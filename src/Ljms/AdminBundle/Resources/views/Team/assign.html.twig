@@ -1,0 +1,30 @@
+{% extends 'LjmsAdminBundle:Default:base.html.twig' %}
+	{% block content%}
+        <h2 class="game_result">Assign Players</h2>
+        <form action="{{ path('team_assign',{'id':edit_id}) }}" method="post" id="assign_form">
+            <fieldset>
+                <div class="row span8">
+                    <div class="span4">
+
+                    </div>
+                    <div class="span3">
+                        <div class="control-group" >
+                            <p></p>
+                            <div class="controls assign_buttons">
+                                <p><input id="add_assign_players" class="btn" type="button" value="Add"></p>
+                                <p><input id="remove_assign_players" class="btn"  type="button" id="act" value="Remove"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span4">
+
+                    </div>
+                </div>
+            </fieldset>
+            <div class="controls buttons">
+                {{form_widget(form.Save,{attr:{'class':'btn'}})}}
+                <a class="btn" id="act" href="{{ path('team_index') }}">Back</a>
+            </div>
+            {{form_rest(form)}}
+        </form>
+    {% endblock %}

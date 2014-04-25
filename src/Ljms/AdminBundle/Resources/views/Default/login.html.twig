@@ -1,0 +1,29 @@
+{% extends 'LjmsHomeBundle:Home:base.html.twig' %}
+{% block section %}
+    <div class="span5">
+        <form action="{{ path('login_check') }}" method="post" class="form-horizontal" name="form_login" id="admin_login_form">
+            <fieldset>
+                <legend><strong>Administrator Login Only</strong></legend>
+                {% if error %}
+                    <p class="alert alert-error">{{ error.message }}</p>
+                {% endif %}                
+                <div class="control-group" >
+                    <label class="control-label" for="email">Email</label>
+                    <div class="controls">
+                    <input class="input-large" type="text" name="_username" id="username" value="{{ last_username }}">
+                    </div>
+                </div>
+                <div class="control-group" >
+                    <label class="control-label" for="password">Password</label>
+                    <div class="controls">
+                    <input class="input-large" type="password" name="_password" id="password">
+                    </div>
+                </div>
+                <div class="controls">
+                <input type="submit" class="btn" name="login" value="Login" >
+                </div>       
+            </fieldset>
+        </form>
+        <p><a href="">Forgot password? Click here</a></p>
+    </div>
+{% endblock %}

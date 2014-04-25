@@ -1,0 +1,17 @@
+ljms_core:
+    resource: "@LjmsCoreBundle/Resources/config/routing.yml"
+    prefix:   /
+
+ljms_home:
+    resource: "@LjmsHomeBundle/Resources/config/routing.yml"
+    prefix:   /
+ljms_admin:
+    resource: "@LjmsAdminBundle/Controller"
+    type:     annotation   
+login:
+    pattern:   /admin
+    defaults:  { _controller: LjmsAdminBundle:Admin:login }
+login_check:
+    pattern:   /login_check
+logout:
+    pattern:   /logout

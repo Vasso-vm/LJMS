@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>{% block title %}Test Application{% endblock %}</title>
+        {% block stylesheets %}
+            <link href="{{ asset('bundles/ljmshome/css/bootstrap.css') }}" type="text/css" rel="stylesheet" /> 
+            <link href="{{ asset('bundles/ljmshome/css/index.css') }}" type="text/css" rel="stylesheet" />
+            <link href="{{ asset('bundles/ljmshome/css/pickmeup.css')}}" rel="stylesheet">
+            <link href="{{ asset('bundles/ljmshome/css/jquery.ui.timepicker.css')}}" rel="stylesheet">
+            <link href="{{ asset('bundles/ljmshome/css/jquery-ui-1.10.4.custom.min.css')}}" rel="stylesheet">    
+        {% endblock %}
+        {% block scripts %}
+            <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/lib/jquery-1.10.2.js')}}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/lib/jquery.validate.js')}}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/lib/jquery-ui-1.10.4.custom.min.js')}}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/lib/jquery.inputmask.js')}}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/lib/jquery.ui.timepicker.js')}}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/lib/jquery.pickmeup.js')}}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/ajax.js')}}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/upload.js')}}>"></script>
+            <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/script.js')}}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/form_validation.js')}}"></script>
+        {% endblock %}
+    </head>
+    <body>
+        <header>
+            <h1><a href="{{url ('home_index')}}"><img src="{{ asset('bundles/ljmshome/images/logo.jpg') }}"></a></h1>
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <ul class="nav">
+                        <li><a href="{{url ('home_index')}}">Home</a></li>
+                        <li><a href="{{path('about_index')}}">About</a></li>
+                        <li><a href="{{path ('sponsors_index')}}">Sponsors</a></li>
+                        <li><a href="">Home</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        {% block content%}
+        <section>
+            <div class="row">
+                {% block leftside %}
+                    <div class="span2 left">
+                   
+                        
+                          
+                        <div id="date"> </div>
+                    </div>
+                {% endblock %}
+                {% block section %} {% endblock %}
+                {% block rightside %}
+                    <div class="span2">
+                        <h2>Announcements</h2>
+                        <img src="{{asset ('bundles/ljmshome/images/announce_img.gif')}}" alt="">
+                        <blockquote>
+                            <p><strong>All Games On As Scheduled!!!!</strong></p>
+                            <p><strong>LJMS will be walking in the Lockport Old Canal Days Parade June 14th!!!!</strong></p>
+                            <p><strong>Watch for more Info!!!!!</strong></p>
+                            <p class="last">
+                                Rain-out hot line.....in the event of questionable weather, we have established a call in hot-line
+                                that you can call to see if games are cancelled.<strong>This only applies to</strong>
+                                <strong>Hassert Park</strong> and can be called after 3pm on weekdays and 8am on weekends.
+                                The number is <strong>815-838-1183 ext 504</strong> .....please remember to dial the proper extension.
+                            </p>
+                        </blockquote>
+                    </div>    
+                {% endblock %}
+            </div>
+        </section>
+        {% endblock %}
+        <footer>
+            {% block footer %}                
+            <ul class="unstyled pull-left nav nav-pills">
+                <li><a href="{{url ('home_index')}}">Home</a></li>
+                <li><a href="{{path('about_index')}}">About</a></li>
+                <li><a href="{{path ('sponsors_index')}}">Sponsors</a></li>
+                <li><a href="">Contact</a></li>
+            </ul>
+            <p class="pull-right">Copyright 2008 Lockport Junior Miss Softball</p>
+            {% endblock %}
+        </footer>
+    </body>
+</html>

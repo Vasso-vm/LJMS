@@ -1,0 +1,29 @@
+{% extends 'LjmsAdminBundle:Default:base.html.twig' %}
+	{% block content%}
+		<h2 class="add_user">
+			{% if method=='add'%}
+				Add Team
+			{% else %}
+				Edit Team
+			{% endif %}
+		</h2>
+			{% if method=='add'%}
+				<form action="{{ path('team_add') }}" method="post" class="form-horizontal player_form" id="add_user_form">
+			{% else %}
+				<form action="{{ path('team_edit',{'id':edit_id}) }}" method="post" class="form-horizontal player_form" id="add_user_form">
+				
+			{% endif %}
+				<fieldset>
+					{{ form_errors(form) }}
+                    {{form_row(form.name)}}
+					{{form_row(form.is_active)}}
+					{{form_row(form.division)}}
+					{{form_row(form.traveling)}}
+				</fieldset>
+				<div class="controls buttons">
+					{{form_widget(form.Save,{attr:{'class':'btn'}})}}
+                    <a class="btn" id="act" href="{{ path('team_index') }}">Back</a>
+				</div>
+				{{form_rest(form)}}
+			</form>
+	{% endblock %}

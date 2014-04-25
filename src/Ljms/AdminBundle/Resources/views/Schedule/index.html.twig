@@ -1,0 +1,80 @@
+{% extends 'LjmsAdminBundle:Default:base.html.twig' %}
+	{% block content%}
+		<h2>Game Schedule</h2>
+		<form action="{{path ('schedule_index')}}" method="get" class="pull-left" id="filter_form">
+			<span class="filter"><strong>Filter by:</strong></span>
+            <span class="filter"> Division:</span>
+            <select id="filter" name="division">
+                <option value="all" {% if filter.division=='all' %}selected {%endif%}>All</option>
+                {% for d in division_list %}
+                    <option value="{{ d.name }}" {% if filter.division==d.name %}selected {%endif%}>{{ d.name }}</option>
+                {% endfor %}
+            </select>
+			<input class="btn filter" type="submit" value="filter" >
+		</form>
+		 <div class="pull-right">
+			<a class="btn action add" href="{{path ('schedule_add')}}" id="act"> Add game</a>
+		</div>
+		<form action="{{ path ('schedule_group') }}" method="post" id="system_users_form">
+			<div class="pull-left">
+				<select id="action_select" name="action_select">
+					<option value="delete">Delete</option>
+				</select>
+				<input class="btn action" type="submit" value="Action" >
+			</div>
+			<div class="pagination pull-right">
+				<ul>
+					<li class="active">
+						<a href="">10</a>
+					</li>
+					<li class="active">
+						<a href="">20</a>
+					</li>
+					<li class="active">
+						<a href="">30</a>
+					</li>
+					<li class="active">
+						<a href="">All</a>
+					</li>		
+				</ul>
+			</div>
+			<table class="system_users">
+				<tbody>
+				<tr class="header">
+					<td><input type="checkbox" id="selall"></td>
+					<td>DATE</td>
+					<td>TIME</td>
+					<td>DIVISION</td>
+                    <td>HOME</td>
+                    <td>VISITOR</td>
+                    <td>PRACTICE</td>
+                    <td>LOCATION</td>
+					<td>ACTION</td>
+				</tr>
+				{% for s in schedule%}
+				<tr>
+					<td> <input type="checkbox" class="checkbox" name="check[]" value={{s.id}}> </td>
+					<td>{{s.date|date("m-d-Y")}}</td>
+					<td>{{ s.date|date("h-i A", false) }}</td>
+					<td>{{ s.hometeam.division.name }}</td>
+                    <td>{{ s.hometeam.name }}</td>
+                    <td>{{ s.visitingteam.name }}</td>
+                    <td>{% if s.practice==1 %} Yes {% else %} No {% endif %}</td>
+                    <td>{{ s.location.name }}</td>
+                    <td>
+                        {% if 'now'|date('Y-m-d-h-i')>s.date|date('Y-m-d-h-i') %}
+                            <a class="btn action add" href="{{path ('schedule_result',{'id':s.id})}}" id="act"> Result</a>
+                        {% endif %}
+						<a href="{{path ('schedule_edit',{'id':s.id}) }}">
+							<img src="{{ asset('bundles/ljmshome/images/edit.png') }}">
+						</a>
+						<a href="{{path ('schedule_delete',{'id':s.id})}}" onclick="return confirm ('Do you want to delete schedule?');">
+							<img src="{{ asset('bundles/ljmshome/images/delete.png') }}">
+						</a>
+					</td>
+				</tr>
+				{%endfor%}
+				</tbody>
+			</table>
+		</form>		
+	{% endblock %}

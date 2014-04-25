@@ -1,0 +1,7 @@
+parameters:
+#    ljms_home.example.class: Ljms\HomeBundle\Example
+
+services:
+#    ljms_home.example:
+#        class: %ljms_home.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

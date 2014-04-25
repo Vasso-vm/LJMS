@@ -1,0 +1,30 @@
+{% extends 'LjmsAdminBundle:Default:base.html.twig' %}
+	{% block content%}
+		<h2 class="add_user">
+			{% if method=='add'%}
+				Add Schedule
+			{% else %}
+				Edit Schedule
+			{% endif %}
+		</h2>
+			{% if method=='add'%}
+				<form action="{{ path('schedule_add') }}" method="post" class="form-horizontal game_form" id="add_user_form">
+			{% else %}
+				<form action="{{ path('schedule_edit',{'id':edit_id}) }}" method="post" class="form-horizontal game_form" id="add_user_form">
+			{% endif %}
+				<fieldset>
+					{{ form_errors(form) }}
+                    {{ form_row(form.practice) }}
+                    {{form_row(form.date)}}
+                    {{form_row(form.division)}}
+                    {{form_row(form.home_team)}}
+                    {{form_row(form.visiting_team)}}
+                    {{form_row(form.location)}}
+				</fieldset>
+				<div class="controls buttons">
+					{{form_widget(form.Save,{attr:{'class':'btn'}})}}
+                    <a class="btn" id="act" href="{{ path('schedule_index') }}">Back</a>
+				</div>
+				{{form_rest(form)}}
+			</form>
+	{% endblock %}

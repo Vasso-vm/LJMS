@@ -1,0 +1,52 @@
+{% extends 'LjmsAdminBundle:Default:base.html.twig' %}
+	{% block content%}
+		<h2 class="add_user">
+			{% if method=='add'%}
+				Add Player
+			{% else %}
+				Edit Player
+			{% endif %}
+		</h2>
+		{% if method=='add'%}
+			<form action="{{ path('player_add',{'id':guardian_id}) }}" method="post" class="form-horizontal" id="add_user_form">			
+		{% else %}
+			<form action="{{ path('player_edit',{'id':edit_id}) }}" method="post" class="form-horizontal" id="edit_user_form">
+			
+		{% endif %}
+			<fieldset>
+				<h3>Child information</h3>
+				{{ form_errors(form) }}				
+				<div class="pull-left">
+                    {{ form_row(form.shares_guardian_address) }}
+					{{form_row(form.FirstName)}}
+					{{form_row(form.address.address)}}
+					{{form_row(form.address.state)}}
+					{{form_row(form.birthdate)}}					
+					{{form_row(form.note)}}							
+				</div>
+				<div class="pull-right">
+					{{form_row(form.LastName)}}
+					{{form_row(form.address.city)}}
+					{{form_row(form.address.zip)}}									
+				</div>
+			</fieldset>
+            <fieldset>
+                <h3>Child information</h3>
+                <div class="pull-left">
+                    {{form_row(form.player_registration.shirt_type)}}
+                    {{form_row(form.player_registration.short_type)}}
+                    {{form_row(form.player_registration.jersey_name)}}
+                    {{form_row(form.player_registration.jersey_number)}}
+                </div>
+                <div class="pull-right">
+                    {{form_row(form.player_registration.shirt_size)}}
+                    {{form_row(form.player_registration.short_size)}}
+                </div>
+            </fieldset>
+			<div class="controls buttons">
+				{{form_widget(form.Save,{attr:{'class':'btn'}})}}
+                <a class="btn" id="act" href="{{ path('player_index') }}">Back</a>
+			</div>
+			{{form_rest(form)}}
+		</form>
+	{% endblock %}

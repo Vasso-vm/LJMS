@@ -1,0 +1,834 @@
+html{
+    background-color: #660000;
+}
+body{
+    background-color: #660000;
+    margin:0 auto;
+    width:1003px;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 11px;
+    margin-top:10px;
+}
+/*---------------------------------------------------------HEADER----------------------------------------------------*/
+header{
+    margin-top:90px;
+    position: relative;
+    height:245px;
+    background: url("/web/bundles/ljmshome/images/header1.jpg") no-repeat top right;
+}
+h1{
+    position:absolute;
+    top:-96px;
+    left:0;
+}
+ul.nav li{
+    height:47px;
+    padding-top:4px;
+}
+section ul.nav li a.disabled, section ul.nav li a.disabled:hover{
+    color: #616161;
+}
+
+div.navbar-inner{
+    background: none;
+    box-shadow: none;
+    padding-left: 245px;
+    height:47px;
+    border:none;
+    border-radius:0;
+    filter:none;
+}
+.navbar .nav > li > a {
+    color:#ffffff;
+    font-weight: bold;
+    text-shadow: none;
+    font-size:14px;
+}
+.navbar .nav > li > a:hover{
+    color: #660000;
+}
+header div.login{
+    margin-top:-25px;
+    padding-right:10px;
+
+}
+header div.login a{
+    color:#ffff00;
+    font-size: 14px;
+    padding:0 5px;
+}
+header div.login a:hover{
+    color:#ff0000;
+}
+header div.login strong:first-child{
+    border-right:2px solid #ffff00;
+}
+/*--------------------------------------------------SECTION-----------------------------------------------------------*/
+section{
+    background-color: #ffffff;
+}
+div.row{
+    width:1003px;
+    margin-left:0;
+}
+div.span2{
+    width:220px;
+    margin:0;
+    padding:13px 10px 26px 14px;
+}
+div.span5{
+    width:487px;
+    margin-left:0;
+    padding-left:25px;
+    padding-top:14px;
+    padding-bottom: 100px;
+    min-height:280px;
+    background: url("/img/section2.jpg") no-repeat bottom right;
+}
+div.span2 img{
+    border-bottom:1px solid #7F7F7F;
+}
+div.span2 blockquote{
+    color:#ff0000;
+    padding:20px 30px;
+    border-left:none;
+}
+blockquote p{
+    margin-top:20px;
+}
+blockquote p.last{
+    margin-top:100px;
+    padding-right:35px;
+    font-size: 11px;
+    color:#333333;
+}
+div.span5 p{
+    font-size:12px;
+}
+section p.link{
+    margin-top:50px;
+    border-left:1px solid #808080;
+    padding-left:6px;
+
+}
+section p.link a{
+    color:#660000;
+}
+section div.welcome{
+    border-left:1px solid black;
+    overflow: hidden;
+    padding-left:9px;
+    padding-top:15px;
+
+}
+section img.pull-left{
+    margin-right:6px;
+}
+div.left{
+    background: url("/img/section1.jpg") no-repeat top right;
+    padding-right:8px;
+}
+section a.click{
+    color:#660000;
+    text-decoration: underline;
+}
+section table{
+    margin:0 auto;
+    margin-top:20px;
+    width:90%;
+
+}
+section table tr td{
+    border:1px solid grey;
+    text-align: center;
+}
+
+table tr p{
+    margin:0;
+    padding:0;
+}
+table h3{
+    color:#660000;
+    font-size:17px;
+}
+table a{
+    color:#ff6600;
+}
+table a:hover{
+    color:#ff0000;
+}
+/*------------------------------------------------------------FOOTER--------------------------------------------------*/
+footer{
+    position:relative;
+    top:0;
+    left:0;
+    height:40px;
+    background-color: #CE910E;
+    border-top:4px solid #E3B047;
+
+}
+footer p{
+    position:absolute;
+    left:380px;
+    top:10px;
+    color: #ffffff;
+}
+footer .nav > li > a:hover,
+.nav > li > a:focus {
+    background-color:#CE910E;
+    color: #660000;
+}
+footer .nav > li > a{
+    color:#ffffff;
+    font-size:11px;
+    margin-top:9px;
+    border:0;
+    border-radius: 0;
+    padding:0 6px;
+    border-right:2px solid #ffffff;
+}
+footer .nav > li:first-child{
+    margin-left:10px;
+}
+footer .nav > li:last-child a{
+    border: 0;
+}
+/*------------------------------------------------------FORM--------------------------------------------------------*/
+form legend, h2{
+    color: #660000;
+    font-weight: lighter;
+    font-size:22px;
+    letter-spacing: -1px;
+    margin:0;
+}
+
+form legend{
+    border-bottom:1px solid #808080;
+}
+form label,select,option{
+    font-size:11px;
+}
+div.span2 img,div.span2 h2{
+    margin-left:13px;
+}
+form.form-horizontal{
+    width:430px;
+}
+form textarea{
+    resize:none;
+    width:250px;
+    height:100px;
+}
+form.form-horizontal .control-label{
+    width:90px;
+}
+form.form-horizontal .controls{
+    margin-left:120px;
+}
+input.error, textarea.error,select.error{
+    border:1px solid #990000;
+}
+label.error{
+    color:#990000;
+}
+#admin_login_form{
+    width:300px;
+    margin:0 auto;
+    margin-bottom: 10px;
+
+}
+#admin_login_form fieldset{
+    padding-right:10px;
+}
+#admin_login_form legend{
+    font-size:14px;
+    color:#333333;
+    border-bottom:none;
+    text-align: center;
+
+}
+#admin_login_form .control-group{
+    margin-top:5px;
+    margin-bottom:15px;
+}
+#admin_login_form input{
+    height:15px;
+}
+#admin_login_form input.btn{
+    height:25px;
+    padding-top:3px;
+}
+#admin_login_form .control-label{
+    width:60px;
+}
+#admin_login_form .controls{
+    margin-left:80px;
+}
+/*----------------------------------------------------------------ADMIN-----------------------------------------------*/
+div.span9{
+    width:960px;
+    min-height: 400px;
+    margin-top:20px;
+    position:relative;
+}
+div.span9 h2{
+
+    font-weight: bold;
+    color: #CC3333;
+}
+#profile_form{
+    margin:0 auto;
+    width:800px;
+    margin-bottom:30px;
+    border:1px solid #808080;
+
+}
+#profile_form fieldset{
+    margin-left:80px;
+    margin-top:20px;
+    margin-bottom:20px;
+}
+#profile_form div.controls{
+    margin-left:220px;
+}
+#profile_form .control-label{
+    width:130px;
+}
+#profile_form label,#profile_form p{
+    font-size: 14px;
+}
+#profile_form div.change{
+    border-top:1px solid #808080;
+    width:640px;
+    padding-top:20px;
+}
+#profile_form p{
+    margin-left:10px;
+    color: #3646ff;
+}
+#profile_form p.alert-error{
+    color: #ff0000;
+}
+#profile_form p.first{
+    margin-left:40px;
+    cursor: pointer;
+}
+#profile_form p.btn-slide{
+    cursor: pointer;
+}
+#forgot_password_form legend{
+    margin-bottom:10px;
+}
+p.alert alert-error{
+    margin-bottom:5px;
+
+}
+.ie7 form.form-horizontal div.controls{
+    margin-left:30px;
+}
+.ie7 #admin_login_form div.controls{
+    margin-left:0px;
+}
+.ie7 #admin_login_form input.btn{
+    margin-left:61px;
+}
+.ie7 div.login{
+    margin: 0;
+}
+.ie7 #profile_form div.controls{
+    margin-left:80px;
+}
+.ie7 #profile_form div.controls label.control-label{
+    margin-left:70px;
+}
+.ie7 #profile_form input.btn{
+    margin-left:50px;
+}
+#login_header_form{
+    margin-top:-70px;
+}
+#login_header_form label{
+    color:#ffffff;
+}
+#login_header_form input{
+    height:15px;
+    padding:2px 4px;
+    margin-left:10px;
+    font-size:11px;
+    width:114px;
+}
+#login_header_form input.btn{
+    height:22px;
+    padding:2px 6px;
+    width:60px;
+
+
+}
+#login_header_form p{
+    margin-top:5px;
+}
+#login_header_form a{
+    color:#ffffff;
+    margin-left:40px;
+}
+.ie7 #login_header_form{
+    width:351px;
+}
+.ie7 #login_header_form input{
+    display: inline;
+    line-height: 15px;
+
+}
+.ie7 header div.navbar-inner{
+    margin-top:0px;
+}
+.ie header div.navbar-inner{
+    margin-top:-13px;
+}
+.ie7 div.login{
+    margin-top:-25px;
+}
+.ie7 select{
+    margin-top:0;
+    float:left;
+}
+.ie7 input.add{
+    margin-top:-30px;
+}
+.ie7 #add_user_form div.controls,#edit_user_form div.controls,{
+    margin-left:0;
+    padding-left:0;
+}
+
+#panelemail,#panelpassword{
+    display: none;
+}
+#profile_form p.alert-success{
+    color:#468847;
+}
+section table.system_users td{
+    border:0;
+    padding:8px 6px 6px 12px;
+    height:20px;
+    text-align: left;
+}
+section table.system_users{
+    width:100%;
+    margin-top:10px;
+    clear: both;
+}
+section table.system_users td.name{
+    padding-left:3px;
+}
+tr.header{
+    background-color:#cecece;
+}
+section table.system_users td input{
+
+    margin-top:-4px;
+}
+section table.system_users tr{
+    border-bottom:1px solid #adadad;
+}
+section table.system_users tr.header{
+
+    color: #333333;
+    text-transform: uppercase;
+    font: bold 13px "Trebuchet MS",Arial,Helvetica,sans-serif;
+
+}
+
+#add_user_form,#edit_user_form{
+    margin:0 auto;
+    width:900px;
+    margin-bottom:30px;
+
+}
+#add_user_form fieldset,#edit_user_form fieldset{
+    padding-left:30px;
+    padding-top:20px;
+    padding-bottom:20px;
+    padding-right:30px;
+    border:1px solid #808080;
+    margin-bottom:10px;
+}
+#profile_form div.controls{
+    margin-left:220px;
+}
+#add_user_form .control-label,#edit_user_form .control-label{
+    width:100px;
+    text-align: left;
+}
+#add_user_form label,#profile_form p,#edit_user_form label{
+    font-size: 14px;
+}
+#add_user_form div.change,{
+    border-top:1px solid #808080;
+    width:640px;
+    padding-top:20px;
+}
+#add_user_form p{
+    margin-left:10px;
+    color: #3646ff;
+}
+#add_user_form p.alert-error,#edit_user_form p.alert-error{
+    color: #ff0000;
+}
+#add_user_form p.first{
+    margin-left:40px;
+    cursor: pointer;
+}
+#add_user_form p.btn-slide{
+    cursor: pointer;
+}
+/*------------*/
+h2.add_user{
+    margin-left:100px;
+    margin-bottom:20px;
+}
+#add_user_form h3,#edit_user_form h3{
+    color: #777777;
+    font-size: 18px;
+    text-decoration: underline;
+    line-height: 18px;
+
+}
+#add_user_form input.input-large,#edit_user_form input.input-large{
+    height:17px;
+    width:180px;
+}
+#add_user_form div.controls,#edit_user_form div.controls{
+    margin-left:110px;
+}
+#add_user_form div.control-group,#edit_user_form div.control-group{
+    margin-bottom:5px;
+}
+#add_user_form div.control-group pull-right,#edit_user_form div.control-group pull-right{
+    margin-right:20px;
+}
+button.action{
+    margin-bottom:-5px;
+}
+#action_select{
+    width:100px;
+    margin-bottom:-2px;
+}
+#action_select{
+    color:#000000;
+}
+div.pagination{
+    text-align: center;
+    margin-top:0;
+    margin-bottom:0;
+
+}
+div.pagination a{
+    color: #660000;
+}
+#system_users_form, #division_form{
+    min-height:250px;
+    clear:both;
+
+}
+
+.ie7 tr.content{
+    border-bottom:1px solid lightgrey;
+}
+#add_user_form div.buttons,#edit_user_form div.buttons{
+    margin-left:0;
+}
+span.red{
+    color: red;
+}
+div.filter{
+    display:inline;
+    position: relative;
+    float:right;
+    top:10px;
+
+
+}
+.pagination ul > li > span.invizible {
+    border-left:0;
+    border-top:0;
+    border-bottom:0;
+    padding-left:3px;
+    padding-right:3px;
+    padding-top:8px;
+}
+#filter_form{
+    margin:0;
+    margin-bottom:10px;
+}
+span.filter{
+    font-size:14px;
+}
+#filter{
+    width:100px;
+    height:26px;
+    margin-bottom: 0;
+    margin-left:10px;
+}
+input.filter{
+    width:50px;
+}
+div.menu div.navbar-inner{
+    padding:0;
+}
+div.menu div.navbar-inner li{
+    border-right:1px solid #B8B8B8;
+    padding-top:0;
+    padding-bottom:0;
+}
+div.menu div.navbar-inner a{
+    background: linear-gradient(to top, #b8b8b8, #f5f3e1);
+    color: #CC3333;
+    padding:14px;
+
+}
+#states{
+    width:193px;
+}
+td.last{
+    width:150px;
+}
+#addr_as_guard{
+    margin-right:10px;
+    margin-top:-2px;
+}
+span.addr_guard{
+    font-size:13px;
+}
+/* ----------------------------------------------------DIVISION Form -------------------------------------------------*/
+form.division{
+    width: 800px;
+}
+form.division fieldset{
+    padding: 20px 60px 0 60px;
+}
+form.division label,#photo_form label {
+    font-size: 14px;
+}
+form.division .control-label{
+    width:120px;
+}
+form.division .controls {
+    margin-left: 160px;
+}
+form.division textarea{
+    width:450px;
+    height:150px;
+}
+form.division div.controls label{
+    display:inline;
+    margin:0 5px;
+}
+form.division div.controls span.years{
+    font-size:14px;
+}
+form.division .buttons{
+    margin-left:10px;
+
+}
+#min_age, #max_age{
+    width:50px;
+}
+
+#imageId{
+    margin-left:165px;
+    margin-bottom:15px;
+}
+#photo_form{
+    width:800px;
+    margin-bottom:0;
+}
+#photo_form fieldset{
+    padding:0 60px;
+}
+#photo_form .control-label{
+    width:120px;
+}
+#photo_form .controls{
+    margin-left:160px;
+}
+#filter_division{
+    width:150px;
+}
+img.photo{
+    display: block;
+    margin-left:170px;
+    margin-bottom:15px;
+    margin-top:10px;
+}
+/* ------------------------------------------------------- END -------------------------------------------------------*/
+div.wrapper{
+    border: 1px solid #808080;
+    margin:0 80px 80px 80px;
+}
+section table td.header_assign{
+    padding-left:50px;
+}
+td.assign{
+    width:170px;
+}
+fieldset div.row{
+    width:950px;
+    border-bottom:1px solid #808080;
+    margin-bottom:15px;
+}
+fieldset div.row div.span3{
+    margin:0;
+    text-align: center;
+}
+fieldset div.span4{
+    width:360px;
+    margin:0;
+
+}
+fieldset div.assign_buttons{
+    margin-top:100px;
+}
+fieldset div.row label.control-label{
+    background-color: #CECECE;
+    padding-top:5px;
+    padding-bottom:5px;
+    font-size:14px;
+    text-align: center;
+}
+fieldset div.row div.span3 p{
+    background-color: #CECECE;
+    width:100%;
+    height:30px;
+    margin:0;
+}
+#assign_players,#not_assign_players{
+    height:250px;
+    width:350px;
+    margin-left:5px;
+}
+fieldset div.row div.assign_buttons p{
+    background-color: #ffffff;
+    margin-top:10px;
+}
+div.span9 form.game_form fieldset div.controls{
+    margin-left:170px!important;
+}
+div.span9 form.game_form fieldset .control-label{
+    width:150px!important;
+}
+span.ampm{
+    font-size:14px;
+    margin-left:2px;
+}
+/*------------------------------------------------------GAME FORM----------------------------------------------------*/
+#game_form{
+    margin: 0 auto 30px;
+    width: 800px;
+}
+#game_form fieldset{
+    border: 1px solid #808080;
+    margin-bottom: 10px;
+    padding: 20px 60px;
+}
+#game_form div.buttons{
+    margin-left: 0;
+}
+#game_form div.control-group {
+    margin-bottom: 5px;
+}
+#game_form .control-label {
+    text-align: left;
+    width: 100px;
+}
+#game_form label{
+    font-size: 14px;
+}
+div.span9 form.game_form fieldset .control-label {
+    width: 150px !important;
+}
+#game_form label.radio.inline,#add_user_form label.radio.inline{
+    padding-top:0;
+}
+h2.game_result{
+    text-align: center;
+}
+#result_form {
+    margin:0 auto;
+    margin-top:10px;
+    width:400px;
+    text-align: center;
+
+}
+#result_form label.control-label{
+    font-size:14px;
+}
+ul.nav .sub {
+    display: none;
+    margin:0;
+
+}
+.drop:hover .sub {
+    display: inline-block;
+}
+ul.sub a{
+    width:108px;
+    display:block;
+    margin:0;
+}
+form.location .control-label {
+    width: 150px !important;
+}
+form.location .controls {
+    margin-left: 150px !important;
+}
+form.location select{
+    width:194px !important;
+}
+form.location div.buttons{
+    margin-left:0 !important;
+}
+#date{
+    font-size:14px;
+}
+#schedule{
+    padding-left:10px;
+
+}
+div.span7{
+    width:710px;
+    min-height:500px;
+}
+div.span7 h3{
+    font-size:14px;
+    color:#660000;
+}
+table.roles{
+    width:100%;
+}
+table.roles td{
+    border:0;
+    padding:4px 6px;
+    text-align: left;
+}
+input.btn .role{
+    margin-left:0;
+}
+div.add_role{
+    margin-top:10px;
+}
+table.roles td.delete{
+    text-align:right;
+}
+table.system_users td.role{
+    width:70px;
+    text-align: center;
+    vertical-align: top;
+}
+table.system_users td.division{
+    vertical-align: top;
+}
+table.system_users td.team{
+    vertical-align: top;
+}
+
+

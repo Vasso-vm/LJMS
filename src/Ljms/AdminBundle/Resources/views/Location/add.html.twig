@@ -1,0 +1,32 @@
+{% extends 'LjmsAdminBundle:Default:base.html.twig' %}
+	{% block content%}
+		<h2 class="add_user">
+			{% if method=='add'%}
+				Add Location
+			{% else %}
+				Edit Location
+			{% endif %}
+		</h2>
+			{% if method=='add'%}
+				<form action="{{ path('location_add') }}" method="post" class="form-horizontal location" id="add_user_form">
+			{% else %}
+				<form action="{{ path('location_edit',{'id':edit_id}) }}" method="post" class="form-horizontal location" id="add_user_form">
+			{% endif %}
+				<fieldset>
+					{{ form_errors(form) }}								
+					{{form_row(form.name)}}
+					{{form_row(form.city)}}
+					{{form_row(form.address)}}
+					{{form_row(form.state)}}
+					{{form_row(form.zip)}}
+					{{form_row(form.phone)}}
+                    {{form_row(form.url)}}
+                    {{form_row(form.is_active)}}
+                </fieldset>
+				<div class="controls buttons">
+					{{form_widget(form.Save,{attr:{'class':'btn'}})}}
+                    <a class="btn" id="act" href="{{ path('location_index') }}">Back</a>
+				</div>
+				{{form_rest(form)}}
+			</form>
+	{% endblock %}

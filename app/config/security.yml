@@ -1,0 +1,24 @@
+security:
+    encoders:
+        Ljms\CoreBundle\Entity\Profile:
+            algorithm: sha512
+            encode-as-base64: true
+            iterations: 10
+    providers:
+          main:
+              entity: { class: LjmsCoreBundle:Profile, property: email }
+    firewalls:
+            secured_area:
+                pattern:    ^/
+                anonymous: ~
+                form_login: 
+                    login_path: /admin
+                    check_path: /login_check
+                logout:
+                    path:   /logout
+                    target: /home
+
+    access_control:
+        - { path: ^/admin/users, roles: ROLE_ADMIN }
+
+

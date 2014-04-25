@@ -1,0 +1,53 @@
+{% extends 'LjmsAdminBundle:Default:base.html.twig' %}
+	{% block content%}
+		<h2 class="add_user">
+			{% if method=='add'%}
+				Add Guardian
+			{% else %}
+				Edit Guardian
+			{% endif %}
+		</h2>
+		{% if method=='add'%}
+			<form action="{{ path('guardian_add') }}" novalidate="novalidate" method="post" class="form-horizontal" id="add_user_form">			
+		{% else %}
+			<form action="{{ path('guardian_edit',{'id':edit_id}) }}" method="post" class="form-horizontal" id="edit_user_form">
+			
+		{% endif %}
+			<fieldset>
+				<h3>User information</h3>
+				{{ form_errors(form) }}				
+				<div class="pull-left">					
+					{{form_row(form.FirstName)}}
+					{{form_row(form.address.address)}}
+					{{form_row(form.address.state)}}
+					{{form_row(form.email)}}					
+					{{form_row(form.password)}}
+							
+				</div>
+				<div class="pull-right">
+					{{form_row(form.LastName)}}
+					{{form_row(form.address.city)}}
+					{{form_row(form.address.zip)}}
+					{{form_row(form.HomePhone)}}
+					{{form_row(form.CellPhone)}}
+					{{form_row(form.AltPhone)}}					
+				</div>
+			</fieldset>
+			<fieldset>
+				<h3>Alt Contact</h3>
+				<div class="pull-left">
+					{{form_row(form.altContact.altFirstName)}}
+					{{form_row(form.altContact.altEmail)}}
+				</div>
+				<div class="pull-right">
+					{{form_row(form.altContact.altLastName)}}
+					{{form_row(form.altContact.altPhone)}}
+				</div>				
+			</fieldset>			
+			<div class="controls buttons">
+				{{form_widget(form.Save,{attr:{'class':'btn'}})}}
+                <a class="btn" id="act" href="{{ path('guardian_index') }}">Back</a>
+			</div>
+			{{form_rest(form)}}
+		</form>
+	{% endblock %}

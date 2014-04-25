@@ -1,0 +1,85 @@
+{% extends 'LjmsAdminBundle:Default:base.html.twig' %}
+	{% block content%}
+		<h2>Divisions</h2>
+		<form action="{{path ('division_index')}}" method="get" class="pull-left" id="filter_form">
+			<span class="filter"><strong>Filter by:</strong></span>
+            <span class="filter"> Division:</span>
+            <select id="filter" name="division">
+                <option value="all" {% if filter.division=='all' %}selected {%endif%}>All</option>
+                {% for d in division_list %}
+                    <option value="{{ d.name }}" {% if filter.division==d.name %}selected {%endif%}>{{ d.name }}</option>
+                {% endfor %}
+            </select>
+			<span class="filter"> Status:</span>
+			<select id="filter" name="status">
+				<option value="all" {% if filter.status=='all' %}selected {%endif%}>All</option>
+				<option value="active"{% if filter.status=='active' %}selected {%endif%}>Active</option>
+				<option value="inactive"{% if filter.status=='inactive' %}selected {%endif%}>Inactive</option>
+			</select>
+			<input class="btn filter" type="submit" value="filter" >
+		</form>
+		 <div class="pull-right">
+			<a class="btn action add" href="{{path ('division_add')}}" id="act"> Add division</a>
+		</div>
+		<form action="{{path ('division_group')}}" method="post" id="system_users_form">
+			<div class="pull-left">
+				<select id="action_select" name="action_select">
+					<option value="active">Active</option>
+					<option value="inactive">Inactive</option>
+					<option value="delete">Delete</option>
+				</select>
+				<input class="btn action" type="submit" value="Action" >
+			</div>
+			<div class="pagination pull-right">
+				<ul>
+					<li class="active">
+						<a href="">10</a>
+					</li>
+					<li class="active">
+						<a href="">20</a>
+					</li>
+					<li class="active">
+						<a href="">30</a>
+					</li>
+					<li class="active">
+						<a href="">All</a>
+					</li>		
+				</ul>
+			</div>
+			<table class="system_users">
+				<tbody>
+				<tr class="header">
+					<td><input type="checkbox" id="selall"></td>
+					<td>DIVISION</td>
+					<td>TEAM(S)</td>
+					<td>DIRECTOR</td>
+					<td>ACTION</td>
+				</tr>
+				{% for d in divisions%}
+				<tr {% if d.isActive==0 %} class="muted content"{% else %}class="content"{% endif %} >
+					<td> <input type="checkbox" class="checkbox" name="check[]" value={{d.id}}> </td>
+					<td class="name">{{d.name}}</td>
+					<td> {% if d.teams!=NULL%}
+                            {% for t in d.teams %}
+                                {{ t.name }}
+                            {% endfor %}
+                        {% endif %} </td>
+					<td>
+						{% if d.profile!=NULL%}
+							{{ d.profile.FirstName}},{{ d.profile.LastName}}
+						{% endif %}	
+					</td>
+                    <td>
+						<a href="{{path ('division_edit',{'id':d.id}) }}">
+							<img src="{{ asset('bundles/ljmshome/images/edit.png') }}">
+						</a>
+						<a href="{{path ('division_delete',{'id':d.id})}}" onclick="return confirm ('Do you want to delete division?');">
+							<img src="{{ asset('bundles/ljmshome/images/delete.png') }}">
+						</a>
+					</td>
+				</tr>
+				{%endfor%}
+				</tbody>
+			</table>
+		</form>		
+	{% endblock %}

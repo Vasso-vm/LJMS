@@ -1,0 +1,108 @@
+{% extends 'LjmsAdminBundle:Default:base.html.twig' %}
+	{% block content%}
+		<h2 class="add_user">
+			{% if method=='add'%}
+				Add User
+			{% else %}
+				Edit User
+			{% endif %}
+		</h2>
+		{% if method=='add'%}
+			<form action="{{ path('users_add') }}" novalidate method="post" class="form-horizontal" id="add_user_form">			
+		{% else %}
+			<form action="{{ path('users_edit',{'id':edit_id}) }}" novalidate method="post" class="form-horizontal" id="edit_user_form">
+			
+		{% endif %}
+			<fieldset>
+				<h3>User information</h3>
+				{{ form_errors(form) }}				
+				<div class="pull-left">					
+					{{form_row(form.FirstName)}}
+					{{form_row(form.address.address)}}
+					{{form_row(form.address.state)}}
+					{{form_row(form.email)}}					
+					{{form_row(form.password)}}
+							
+				</div>
+				<div class="pull-right">
+					{{form_row(form.LastName)}}
+					{{form_row(form.address.city)}}
+					{{form_row(form.address.zip)}}
+					{{form_row(form.HomePhone)}}
+					{{form_row(form.CellPhone)}}
+					{{form_row(form.AltPhone)}}					
+				</div>
+			</fieldset>
+			<fieldset>
+				<h3>Alt Contact</h3>
+				<div class="pull-left">
+					{{form_row(form.altContact.altFirstName)}}
+					{{form_row(form.altContact.altEmail)}}
+				</div>
+				<div class="pull-right">
+					{{form_row(form.altContact.altLastName)}}
+					{{form_row(form.altContact.altPhone)}}
+				</div>				
+			</fieldset>
+			<fieldset>
+				<h3>User Role</h3>
+				
+				<div class="pull-left">
+							
+				</div>
+				<div class="pull-right">
+							
+				</div>
+				<table class="roles" id="roles">
+					<tr class="header">
+						<td>Current Roles</td>
+						<td>Division</td>
+						<td>Team</td>
+						<td></td>
+					</tr>
+					<tr class="1_undefined_undefined">
+						<input type="hidden" name="current_role[]" value="1|undefined|undefined">
+						<td>Admin</td>
+						<td></td>
+						<td></td>
+						<td class="delete"><input type="button" onclick="deleteRole(this)" value="Delete Role" class="1_undefined_undefined"></td>
+					</tr>
+					<tr class="2">
+						<input type="hidden" name="current_role[]" value="">
+						<td>Director</td>
+						<td><?php echo ($value['name']);?></td>
+						<td></td>
+						<td class="delete"><input type="button" onclick="deleteRole(this)" value="Delete Role" class=""></td>
+					</tr>					
+					<tr class="3">
+						<input type="hidden" name="current_role[]" value="">
+						<td>Coach</td>
+						<td><?php echo ($value['division_name']);?></td>
+						<td><?php echo ($value['name']);?></td>
+						<td class="delete"><input type="button" onclick="deleteRole(this)" value="Delete Role" class=""></td>
+					</tr>				
+					<tr class="4">
+						<td>Manager</td>
+						<td><?php echo ($value['division_name']);?></td>
+						<td><?php echo ($value['name']);?></td>
+						<td class="delete"><input type="button" onclick="deleteRole(this)" value="Delete Role" class=""></td>
+					</tr>
+					<tr class="5_undefined_undefined">
+						<input type="hidden" name="current_role[]" value="5|undefined|undefined">
+						<td>Guardian</td>
+						<td></td>
+						<td></td>
+						<td class="delete"><input type="button" onclick="deleteRole(this)" value="Delete Role" class="5_undefined_undefined"></td>
+					</tr>				
+				</table>
+				<div class="add_role">
+					
+				</div>				
+			</fieldset>
+			<div class="controls buttons">
+				{{form_widget(form.Save,{attr:{'class':'btn'}})}}
+				<a class="btn" id="act" href="{{ path('users_index') }}">Back</a>
+			</div>
+			{{form_rest(form)}}
+		</form>
+	{% endblock %}

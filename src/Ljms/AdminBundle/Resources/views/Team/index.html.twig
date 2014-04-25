@@ -1,0 +1,85 @@
+{% extends 'LjmsAdminBundle:Default:base.html.twig' %}
+	{% block content%}
+		<h2>Teams</h2>
+		<form action="{{path ('team_index')}}" method="get" class="pull-left" id="filter_form">
+			<span class="filter"><strong>Filter by:</strong></span>
+            <span class="filter"> Division:</span>
+            <select id="filter" name="division">
+                <option value="all" {% if filter.division=='all' %}selected {%endif%}>All</option>
+                {% for d in division_list %}
+                    <option value="{{ d.name }}" {% if filter.division==d.name %}selected {%endif%}>{{ d.name }}</option>
+                {% endfor %}
+            </select>
+			<span class="filter"> Status:</span>
+			<select id="filter" name="status">
+				<option value="all" {% if filter.status=='all' %}selected {%endif%}>All</option>
+				<option value="active"{% if filter.status=='active' %}selected {%endif%}>Active</option>
+				<option value="inactive"{% if filter.status=='inactive' %}selected {%endif%}>Inactive</option>
+			</select>
+			<input class="btn filter" type="submit" value="filter" >
+		</form>
+		 <div class="pull-right">
+			<a class="btn action add" href={{path('team_add')}} id="act" >Add team</a>
+		</div>
+		<form action="{{path ('team_group')}}" method="post" id="system_users_form">
+			<div class="pull-left">
+				<select id="action_select" name="action_select">
+					<option value="active">Active</option>
+					<option value="inactive">Inactive</option>
+					<option value="delete">Delete</option>
+				</select>
+				<input class="btn action" type="submit" value="Action" >
+			</div>
+			<div class="pagination pull-right">
+				<ul>
+					<li class="active">
+						<a href="">10</a>
+					</li>
+					<li class="active">
+						<a href="">20</a>
+					</li>
+					<li class="active">
+						<a href="">30</a>
+					</li>
+					<li class="active">
+						<a href="">All</a>
+					</li>		
+				</ul>
+			</div>
+			<table class="system_users">
+				<tbody>
+				<tr class="header">
+					<td><input type="checkbox" id="selall"></td>
+					<td>TEAM</td>
+					<td>DIVISION</td>
+					<td>COACH</td>
+					<td>WINS</td>
+					<td>LOSES</td>
+					<td>TIES</td>
+					<td>AVERAGE</td>
+					<td>ACTION</td>
+				</tr>
+				{% for t in teams %}
+				<tr {% if t.isActive==0 %} class="muted content"{% else %}class="content"{% endif %} >
+					<td> <input type="checkbox" class="checkbox" name="check[]" value={{t.id}}> </td>
+					<td class="name">{{t.name}}</td>
+					<td> {{t.division.name}}</td>
+					<td></td>
+					<td></td>	
+					<td></td>	
+					<td></td>
+                    <td></td>
+					<td>
+						<a href="{{path ('team_edit',{'id':t.id}) }}">
+							<img src="{{ asset('bundles/ljmshome/images/edit.png') }}">
+						</a>
+						<a href="{{path ('team_delete',{'id':t.id}) }}" onclick="return confirm ('Do you want to delete team?');">
+							<img src="{{ asset('bundles/ljmshome/images/delete.png') }}">
+						</a>
+					</td>
+				</tr>
+				{%endfor%}
+				</tbody>
+			</table>
+		</form>		
+	{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'LjmsHomeBundle:Home:base.html.twig' %}
+{% block section %}        
+    <div class="span5">
+        <h2>Welcome to our web site!</h2>
+        <img src="{{asset ('bundles/ljmshome/images/welcome_image.jpeg')}}" alt="" class="pull-left">
+        <div class="welcome">
+            <p>Welcome to the Lockport Junior Miss Softball web site. The LJMS Executive Board is excited to introduce the new league site.
+                This site will have many new features that will enable us to keep you informed and updated on all league activities.
+            </p>
+            <p class="link"><a href="{{path ('about_index')}}">more about us</a></p>
+        </div>
+    </div>        
+{% endblock %}

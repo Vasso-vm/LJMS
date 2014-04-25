@@ -1,0 +1,130 @@
+<?php
+
+namespace Ljms\AdminBundle\Controller;
+use Ljms\CoreBundle\Entity\Team;
+use Ljms\CoreBundle\Entity\Division;
+use Symfony\Component\HttpFoundation\Request;
+use Ljms\CoreBundle\Form\TeamType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+    /**
+     * TeamController - edit/delete operations for backend-users (admins)
+     * @Route("admin/teams")
+     */
+class TeamController extends Controller
+{
+    /**
+     * @Route("", name="team_index")
+     * @Template()
+     */
+    public function indexAction()
+    {
+        $filter=array(
+            'status'=>'all',
+            'division'=>'all'
+            );
+        if (isset ($_GET['status'])){
+            $filter['status']=htmlspecialchars($_GET['status']);
+        }
+        if (isset($_GET['division'])){
+            $filter['division']=htmlspecialchars($_GET['division']);
+        }
+        return array (
+            'teams'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Team')->findTeams($filter),
+            'Url'=>'team_add',
+            'division_list'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisionList(),
+            'filter'=>$filter,          
+        );
+    }
+    /**
+     * @Route("/add", name="team_add")
+     * @Template()
+     */
+    public function addAction(Request $request){
+        $team = new Team();
+        $form = $this->createForm(new TeamType(), $team);
+        $form->handleRequest($request);
+        if ($form->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($team);
+            $em->flush();           
+            return $this->redirect($this->generateUrl('team_index'));
+        }
+        return array('method'=>'add','form'=>$form->createView(),'Url'=>'team_index');
+    }
+    /**
+     * @Route("/edit/{id}", name="team_edit")
+     * @Template("LjmsAdminBundle:Team:add.html.twig")
+     */
+    public function editAction(Request $request,$id){
+        $em=$this->getDoctrine()->getManager();
+        $team = $em->getRepository('LjmsCoreBundle:Team')->find($id);
+        if (!$team) {
+            throw $this->createNotFoundException(
+                'No profile found for id '.$id
+            );
+        }
+        $form = $this->createForm(new TeamType(), $team);
+        $form->handleRequest($request);
+        if ($form->isValid()){
+            $em->flush();           
+            return $this->redirect($this->generateUrl('team_index'));
+        }
+        return array('method'=>'edit','form'=>$form->createView(),'edit_id'=>$id);
+    }
+    /**
+     * @Route("/delete/{id}", name="team_delete")
+     */
+    public function deleteAction(Request $request,$id){
+        $em=$this->getDoctrine()->getManager();
+        $team = $em->getRepository('LjmsCoreBundle:Team')->find($id);
+        $em->remove($team);
+        $em->flush();
+        return $this->redirect($this->generateUrl('team_index'));
+    }
+    /**
+     * @Route("/group", name="team_group")
+     */
+    public function groupAction(Request $request)
+    {
+        if ($request->request->get('check')){
+            $check=$request->request->get('check');
+            switch ($request->request->get('action_select')){
+                case 'active':
+                    $this->active($check,1);
+                    break;
+                case 'inactive':
+                    $this->active($check,0);
+                    break;
+                case 'delete':
+                    $em=$this->getDoctrine()->getManager();
+                    $teams=$em->getRepository('LjmsCoreBundle:Team')->findBy(array('id'=>$check));
+                    foreach($teams as $team){
+                        $em->remove($team);
+                    }
+                    $em->flush();
+                    break;
+            }
+        }
+        return $this->redirect($this->generateUrl('team_index'));
+    }
+    private function active($check,$is_active)
+    {
+        $em=$this->getDoctrine()->getManager();
+        $teams=$em->getRepository('LjmsCoreBundle:Team')->findBy(array('id'=>$check));
+        foreach($teams as $team){
+            $team->setIsActive($is_active);
+        }
+        $em->flush();
+    }
+    /**
+     * @Route("/assign/{id}", name="team_assign")
+     * @Template()
+     */
+    public function assignAction(Request $request,$id)
+    {
+        return array('edit_id'=>$id);
+    }
+}
+?>

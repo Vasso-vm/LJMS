@@ -1,0 +1,78 @@
+{% extends 'LjmsAdminBundle:Default:base.html.twig' %}
+	{% block content%}
+		<h2>Locations</h2>
+		<form action="{{path ('location_index')}}" method="get" class="pull-left" id="filter_form">
+			<span class="filter"><strong>Filter by:</strong></span>
+			<span class="filter"> Status:</span>
+			<select id="filter" name="status">
+				<option value="all" {% if filter.status=='all' %}selected {%endif%}>All</option>
+				<option value="active"{% if filter.status=='active' %}selected {%endif%}>Active</option>
+				<option value="inactive"{% if filter.status=='inactive' %}selected {%endif%}>Inactive</option>
+			</select>
+			<input class="btn filter" type="submit" value="filter" >
+		</form>
+		 <div class="pull-right">
+			<a class="btn action add" href="{{path ('location_add')}}" id="act"> Add location</a>
+		</div>
+		<form action="{{ path ('location_group') }}" method="post" id="system_users_form">
+			<div class="pull-left">
+				<select id="action_select" name="action_select">
+					<option value="active">Active</option>
+					<option value="inactive">Inactive</option>
+					<option value="delete">Delete</option>
+				</select>
+				<input class="btn action" type="submit" value="Action" >
+			</div>
+			<div class="pagination pull-right">
+				<ul>
+					<li class="active">
+						<a href="">10</a>
+					</li>
+					<li class="active">
+						<a href="">20</a>
+					</li>
+					<li class="active">
+						<a href="">30</a>
+					</li>
+					<li class="active">
+						<a href="">All</a>
+					</li>		
+				</ul>
+			</div>
+			<table class="system_users">
+				<tbody>
+				<tr class="header">
+					<td><input type="checkbox" id="selall"></td>
+					<td>NAME</td>
+					<td>CITY</td>
+					<td>STATE</td>
+					<td>ZIPCODE</td>
+                    <td>PHONE</td>
+                    <td>LOCATION URL</td>
+                    <td>MAP</td>
+                    <td>ACTION</td>
+				</tr>
+				{% for l in locations %}
+				<tr {% if l.isActive==0 %} class="muted content"{% else %}class="content"{% endif %} >
+					<td> <input type="checkbox" class="checkbox" name="check[]" value={{l.id}}> </td>
+					<td class="name">{{l.name}}</td>
+					<td> {{ l.city }} </td>
+					<td> {{ l.state.name}} </td>
+                    <td> {{ l.zip}} </td>
+                    <td> {{ l.phone}} </td>
+                    <td> <a href="http://{{l.url}}">{{ l.url }}</a> </td>
+                    <td> <a href="{{l.googlemaplink}}">map</a></td>
+                    <td>
+						<a href="{{path ('location_edit',{'id':l.id}) }}">
+							<img src="{{ asset('bundles/ljmshome/images/edit.png') }}">
+						</a>
+						<a href="{{path ('location_delete',{'id':l.id})}}" onclick="return confirm ('Do you want to delete location?');">
+							<img src="{{ asset('bundles/ljmshome/images/delete.png') }}">
+						</a>
+					</td>
+				</tr>
+				{%endfor%}
+				</tbody>
+			</table>
+		</form>		
+	{% endblock %}

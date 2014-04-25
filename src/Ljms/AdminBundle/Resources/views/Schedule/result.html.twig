@@ -1,0 +1,20 @@
+{% extends 'LjmsAdminBundle:Default:base.html.twig' %}
+	{% block content%}
+    <h2 class="game_result">Game Results</h2>
+    <form action="{{ path('schedule_result',{'id':edit_id}) }}" method="post" id="result_form">
+        <fieldset>
+            {{ form_errors(form) }}
+            <div class="pull-left">
+                {{ form_row(form.home_team_score) }}
+            </div>
+            <div>
+            {{ form_row(form.visiting_team_score) }}
+            </div>
+        </fieldset>
+        <div class="controls buttons">
+            {{form_widget(form.Save,{attr:{'class':'btn'}})}}
+            <a class="btn" id="act" href="{{ path('schedule_index') }}">Back</a>
+        </div>
+        {{form_rest(form)}}
+    </form>
+    {% endblock %}

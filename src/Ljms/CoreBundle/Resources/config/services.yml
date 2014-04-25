@@ -1,0 +1,7 @@
+parameters:
+#    ljms_core.example.class: Ljms\CoreBundle\Example
+
+services:
+#    ljms_core.example:
+#        class: %ljms_core.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
