@@ -27,10 +27,6 @@
                 $qb->where(" d.name ='$division'");
             }
             $qb->andwhere($where);
-            //$qb->andwhere('(home.practice=0 or visiting.practice=0)');
-            //$qb->groupBy('home.home_team,visiting.visiting_team');
-            //$qb->leftJoin(self::TABLE_ALIAS.'.visiting_games','visiting');
-            //$qb->select(self::TABLE_ALIAS.',COUNT(home.id) as home_games_count,COUNT(visiting.id) as visiting_games_count');
             return $qb->getQuery()->getResult();
 		}   
 		 

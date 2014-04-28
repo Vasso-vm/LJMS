@@ -12,7 +12,7 @@
 	    		->add('altFirstName','text',array('required' => false))
 	            ->add('altLastName', 'text',array('required' => false))
 	            ->add('altEmail','text',array('required' => false))
-	            ->add('altPhone','integer',array('required' => false));
+	            ->add('altPhone','number',array('required' => false));
 	    }
 
 	    public function setDefaultOptions(OptionsResolverInterface $resolver)

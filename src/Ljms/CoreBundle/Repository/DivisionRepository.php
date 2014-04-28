@@ -33,7 +33,7 @@
             $qb->leftJoin(self::TABLE_ALIAS.'.teams','teams');
             $qb->add('select','teams.id,teams.name');
             $qb->add('where',self::TABLE_ALIAS.'.id ='.$id);
-            return $qb->getQuery()->getResult();
+            return $qb->getQuery()->getArrayResult();
         }
         public function getDivisionList()
         {
@@ -41,7 +41,12 @@
             $qb->add('select',self::TABLE_ALIAS.'.name');
             return $qb->getQuery()->getArrayResult();
         }
-		 
+		public function getDivisions()
+        {
+            $qb = $this->createQueryBuilder('d');
+            $qb->select('d.id,d.name');
+            return $qb->getQuery()->getArrayResult();
+        }
 	}
 
 

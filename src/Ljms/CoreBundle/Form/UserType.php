@@ -20,28 +20,39 @@
     					'second_options' => array('label' => 'Confirm Password'),
 	            	))	            
 	            ->add('LastName','text')
-	            ->add('HomePhone','integer')
-	            ->add('CellPhone','integer',array('required' => false))
-	            ->add('AltPhone','integer',array('required' => false))
-	            /*
+	            ->add('HomePhone','number')
+	            ->add('CellPhone','number',array('required' => false))
+	            ->add('AltPhone','number',array('required' => false))
 	            ->add('Role','choice',array(
 	            		'choices'=>array(
-	            			'0'=>'Select One',
 	            			'1'=>'Admin',
 	            			'2'=>'Director',
 	            			'3'=>'Coach',
 	            			'4'=>'Manager',
 	            			'5'=>'Guardian'
 	            		),
+                    'mapped'=>false,
+                    'empty_value' =>'Select One',
+                    'label'=>'Assign Roles',
+                    'required'=>false,
+
 	            	))
-	            /*->add('AssignDivision','choice',array(
-	            		'choices'=>array(         			
-	            		),
+	            ->add('Division','entity',array(
+                    'class'=>'LjmsCoreBundle:Division',
+                    'property'=>'name',
+                    'mapped'=>false,
+                    'required'=>false,
+                    'label'=>'Assign Division',
+                    'disabled'=>true,
 	            	))
-	            ->add('AssignTeam','choice',array(
-	            		'choices'=>array(         			
-	            		),
-	            	))*/
+	            ->add('Team','entity',array(
+                    'class'=>'LjmsCoreBundle:Team',
+                    'property'=>'name',
+                    'mapped'=>false,
+                    'required'=>false,
+                    'label'=>'Assign Team',
+                    'disabled'=>true,
+	            	))
 	            ->add('Save', 'submit');
 	        $builder->add('address', new AddressType());
 	        $builder->add('altContact', new AltContactType());

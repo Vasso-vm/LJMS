@@ -24,7 +24,7 @@
 			$qb	->andwhere($where);
 			return $qb->getQuery()->getResult();
 		}   
-		
+
 	}
 
 

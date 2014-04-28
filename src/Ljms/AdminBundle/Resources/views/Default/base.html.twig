@@ -22,7 +22,8 @@
             <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/script.js')}}"></script>
             <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/form_validation.js')}}"></script>
             <script>
-            	var Url='{{path('schedule_get')}}';
+                {% if url is defined %} var Url='{{path(url)}}';{% endif %}
+                {% if ajaxUrl is defined %} var ajaxUrl='{{path(ajaxUrl)}}';{% endif %}
             </script>
         {% endblock %}
     </head>
@@ -35,7 +36,7 @@
                         <li><a href="{{url ('home_index')}}">Home</a></li>
                         <li><a href="{{path('about_index')}}">About</a></li>
                         <li><a href="{{path ('sponsors_index')}}">Sponsors</a></li>
-                        <li><a href="">Home</a></li>
+                        <li><a href="">Contact</a></li>
                     </ul>
                 </div>
             </div>

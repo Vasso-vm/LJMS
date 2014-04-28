@@ -70,20 +70,51 @@
 							<p>Admin</p>
 						{% endif %}	
 						{% if u.directorrole == 1%}
-							<p>Director</p>
+							Director
+                            {% for d in u.divisions %}<br>{% endfor %}
 						{% endif %}
-						{% if u.guardianrole == 1%}
-							<p>Guardian</p>
-						{% endif %}	
 						{% if u.coachrole == 1%}
-							<p>Coach</p>
+							Coach
+                            {% for c in u.coachTeams %}<br>{% endfor %}
 						{% endif %}
 						{% if u.managerrole == 1%}
 							<p>Manager</p>
-						{% endif %}			
-					</td>
-					<td class="division">					
-					<td class="team">					
+						{% endif %}
+                        {% if u.guardianrole == 1%}
+                            <p>Guardian</p>
+                        {% endif %}
+                    </td>
+					<td class="division">
+                        {% if u.adminRole ==1 %}<br>{% endif %}
+                        {% if u.directorRole==1 %}
+                            {% for d in u.divisions %}
+                               <p>{{ d.name }}</p>
+                            {% endfor %}
+                        {% endif %}
+                        {% if u.coachRole==1 %}
+                            {% for c in u.coachTeams %}
+                                <p>{{ c.division.name }}</p>
+                            {% endfor %}
+                        {% endif %}
+                        {% if u.managerRole==1 %}
+                            {% for m in u.managerTeams %}
+                                <p>{{ m.division.name }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </td>
+					<td class="team">
+                        {% if u.adminRole==1 %}<br>{% endif %}
+                        {% if u.directorRole==1 %}{% for d in u.divisions %}<br>{% endfor %}{% endif %}
+                        {% if u.coachRole==1 %}
+                            {% for c in u.coachTeams %}
+                                <p>{{ c.name }}</p>
+                            {% endfor %}
+                        {% endif %}
+                        {% if u.managerRole==1 %}
+                            {% for m in u.managerTeams %}
+                                <p>{{ m.name }}</p>
+                            {% endfor %}
+                        {% endif %}
 					</td>
 					<td>
 					<a href="{{path ('users_edit',{'id':u.id}) }}">

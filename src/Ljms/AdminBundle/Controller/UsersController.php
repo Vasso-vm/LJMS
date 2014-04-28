@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Ljms\CoreBundle\Form\UserType;
 use Ljms\CoreBundle\Entity\AltContact;
 use Ljms\CoreBundle\Entity\Division;
+use Symfony\Component\HttpFoundation\Response;
 use Ljms\CoreBundle\Entity\Profile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -26,8 +27,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
      */
     public function indexAction()
     {
-        $page=1;
-        $limit=10;
         $filter=array(
             'status'=>'all',
             'division'=>'all'
@@ -38,8 +37,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
         if (isset($_GET['division'])){
             $filter['division']=htmlspecialchars($_GET['division']);
         }
-        $status=null;
-		return array (
+        return array (
             'users'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Profile')->findUsers($filter),
             'filter'=>$filter,
             'division_list'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisionList(),
@@ -50,7 +48,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
      * @Route("/add", name="users_add")
      * @Template()
      */
-    public function addAction(Request $request){
+    public function addAction(Request $request)
+    {
         $encoder = new MessageDigestPasswordEncoder('sha512', true, 10);
         $profile = new Profile();
         $profile->setAltContact(new AltContact());
@@ -59,13 +58,19 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
         if ($form->isValid()){
             $password = $encoder->encodePassword($profile->getPassword(), $profile->getSalt());
             $profile->setPassword($password);
+            $this->setRole($request->request->get('current_role'),$profile);
             $em = $this->getDoctrine()->getManager();
             $em->persist($profile);
             $em->flush();           
             return $this->redirect($this->generateUrl('users_index'));
         }
-        return array('method'=>'add','form'=>$form->createView());
-    }   
+        return array('method'=>'add',
+            'form'=>$form->createView(),
+            'url'=>'team_get',
+            'ajaxUrl'=>'division_get',
+        );
+    }
+
     /**
      * @Route("/edit/{id}", name="users_edit")
      * @Template("LjmsAdminBundle:Users:add.html.twig")
@@ -84,21 +89,25 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
         if ($form->isValid()){
             $password = $encoder->encodePassword($profile->getPassword(), $profile->getSalt());
             $profile->setPassword($password);
+            $this->setRole($request->request->get('current_role'),$profile);
             $em->flush();           
             return $this->redirect($this->generateUrl('users_index'));
         }
-        return array('method'=>'edit','form'=>$form->createView(),'Url'=>'users_index','edit_id'=>$id);
+        return array('method'=>'edit','form'=>$form->createView(),'edit_id'=>$id,'url'=>'team_get','profile'=>$profile,
+            'ajaxUrl'=>'division_get');
     }
+
     /**
      * @Route("/delete/{id}", name="users_delete")
      */
-    public function deleteAction(Request $request,$id){
+    public function deleteAction($id){
         $em=$this->getDoctrine()->getManager();
         $profile = $em->getRepository('LjmsCoreBundle:Profile')->find($id);
         $em->remove($profile);
         $em->flush();
         return $this->redirect($this->generateUrl('users_index'));
     }
+
     /**
      * @Route("/group", name="users_group")
      */
@@ -125,6 +134,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
         }
         return $this->redirect($this->generateUrl('users_index'));
     }
+
     private function active($check,$is_active)
     {
         $em=$this->getDoctrine()->getManager();
@@ -134,5 +144,62 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
         }
         $em->flush();
     }
+
+    private function setRole($role,&$profile)
+    {
+        $this->deleteRole($profile);
+        if($role!==null){
+            sort($role);
+            foreach ($role as $value){
+                $role=substr($value,0,1);
+                $i=strpos($value,'|',2);
+                $division_id=substr($value,2,$i-2);
+                $team_id=substr($value,$i+1);
+                $em=$this->getDoctrine()->getManager();
+                switch ($role){
+                    case '1':
+                        $profile->setAdminRole(1);
+                        break;
+                    case '2':
+                        $profile->setDirectorRole(1);
+                        $division = $em->getRepository('LjmsCoreBundle:Division')->find($division_id);
+                        $division->setProfile($profile);
+                        $em->flush();
+                        break;
+                    case '3':
+                        $profile->setCoachRole(1);
+                        $team = $em->getRepository('LjmsCoreBundle:Team')->find($team_id);
+                        $team->setCoachProfile($profile);
+                        $em->flush();
+                        break;
+                    case '4':
+                        $profile->setManagerRole(1);
+                        $team = $em->getRepository('LjmsCoreBundle:Team')->find($team_id);
+                        $team->setManagerProfile($profile);
+                        $em->flush();
+                    case '5':
+                        $profile->setGuardianRole(1);
+                }
+            }
+        }
     }
+
+    private function deleteRole(&$profile)
+    {
+        $profile->setAdminRole(0);
+        $profile->setDirectorRole(0);
+        $profile->setCoachRole(0);
+        $profile->setManagerRole(0);
+        $profile->setGuardianRole(0);
+        foreach ($profile->getDivisions() as $division){
+            $division->setProfile(null);
+        }
+        foreach ($profile->getCoachTeams() as $coach_team ){
+            $coach_team->setCoachProfile(null);
+        }
+        foreach ($profile->getManagerTeams() as $manager_team ){
+            $manager_team->setManagerProfile(null);
+        }
+    }
+}
 ?>

@@ -137,88 +137,87 @@ function getSchedule(y,m){
     });
 }
 $(function() {
-    $("#role").on("change", function() {
-        switch ($("#role").val()){
+    $("#user_Role").on("change", function() {
+        switch ($("#user_Role").val()){
             case '2':
-                $("#division").removeAttr("disabled");
-                $("#division").empty();
-                $("#team").empty();
-                $("#team").attr("disabled",true);
+                $("#user_Division").removeAttr("disabled");
+                $("#user_Division").empty();
+                $("#user_Team").empty();
+                $("#user_Team").attr("disabled",true);
                 $("#add_role").attr("disabled",true);
                 GetDivisionList();
                 break;
             case '1':
-                $("#division").empty();
-                $("#division").attr("disabled",true);
-                $("#team").empty();
-                $("#team").attr("disabled",true);
+                $("#user_Division").empty();
+                $("#user_Division").attr("disabled",true);
+                $("#user_Team").empty();
+                $("#user_Team").attr("disabled",true);
                 $("#add_role").removeAttr("disabled");
                 break;
             case '5':
-                $("#division").empty();
-                $("#division").attr("disabled",true);
-                $("#team").empty();
-                $("#team").attr("disabled",true);
+                $("#user_Division").empty();
+                $("#user_Division").attr("disabled",true);
+                $("#user_Team").empty();
+                $("#user_Team").attr("disabled",true);
                 $("#add_role").removeAttr("disabled");
                 break;
             case '':
-                $("#division").empty();
-                $("#division").attr("disabled",true);
-                $("#team").empty();
-                $("#team").attr("disabled",true);
+                $("#user_Division").empty();
+                $("#user_Division").attr("disabled",true);
+                $("#user_Team").empty();
+                $("#user_Team").attr("disabled",true);
                 $("#add_role").attr("disabled",true);
                 break;
             default :
-                $("#division").removeAttr("disabled");
-                $("#division").empty();
-                $("#team").empty();
-                $("#team").attr("disabled",true);
+                $("#user_Division").removeAttr("disabled");
+                $("#user_Division").empty();
+                $("#user_Team").empty();
+                $("#user_Team").attr("disabled",true);
                 $("#add_role").attr("disabled",true);
                 GetDivisionList();
         }
     });
-    $("#division").on("change", function() {
-        if ($("#division").val()!=''){
-            if ($("#role").val()=='2'){
+    $("#user_Division").on("change", function() {
+        if ($("#user_Division").val()!=''){
+            if ($("#user_Role").val()=='2'){
                 $("#add_role").removeAttr("disabled");
             }else{
-                $("#team").removeAttr("disabled");
-                $("#team").empty();
-                $("#team").append($('<option>',{value :""}).text("Select one"));
-                var id=$("#division option:selected").val();
-                var url=window.ajaxUrl;
-                url=url+'/players/GetTeam';
-                var jqxhr = jQuery.post(url,{id: id},"json").done(function(data){
+                $("#user_Team").removeAttr("disabled");
+                $("#user_Team").empty();
+                $("#user_Team").append($('<option>',{value :""}).text("Select one"));
+                var id=$("#user_Division option:selected").val();
+                var url=window.Url;
+               jQuery.post(url,{id: id},"json").done(function(data){
                     var result=JSON.parse(data);
                     for (var key in result) {
-                        $("#team").append($('<option>',{value : result[key]['id']}).text(result[key]['name']));
+                        $("#user_Team").append($('<option>',{value : result[key]['id']}).text(result[key]['name']));
                     }
                 });
             }
         }else{
             $("#add_role").attr("disabled",true);
-            $("#team").empty();
-            $("#team").attr("disabled",true);
+            $("#user_Team").empty();
+            $("#user_Team").attr("disabled",true);
         }
     });
-    $("#team").on("change", function() {
-        if ($("#team").val()!=''){
+    $("#user_Team").on("change", function() {
+        if ($("#user_Team").val()!=''){
             $("#add_role").removeAttr("disabled");
         }else{
             $("#add_role").attr("disabled",true);
         }
     });
     $("#add_role").click (function() {
-        if ($('#roles tr').hasClass(''+$("#role option:selected").val()+'_'+$("#division option:selected").val()+'_'+$("#team option:selected").val()+'')){
+        if ($('#roles tr').hasClass(''+$("#user_Role option:selected").val()+'_'+$("#user_Division option:selected").val()+'_'+$("#user_Team option:selected").val()+'')){
             alert ('This role already used');
         }else{
             $("#roles").append('' +
-                '<tr class="'+$("#role option:selected").val()+'_'+$("#division option:selected").val()+'_'+$("#team option:selected").val()+'">' +
-                '<input type="hidden" name="current_role[]" value="'+$("#role option:selected").val()+'|'+$("#division option:selected").val()+'|'+$("#team option:selected").val()+'">'+
-                '<td>'+$("#role option:selected").text()+'</td>' +
-                '<td>'+$("#division option:selected").text()+'</td>' +
-                '<td>'+$("#team option:selected").text()+'</td>' +
-                '<td class="delete"><input type="button" onclick="deleteRole(this)" value="Delete Role" class="'+$("#role option:selected").val()+'_'+$("#division option:selected").val()+'_'+$("#team option:selected").val()+'"></td>' +
+                '<tr class="'+$("#user_Role option:selected").val()+'_'+$("#user_Division option:selected").val()+'_'+$("#user_Team option:selected").val()+'">' +
+                '<input type="hidden" name="current_role[]" value="'+$("#user_Role option:selected").val()+'|'+$("#user_Division option:selected").val()+'|'+$("#user_Team option:selected").val()+'">'+
+                '<td>'+$("#user_Role option:selected").text()+'</td>' +
+                '<td>'+$("#user_Division option:selected").text()+'</td>' +
+                '<td>'+$("#user_Team option:selected").text()+'</td>' +
+                '<td class="delete"><input type="button" onclick="deleteRole(this)" value="Delete Role" class="'+$("#user_Role option:selected").val()+'_'+$("#user_Division option:selected").val()+'_'+$("#user_Team option:selected").val()+'"></td>' +
                 '</tr>'
             );
         }
@@ -229,13 +228,12 @@ function deleteRole(data){
     $('tr.'+clas+'').remove();
 }
 function GetDivisionList(){
-    $("#division").append($('<option>',{value :""}).text("Select one"));
+    $("#user_Division").append($('<option>',{value :""}).text("Select one"));
     var url=window.ajaxUrl;
-    url=url+'/divisions/GetDivisions';
     jQuery.post(url,"json").done(function(data){
         var result=JSON.parse(data);
         for (var key in result) {
-            $("#division").append($('<option>',{value : result[key]['id']}).text(result[key]['name']));
+            $("#user_Division").append($('<option>',{value : result[key]['id']}).text(result[key]['name']));
         }
     });
 }

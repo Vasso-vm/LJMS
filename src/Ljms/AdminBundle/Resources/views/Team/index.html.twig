@@ -64,12 +64,39 @@
 					<td> <input type="checkbox" class="checkbox" name="check[]" value={{t.id}}> </td>
 					<td class="name">{{t.name}}</td>
 					<td> {{t.division.name}}</td>
-					<td></td>
-					<td></td>	
-					<td></td>	
-					<td></td>
-                    <td></td>
+					<td>{% if t.coachProfile!=null %}{{ t.coachProfile.FirstName }}, {{ t.coachProfile.LastName }}{% endif %}</td>
 					<td>
+                        {% set wins=0 %}{% for h in t.homeGames if h.homeTeamScore>h.visitingTeamScore %}
+                            {% set wins=wins+1 %}
+                        {% endfor %}
+                        {% for v in t.visitingGames if v.homeTeamScore<v.visitingTeamScore %}
+                            {% set wins=wins+1 %}
+                        {% endfor %}
+                        {{ wins }}
+                    </td>
+					<td>
+                        {% set loses=0 %}{% for h in t.homeGames if h.homeTeamScore<h.visitingTeamScore %}
+                            {% set loses=loses+1 %}
+                        {% endfor %}
+                        {% for v in t.visitingGames if v.homeTeamScore>v.visitingTeamScore %}
+                            {% set loses=loses+1 %}
+                        {% endfor %}
+                        {{ loses }}
+                    </td>
+					<td>
+                        {% set ties=0 %}{% for h in t.homeGames if h.homeTeamScore==h.visitingTeamScore %}
+                            {% set ties=ties+1 %}
+                        {% endfor %}
+                        {% for v in t.visitingGames if v.homeTeamScore==v.visitingTeamScore %}
+                            {% set ties=ties+1 %}
+                        {% endfor %}
+                        {{ ties }}
+                    </td>
+                    <td>
+                        {{ (wins/(t.homeGames|length + t.visitingGames|length)*100)|number_format(1) }}
+                    </td>
+					<td>
+                        <a class="btn action add" href="{{path('team_assign',{'id':t.id}) }}" id="act">Assign player</a>
 						<a href="{{path ('team_edit',{'id':t.id}) }}">
 							<img src="{{ asset('bundles/ljmshome/images/edit.png') }}">
 						</a>

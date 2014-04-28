@@ -122,5 +122,12 @@ class DivisionController extends Controller
         }
         $em->flush();
     }
+    /**
+     * @Route("/get", name="division_get")
+     */
+    public function getAction(){
+        $division_list=$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisions();
+        return new Response(json_encode($division_list));
+    }
 }
 ?>

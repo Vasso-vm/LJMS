@@ -2,7 +2,6 @@
 
 namespace Ljms\AdminBundle\Controller;
 use Ljms\CoreBundle\Entity\Schedule;
-use Ljms\CoreBundle\Entity\Division;
 use Ljms\CoreBundle\Form\ScheduleType;
 use Ljms\CoreBundle\Form\ResultType;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,7 +47,7 @@ class ScheduleController extends Controller
             $em->flush();
             return $this->redirect($this->generateUrl('schedule_index'));
         }
-        return array('method'=>'add','form'=>$form->createView());
+        return array('method'=>'add','form'=>$form->createView(),'url'=>'team_get');
     }
     /**
      * @Route("/edit/{id}", name="schedule_edit")
@@ -68,12 +67,12 @@ class ScheduleController extends Controller
             $em->flush();
             return $this->redirect($this->generateUrl('schedule_index'));
         }
-        return array('method'=>'edit','form'=>$form->createView(),'edit_id'=>$id);
+        return array('method'=>'edit','form'=>$form->createView(),'edit_id'=>$id,'url'=>'team_get');
     }
     /**
      * @Route("/delete/{id}", name="schedule_delete")
      */
-    public function deleteAction(Request $request,$id){
+    public function deleteAction($id){
         $em=$this->getDoctrine()->getManager();
         $schedule = $em->getRepository('LjmsCoreBundle:Schedule')->find($id);
         $em->remove($schedule);
@@ -99,14 +98,6 @@ class ScheduleController extends Controller
             return $this->redirect($this->generateUrl('schedule_index'));
         }
         return array('form'=>$form->createView(),'edit_id'=>$id);
-    }
-    /**
-     * @Route("/get", name="schedule_get")
-     */
-    public function getAction(){
-        $id=intval($_POST['id']);
-        $team_list=$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getTeams($id);
-        return new Response(json_encode($team_list));
     }
     /**
      * @Route("/group", name="schedule_group")

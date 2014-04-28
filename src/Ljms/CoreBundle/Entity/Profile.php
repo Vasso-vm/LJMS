@@ -107,11 +107,22 @@
      */
     protected $divisions;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Team", mappedBy="coach_profile")
+     */
+    protected $coach_teams;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Team", mappedBy="manager_profile")
+     */
+    protected $manager_teams;
+
     public function __construct()
     {
         $this->salt = md5(uniqid(null, true));
         $this->players = new ArrayCollection();
         $this->divisions = new ArrayCollection();
+        $this->teams = new ArrayCollection();
     }
 
     /**
@@ -619,5 +630,71 @@
     public function getDivisions()
     {
         return $this->divisions;
+    }
+
+    /**
+     * Add coach_teams
+     *
+     * @param \Ljms\CoreBundle\Entity\Team $coachTeams
+     * @return Profile
+     */
+    public function addCoachTeam(\Ljms\CoreBundle\Entity\Team $coachTeams)
+    {
+        $this->coach_teams[] = $coachTeams;
+
+        return $this;
+    }
+
+    /**
+     * Remove coach_teams
+     *
+     * @param \Ljms\CoreBundle\Entity\Team $coachTeams
+     */
+    public function removeCoachTeam(\Ljms\CoreBundle\Entity\Team $coachTeams)
+    {
+        $this->coach_teams->removeElement($coachTeams);
+    }
+
+    /**
+     * Get coach_teams
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCoachTeams()
+    {
+        return $this->coach_teams;
+    }
+
+    /**
+     * Add manager_teams
+     *
+     * @param \Ljms\CoreBundle\Entity\Team $managerTeams
+     * @return Profile
+     */
+    public function addManagerTeam(\Ljms\CoreBundle\Entity\Team $managerTeams)
+    {
+        $this->manager_teams[] = $managerTeams;
+
+        return $this;
+    }
+
+    /**
+     * Remove manager_teams
+     *
+     * @param \Ljms\CoreBundle\Entity\Team $managerTeams
+     */
+    public function removeManagerTeam(\Ljms\CoreBundle\Entity\Team $managerTeams)
+    {
+        $this->manager_teams->removeElement($managerTeams);
+    }
+
+    /**
+     * Get manager_teams
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getManagerTeams()
+    {
+        return $this->manager_teams;
     }
 }

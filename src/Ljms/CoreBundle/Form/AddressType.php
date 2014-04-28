@@ -16,7 +16,7 @@
                     'empty_value' => 'Select One'
 	            	))
 	            ->add('city','text')
-	            ->add('zip','integer');
+	            ->add('zip','number');
 	    }
 
 	    public function setDefaultOptions(OptionsResolverInterface $resolver)

@@ -2,9 +2,11 @@
 
 namespace Ljms\AdminBundle\Controller;
 use Ljms\CoreBundle\Entity\Team;
-use Ljms\CoreBundle\Entity\Division;
+use Ljms\CoreBundle\Entity\PlayerXteam;
 use Symfony\Component\HttpFoundation\Request;
 use Ljms\CoreBundle\Form\TeamType;
+use Ljms\CoreBundle\Form\AssignType;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -76,7 +78,7 @@ class TeamController extends Controller
     /**
      * @Route("/delete/{id}", name="team_delete")
      */
-    public function deleteAction(Request $request,$id){
+    public function deleteAction($id){
         $em=$this->getDoctrine()->getManager();
         $team = $em->getRepository('LjmsCoreBundle:Team')->find($id);
         $em->remove($team);
@@ -124,7 +126,24 @@ class TeamController extends Controller
      */
     public function assignAction(Request $request,$id)
     {
-        return array('edit_id'=>$id);
+        $player_team = new PlayerXteam();
+        $form = $this->createForm(new AssignType(), $player_team);
+        $form->handleRequest($request);
+        if ($form->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($player_team);
+            $em->flush();
+            return $this->redirect($this->generateUrl('team_index'));
+        }
+        return array('form'=>$form->createView(),'edit_id'=>$id);
+    }
+    /**
+     * @Route("/get", name="team_get")
+     */
+    public function getAction(){
+        $id=intval($_POST['id']);
+        $team_list=$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getTeams($id);
+        return new Response(json_encode($team_list));
     }
 }
 ?>

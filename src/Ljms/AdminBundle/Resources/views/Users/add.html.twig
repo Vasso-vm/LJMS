@@ -46,12 +46,12 @@
 			</fieldset>
 			<fieldset>
 				<h3>User Role</h3>
-				
+                    {{form_row(form.Role)}}
 				<div class="pull-left">
-							
+                    {{form_row(form.Division)}}
 				</div>
 				<div class="pull-right">
-							
+                    {{form_row(form.Team)}}
 				</div>
 				<table class="roles" id="roles">
 					<tr class="header">
@@ -60,43 +60,60 @@
 						<td>Team</td>
 						<td></td>
 					</tr>
-					<tr class="1_undefined_undefined">
-						<input type="hidden" name="current_role[]" value="1|undefined|undefined">
-						<td>Admin</td>
-						<td></td>
-						<td></td>
-						<td class="delete"><input type="button" onclick="deleteRole(this)" value="Delete Role" class="1_undefined_undefined"></td>
-					</tr>
-					<tr class="2">
-						<input type="hidden" name="current_role[]" value="">
-						<td>Director</td>
-						<td><?php echo ($value['name']);?></td>
-						<td></td>
-						<td class="delete"><input type="button" onclick="deleteRole(this)" value="Delete Role" class=""></td>
-					</tr>					
-					<tr class="3">
-						<input type="hidden" name="current_role[]" value="">
-						<td>Coach</td>
-						<td><?php echo ($value['division_name']);?></td>
-						<td><?php echo ($value['name']);?></td>
-						<td class="delete"><input type="button" onclick="deleteRole(this)" value="Delete Role" class=""></td>
-					</tr>				
-					<tr class="4">
-						<td>Manager</td>
-						<td><?php echo ($value['division_name']);?></td>
-						<td><?php echo ($value['name']);?></td>
-						<td class="delete"><input type="button" onclick="deleteRole(this)" value="Delete Role" class=""></td>
-					</tr>
-					<tr class="5_undefined_undefined">
-						<input type="hidden" name="current_role[]" value="5|undefined|undefined">
-						<td>Guardian</td>
-						<td></td>
-						<td></td>
-						<td class="delete"><input type="button" onclick="deleteRole(this)" value="Delete Role" class="5_undefined_undefined"></td>
-					</tr>				
+                {% if profile.adminRole!=0 %}
+                    <tr class="1_undefined_undefined">
+                        <input type="hidden" name="current_role[]" value="1|undefined|undefined">
+                        <td>Admin</td>
+                        <td></td>
+                        <td></td>
+                        <td class="delete"><input type="button" onclick="deleteRole(this)" value="Delete Role" class="1_undefined_undefined"></td>
+                    </tr>
+                {% endif %}
+                {% if profile.directorRole!=0 %}
+                    {% for d in profile.divisions %}
+                    <tr class="2_{{ d.id }}_undefined">
+                        <input type="hidden" name="current_role[]" value="2|{{ d.id }}|undefined">
+                        <td>Director</td>
+                        <td>{{ d.name }}</td>
+                        <td></td>
+                        <td class="delete"><input type="button" onclick="deleteRole(this)" value="Delete Role" class="2_{{ d.id }}_undefined"></td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+                {% if profile.coachRole!=0 %}
+                    {% for c in profile.coachTeams %}
+                        <tr class="3_{{ c.division.id }}_{{ c.id }}">
+                            <input type="hidden" name="current_role[]" value="3|{{ c.division.id }}|{{ c.id }}">
+                            <td>Coach</td>
+                            <td>{{ c.division.name }}</td>
+                            <td>{{ c.name }}</td>
+                            <td class="delete"><input type="button" onclick="deleteRole(this)" value="Delete Role" class="3_{{ c.division.id }}_{{ c.id }}"></td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                {% if profile.managerRole!=0 %}
+                    {% for m in profile.managerTeams %}
+                        <tr class="4_{{ m.division.id }}_{{ m.id }}">
+                            <input type="hidden" name="current_role[]" value="4|{{ m.division.id }}|{{ m.id }}">
+                            <td>Manager</td>
+                            <td>{{ m.division.name }}</td>
+                            <td>{{ m.name }}</td>
+                            <td class="delete"><input type="button" onclick="deleteRole(this)" value="Delete Role" class="4_{{ m.division.id }}_{{ m.id }}"></td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                {% if profile.guardianRole!=0 %}
+                    <tr class="5_undefined_undefined">
+                        <input type="hidden" name="current_role[]" value="5|undefined|undefined">
+                        <td>Guardian</td>
+                        <td></td>
+                        <td></td>
+                        <td class="delete"><input type="button" onclick="deleteRole(this)" value="Delete Role" class="5_undefined_undefined"></td>
+                    </tr>
+                {% endif %}
 				</table>
 				<div class="add_role">
-					
+					<input class="btn" type="button" id="add_role" value="Add Role" disabled>
 				</div>				
 			</fieldset>
 			<div class="controls buttons">
