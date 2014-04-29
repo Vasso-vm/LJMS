@@ -18,19 +18,10 @@ class DivisionController extends Controller
      * @Route("", name="division_index")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-         $filter=array(
-            'status'=>'all',
-            'division'=>'all'
-            );
-        if (isset ($_GET['status'])){
-            $filter['status']=htmlspecialchars($_GET['status']);
-        }
-        if (isset($_GET['division'])){
-            $filter['division']=htmlspecialchars($_GET['division']);
-        }
-        $status=null;
+        $filter['status']=$request->get('status');
+        $filter['division']=$request->get('division');
         return array (
             'divisions'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->findDivisions($filter),
             'filter'=>$filter,

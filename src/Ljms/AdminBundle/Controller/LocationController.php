@@ -18,15 +18,9 @@ class LocationController extends Controller
      * @Route("", name="location_index")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $filter=array(
-            'status'=>'all',
-        );
-        if (isset ($_GET['status'])){
-            $filter['status']=htmlspecialchars($_GET['status']);
-        }
-        $status=null;
+        $filter['status']=$request->get('status');
         return array (
             'locations'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Location')->findLocations($filter),
             'filter'=>$filter,

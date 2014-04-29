@@ -5,7 +5,6 @@ namespace Ljms\AdminBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Ljms\CoreBundle\Form\UserType;
 use Ljms\CoreBundle\Entity\AltContact;
-use Ljms\CoreBundle\Entity\Division;
 use Symfony\Component\HttpFoundation\Response;
 use Ljms\CoreBundle\Entity\Profile;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,22 +24,23 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
      * @Route("", name="users_index")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $filter=array(
-            'status'=>'all',
-            'division'=>'all'
-            );
-        if (isset ($_GET['status'])){
-            $filter['status']=htmlspecialchars($_GET['status']);
-        }
-        if (isset($_GET['division'])){
-            $filter['division']=htmlspecialchars($_GET['division']);
+        $filter['status']=$request->get('status');
+        $filter['division']=$request->get('division');
+        $delete_form=$this->createFormBuilder()
+            ->add('id','hidden')
+            ->getForm();
+        $delete_form->handleRequest($request);
+        if ($delete_form->isValid()){
+            $data=$delete_form->getData();
+            $this->delete($data['id']);
         }
         return array (
             'users'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Profile')->findUsers($filter),
             'filter'=>$filter,
             'division_list'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisionList(),
+            'delete_form'=>$delete_form->createView(),
         );
     }
 
@@ -64,7 +64,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
             $em->flush();           
             return $this->redirect($this->generateUrl('users_index'));
         }
-        return array('method'=>'add',
+        return array(
+            'method'=>'add',
             'form'=>$form->createView(),
             'url'=>'team_get',
             'ajaxUrl'=>'division_get',
@@ -93,14 +94,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
             $em->flush();           
             return $this->redirect($this->generateUrl('users_index'));
         }
-        return array('method'=>'edit','form'=>$form->createView(),'edit_id'=>$id,'url'=>'team_get','profile'=>$profile,
+        return array(
+            'method'=>'edit',
+            'form'=>$form->createView(),
+            'edit_id'=>$id,
+            'url'=>'team_get',
+            'profile'=>$profile,
             'ajaxUrl'=>'division_get');
     }
 
-    /**
-     * @Route("/delete/{id}", name="users_delete")
-     */
-    public function deleteAction($id){
+    private function delete($id){
         $em=$this->getDoctrine()->getManager();
         $profile = $em->getRepository('LjmsCoreBundle:Profile')->find($id);
         $em->remove($profile);
@@ -201,5 +204,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
             $manager_team->setManagerProfile(null);
         }
     }
+
 }
 ?>

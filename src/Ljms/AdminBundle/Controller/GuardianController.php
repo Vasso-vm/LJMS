@@ -20,17 +20,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
      * @Route("", name="guardian_index")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-         $filter=array(
-            'status'=>'all',
-            'division'=>'all'
-            );
-        if (isset ($_GET['status'])){
-            $filter['status']=htmlspecialchars($_GET['status']);
-        }
-
-        return array (
+       $filter['status']=$request->get('status');
+       return array (
             'guardians'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Profile')->findGuardians($filter),
             'filter'=>$filter,
         );
@@ -39,7 +32,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
      * @Route("/add", name="guardian_add")
      * @Template()
      */
-    public function addAction(Request $request){
+    public function addAction(Request $request)
+    {
         $encoder = new MessageDigestPasswordEncoder('sha512', true, 10);
         $guardian = new Profile();
         $form = $this->createForm(new UserType(), $guardian);
@@ -53,7 +47,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
             $em->flush();           
             return $this->redirect($this->generateUrl('guardian_index'));
         }
-        return array('method'=>'add','form'=>$form->createView());
+        return array(
+            'method'=>'add',
+            'form'=>$form->createView());
     } 
     /**
      * @Route("/edit/{id}", name="guardian_edit")
@@ -76,7 +72,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
             $em->flush();           
             return $this->redirect($this->generateUrl('guardian_index'));
         }
-        return array('method'=>'edit','form'=>$form->createView(),'edit_id'=>$id);
+        return array(
+            'method'=>'edit',
+            'form'=>$form->createView(),
+            'edit_id'=>$id);
     }
     /**
      * @Route("/delete/{id}", name="guardian_delete")
@@ -88,40 +87,40 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
         $em->flush();
         return $this->redirect($this->generateUrl('guardian_index'));
     }
-        /**
-         * @Route("/group", name="guardian_group")
-         */
-        public function groupAction(Request $request)
-        {
-            if ($request->request->get('check')){
-                $check=$request->request->get('check');
-                switch ($request->request->get('action_select')){
-                    case 'active':
-                        $this->active($check,1);
-                        break;
-                    case 'inactive':
-                        $this->active($check,0);
-                        break;
-                    case 'delete':
-                        $em=$this->getDoctrine()->getManager();
-                        $profiles=$em->getRepository('LjmsCoreBundle:Profile')->findBy(array('id'=>$check));
-                        foreach($profiles as $profile){
-                            $em->remove($profile);
-                        }
-                        $em->flush();
-                        break;
-                }
+    /**
+     * @Route("/group", name="guardian_group")
+     */
+    public function groupAction(Request $request)
+    {
+        if ($request->request->get('check')){
+            $check=$request->request->get('check');
+            switch ($request->request->get('action_select')){
+                case 'active':
+                    $this->active($check,1);
+                    break;
+                case 'inactive':
+                    $this->active($check,0);
+                    break;
+                case 'delete':
+                    $em=$this->getDoctrine()->getManager();
+                    $profiles=$em->getRepository('LjmsCoreBundle:Profile')->findBy(array('id'=>$check));
+                    foreach($profiles as $profile){
+                        $em->remove($profile);
+                    }
+                    $em->flush();
+                    break;
             }
-            return $this->redirect($this->generateUrl('guardian_index'));
         }
-        private function active($check,$is_active)
-        {
-            $em=$this->getDoctrine()->getManager();
-            $profiles=$em->getRepository('LjmsCoreBundle:Profile')->findBy(array('id'=>$check));
-            foreach($profiles as $profile){
-                $profile->setIsActive($is_active);
-            }
-            $em->flush();
+        return $this->redirect($this->generateUrl('guardian_index'));
+    }
+    private function active($check,$is_active)
+    {
+        $em=$this->getDoctrine()->getManager();
+        $profiles=$em->getRepository('LjmsCoreBundle:Profile')->findBy(array('id'=>$check));
+        foreach($profiles as $profile){
+            $profile->setIsActive($is_active);
         }
+        $em->flush();
+    }
 }
 ?>

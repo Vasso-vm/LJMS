@@ -20,18 +20,10 @@ class TeamController extends Controller
      * @Route("", name="team_index")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $filter=array(
-            'status'=>'all',
-            'division'=>'all'
-            );
-        if (isset ($_GET['status'])){
-            $filter['status']=htmlspecialchars($_GET['status']);
-        }
-        if (isset($_GET['division'])){
-            $filter['division']=htmlspecialchars($_GET['division']);
-        }
+        $filter['status']=$request->get('status');
+        $filter['division']=$request->get('division');
         return array (
             'teams'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Team')->findTeams($filter),
             'Url'=>'team_add',
@@ -53,7 +45,10 @@ class TeamController extends Controller
             $em->flush();           
             return $this->redirect($this->generateUrl('team_index'));
         }
-        return array('method'=>'add','form'=>$form->createView(),'Url'=>'team_index');
+        return array(
+            'method'=>'add',
+            'form'=>$form->createView(),
+            'Url'=>'team_index');
     }
     /**
      * @Route("/edit/{id}", name="team_edit")
@@ -73,7 +68,10 @@ class TeamController extends Controller
             $em->flush();           
             return $this->redirect($this->generateUrl('team_index'));
         }
-        return array('method'=>'edit','form'=>$form->createView(),'edit_id'=>$id);
+        return array(
+            'method'=>'edit',
+            'form'=>$form->createView(),
+            'edit_id'=>$id);
     }
     /**
      * @Route("/delete/{id}", name="team_delete")
@@ -85,6 +83,7 @@ class TeamController extends Controller
         $em->flush();
         return $this->redirect($this->generateUrl('team_index'));
     }
+
     /**
      * @Route("/group", name="team_group")
      */
@@ -111,6 +110,7 @@ class TeamController extends Controller
         }
         return $this->redirect($this->generateUrl('team_index'));
     }
+
     private function active($check,$is_active)
     {
         $em=$this->getDoctrine()->getManager();
@@ -120,6 +120,7 @@ class TeamController extends Controller
         }
         $em->flush();
     }
+
     /**
      * @Route("/assign/{id}", name="team_assign")
      * @Template()
@@ -137,6 +138,7 @@ class TeamController extends Controller
         }
         return array('form'=>$form->createView(),'edit_id'=>$id);
     }
+
     /**
      * @Route("/get", name="team_get")
      */

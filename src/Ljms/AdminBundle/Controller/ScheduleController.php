@@ -9,30 +9,26 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-    /**
-     * ScheduleController - edit/delete operations for backend-users (admins)
-     * @Route("admin/schedule")
-     */
+/**
+ * ScheduleController - edit/delete operations for backend-users (admins)
+ * @Route("admin/schedule")
+ */
 class ScheduleController extends Controller
 {
     /**
      * @Route("", name="schedule_index")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $filter=array(
-            'division'=>'all'
-        );
-        if (isset ($_GET['division'])){
-            $filter['division']=htmlspecialchars($_GET['division']);
-        }
+        $filter['division']=$request->get('division');
         return array (
             'schedule'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Schedule')->findSchedules($filter),
             'filter'=>$filter,
             'division_list'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisionList(),
         );
     }
+
     /**
      * @Route("/add", name="schedule_add")
      * @Template()
@@ -47,8 +43,12 @@ class ScheduleController extends Controller
             $em->flush();
             return $this->redirect($this->generateUrl('schedule_index'));
         }
-        return array('method'=>'add','form'=>$form->createView(),'url'=>'team_get');
+        return array(
+            'method'=>'add',
+            'form'=>$form->createView(),
+            'url'=>'team_get');
     }
+
     /**
      * @Route("/edit/{id}", name="schedule_edit")
      * @Template("LjmsAdminBundle:Schedule:add.html.twig")
@@ -67,8 +67,13 @@ class ScheduleController extends Controller
             $em->flush();
             return $this->redirect($this->generateUrl('schedule_index'));
         }
-        return array('method'=>'edit','form'=>$form->createView(),'edit_id'=>$id,'url'=>'team_get');
+        return array(
+            'method'=>'edit',
+            'form'=>$form->createView(),
+            'edit_id'=>$id,
+            'url'=>'team_get');
     }
+
     /**
      * @Route("/delete/{id}", name="schedule_delete")
      */
@@ -79,6 +84,7 @@ class ScheduleController extends Controller
         $em->flush();
         return $this->redirect($this->generateUrl('schedule_index'));
     }
+
     /**
      * @Route("/result/{id}", name="schedule_result")
      * @Template()
@@ -99,6 +105,7 @@ class ScheduleController extends Controller
         }
         return array('form'=>$form->createView(),'edit_id'=>$id);
     }
+
     /**
      * @Route("/group", name="schedule_group")
      */

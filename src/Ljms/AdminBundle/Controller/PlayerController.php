@@ -21,16 +21,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
      * @Route("", name="player_index")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $filter=array(
-            'status'=>'all',
-            'guardian_id'=>0
-            );
-        if (isset ($_GET['status'])){
-            $filter['status']=htmlspecialchars($_GET['status']);
-        }
-        if (isset ($_GET['id'])){
+        $filter['status']=$request->get('status');
+        if ($request->get('id')){
             $id=intval($_GET['id']);
             return array (
                 'profile'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Profile')->find($id),
@@ -79,15 +73,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
         if ($form->isValid()){
             if ($player->getSharesGuardianAddress()==1){
                 $player->setAddress($player->getProfile()->getAddress());
-                /*$em1=$this->getDoctrine()->getManager();
-                $address=$em1->getRepository('LjmsCoreBundle:Address')->find($id);
-                $em1->remove($address);
-                $em1->flush();*/
             }
             $em->flush();           
             return $this->redirect($this->generateUrl('player_index'));
         }
-        return array('method'=>'edit','form'=>$form->createView(),'edit_id'=>$id);
+        return array(
+            'method'=>'edit',
+            'form'=>$form->createView(),
+            'edit_id'=>$id);
     }
     /**
      * @Route("/delete/{id}", name="player_delete")
