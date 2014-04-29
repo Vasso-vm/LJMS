@@ -30,6 +30,10 @@
     <body>
         <header>
             <h1><a href="{{url ('home_index')}}"><img src="{{ asset('bundles/ljmshome/images/logo.jpg') }}"></a></h1>
+            <div class="login pull-right">
+                <strong><a href="{{ path('profile_index') }}">Profile</a></strong>
+                <strong><a href="{{ path('logout') }}">Log Out</a></strong>
+            </div>
             <div class="navbar">
                 <div class="navbar-inner">
                     <ul class="nav">
