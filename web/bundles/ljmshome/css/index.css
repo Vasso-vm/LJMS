@@ -830,5 +830,7 @@ table.system_users td.division{
 table.system_users td.team{
     vertical-align: top;
 }
-
+form select.input-large{
+    width:195px;
+}
 
