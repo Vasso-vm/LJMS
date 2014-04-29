@@ -7,26 +7,20 @@
 		const TABLE_ALIAS = 'team';
 		public function findTeams($filter)
 		{
-            switch ($filter['status']){
-					case 'active':
-						$where=self::TABLE_ALIAS.'.is_active=1';
-						break;
-					case 'inactive':
-						$where=self::TABLE_ALIAS.'.is_active=0';
-						break;
-					case 'all':
-						$where=self::TABLE_ALIAS.'.is_active<>2';
-						break;
-					default:
-						return false;
-				}
             $qb = $this->createQueryBuilder(self::TABLE_ALIAS);
-            $qb->leftJoin(self::TABLE_ALIAS.'.division','d');
-            if($filter['division']!='all'){
-                $division=$filter['division'];
-                $qb->where(" d.name ='$division'");
+            switch ($filter['status']){
+                case 'active':
+                    $qb->where(self::TABLE_ALIAS.'.is_active=1');
+                    break;
+                case 'inactive':
+                    $qb->where(self::TABLE_ALIAS.'.is_active=0');
+                    break;
             }
-            $qb->andwhere($where);
+            $qb->leftJoin(self::TABLE_ALIAS.'.division','d');
+            if(($filter['division']!==null) and ($filter['division']!='all') ){
+                $division=$filter['division'];
+                $qb->andwhere(" d.name ='$division'");
+            }
             return $qb->getQuery()->getResult();
 		}   
 		 

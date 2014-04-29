@@ -7,21 +7,15 @@
 		const TABLE_ALIAS = 'player';
 		public function findPlayers($filter)
 		{
-			switch ($filter['status']){
-					case 'active':
-						$where=self::TABLE_ALIAS.'.is_active=1';
-						break;
-					case 'inactive':
-						$where=self::TABLE_ALIAS.'.is_active=0';
-						break;
-					case 'all':
-						$where=self::TABLE_ALIAS.'.is_active<>2';
-						break;
-					default:
-						return false;
-				}
             $qb = $this->createQueryBuilder(self::TABLE_ALIAS);
-			$qb	->andwhere($where);
+            switch ($filter['status']){
+                case 'active':
+                    $qb->where(self::TABLE_ALIAS.'.is_active=1');
+                    break;
+                case 'inactive':
+                    $qb->where(self::TABLE_ALIAS.'.is_active=0');
+                    break;
+            }
 			return $qb->getQuery()->getResult();
 		}   
 

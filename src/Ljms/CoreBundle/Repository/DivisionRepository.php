@@ -7,25 +7,19 @@
 		const TABLE_ALIAS = 'division';
 		public function findDivisions($filter)
 		{
-			switch ($filter['status']){
-					case 'active':
-						$where=self::TABLE_ALIAS.'.is_active=1';
-						break;
-					case 'inactive':
-						$where=self::TABLE_ALIAS.'.is_active=0';
-						break;
-					case 'all':
-						$where=self::TABLE_ALIAS.'.is_active<>2';
-						break;
-					default:
-						return false;
-				}
-			$qb = $this->createQueryBuilder(self::TABLE_ALIAS);
-            if($filter['division']!='all'){
-                $division=$filter['division'];
-                $qb->where(self::TABLE_ALIAS.".name ='$division'");
+            $qb = $this->createQueryBuilder(self::TABLE_ALIAS);
+            switch ($filter['status']){
+                case 'active':
+                    $qb->where(self::TABLE_ALIAS.'.is_active=1');
+                    break;
+                case 'inactive':
+                    $qb->where(self::TABLE_ALIAS.'.is_active=0');
+                    break;
             }
-			$qb->andwhere($where);
+            if(($filter['division']!==null) and ($filter['division']!='all') ){
+                $division=$filter['division'];
+                $qb->andwhere(self::TABLE_ALIAS.". name ='$division'");
+            }
 			return $qb->getQuery()->getResult();	
 		}
         public function getTeams($id){

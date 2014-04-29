@@ -1,5 +1,6 @@
 <?php
 	namespace Ljms\CoreBundle\Entity;
+
 	use Doctrine\ORM\Mapping as ORM;
     use Symfony\Component\Security\Core\User\UserInterface;
     use Doctrine\Common\Collections\ArrayCollection;
@@ -10,7 +11,7 @@
 	 * @ORM\Table(name="Profile")
      * @ORM\Entity(repositoryClass="Ljms\CoreBundle\Repository\ProfileRepository")     
 	*/
-	class Profile implements UserInterface
+	class Profile implements UserInterface, \Serializable
 	{
 
 	/**
@@ -193,6 +194,21 @@
         }else if ($this->director_role==1){
             return array('ROLE_DIRECTOR');
         }        
+    }
+
+    public function serialize()
+    {
+        $ar=serialize(array(
+            $this->id,
+        ));
+        return $ar;
+    }
+
+     public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            ) = unserialize($serialized);
     }
     public function eraseCredentials()
     {
