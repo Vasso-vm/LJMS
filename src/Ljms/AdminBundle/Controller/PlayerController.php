@@ -2,8 +2,6 @@
 
 namespace Ljms\AdminBundle\Controller;
 use Ljms\CoreBundle\Entity\Player;
-use Ljms\CoreBundle\Entity\Profile;
-use Ljms\CoreBundle\Entity\Address;
 use Ljms\CoreBundle\Form\PlayerType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,11 +48,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
         $form->handleRequest($request);
         if ($form->isValid()){
             $em = $this->getDoctrine()->getManager();
+            if ($player->getSharesGuardianAddress()==1){
+                $player->setAddress($player->getProfile()->getAddress());
+            }
             $em->persist($player);
             $em->flush();           
             return $this->redirect($this->generateUrl('player_index'));
         }
-        return array('method'=>'add','form'=>$form->createView(),'guardian_id'=>$profile->getId());
+        return array('method'=>'add','form'=>$form->createView(),'guardian_id'=>$profile->getId(),'ajaxUrl'=>'team_get');
     }
     /**
      * @Route("/edit/{id}", name="player_edit")
@@ -80,7 +81,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
         return array(
             'method'=>'edit',
             'form'=>$form->createView(),
-            'edit_id'=>$id);
+            'edit_id'=>$id,
+            'ajaxUrl'=>'team_get'
+        );
     }
     /**
      * @Route("/delete/{id}", name="player_delete")

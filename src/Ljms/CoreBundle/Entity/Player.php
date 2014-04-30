@@ -31,7 +31,7 @@
 	/**
      * @ORM\Column(type="boolean" , options={"default" = 0})
      */
-	protected $shares_guardian_address=0;
+	protected $shares_guardian_address;
 
 	/**
      * @ORM\Column(type="datetime")     
@@ -49,7 +49,7 @@
     protected $note;
 
     /**
-     * @ORM\OneToOne(targetEntity="Address",cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Address")
      * @ORM\JoinColumn(name="address_id", referencedColumnName="id")
      */
     protected $address;
@@ -64,9 +64,10 @@
      */
 	protected $player_registration;
     /**
-     * @ORM\OneToOne(targetEntity="PlayerXteam")
+     * @ORM\ManyToOne(targetEntity="Team")
+     * @ORM\JoinColumn(name="team_id", referencedColumnName="id")
      */
-    protected $player_team;
+    protected $team;
     /**
      * Get id
      *
@@ -285,25 +286,25 @@
     }
 
     /**
-     * Set player_team
+     * Set team
      *
-     * @param \Ljms\CoreBundle\Entity\PlayerXteam $playerTeam
+     * @param \Ljms\CoreBundle\Entity\Team $team
      * @return Player
      */
-    public function setPlayerTeam(\Ljms\CoreBundle\Entity\PlayerXteam $playerTeam = null)
+    public function setTeam(\Ljms\CoreBundle\Entity\Team $team = null)
     {
-        $this->player_team = $playerTeam;
+        $this->team = $team;
 
         return $this;
     }
 
     /**
-     * Get player_team
+     * Get team
      *
-     * @return \Ljms\CoreBundle\Entity\PlayerXteam 
+     * @return \Ljms\CoreBundle\Entity\Team 
      */
-    public function getPlayerTeam()
+    public function getTeam()
     {
-        return $this->player_team;
+        return $this->team;
     }
 }

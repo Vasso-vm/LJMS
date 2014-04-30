@@ -90,27 +90,18 @@ function uploadFile(files) {
 }
 //get team list for division (player)
 $(function() {
-    $("#divisions").on("change", function() {
-        $("#teams").removeAttr("disabled");
-        $("#teams").empty();
-        $("#teams").append($('<option>',{value :""}).text("Select one"));
-        var id=$("#divisions option:selected").val();
-        var date=$("#datepicker").val();
+    $("#player_division").on("change", function() {
+        $("#player_team").removeAttr("disabled");
+        $("#player_team").empty();
+        $("#player_team").append($('<option>',{value :""}).text("Select one"));
+        var id=$("#player_division option:selected").val();
         var url=window.ajaxUrl;
-        url=url+'/players/GetTeam';
-        var jqxhr = jQuery.post(
-            url,
-            {
-                id: id,
-                date: date
-            },
-            "json"
-        )
+        jQuery.post(url,{id: id}, "json")
             .done(function(data) {
                 var result=JSON.parse(data);
                 for (var key in result) {
                     for (var row in key){
-                        $("#teams").append($('<option>',{value : result[key]['id']})
+                        $("#player_team").append($('<option>',{value : result[key]['id']})
                             .text(result[key]['name'])
                         );
                     }

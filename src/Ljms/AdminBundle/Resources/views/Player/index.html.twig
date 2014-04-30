@@ -72,8 +72,8 @@
 					<td> <input type="checkbox" class="checkbox" name="check[]" value={{p.id}}> </td>
 					<td class="name">{{p.firstname}} , {{p.lastname}}</td>
 					<td>{{ p.birthdate|age }}</td>
-					<td></td>
-					<td></td>
+					<td>{% if p.team!=null %}{{ p.team.division.name }}{% endif %}</td>
+					<td>{% if p.team!=null %}{{ p.team.name }}{% endif %}</td>
 					<td><a href="{{ path ('guardian_edit',{'id':p.profile.id}) }}">{{p.profile.FirstName}}, {{p.profile.LastName}}</a></td>
 					<td>
 					<a href="{{path ('player_edit',{'id':p.id}) }}">

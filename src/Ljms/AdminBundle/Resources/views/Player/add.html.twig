@@ -22,12 +22,12 @@
 					{{form_row(form.address.address)}}
 					{{form_row(form.address.state)}}
 					{{form_row(form.birthdate)}}					
-					{{form_row(form.note)}}							
+					{{form_row(form.note)}}
 				</div>
 				<div class="pull-right">
 					{{form_row(form.LastName)}}
 					{{form_row(form.address.city)}}
-					{{form_row(form.address.zip)}}									
+					{{form_row(form.address.zip)}}
 				</div>
 			</fieldset>
             <fieldset>
@@ -41,6 +41,14 @@
                 <div class="pull-right">
                     {{form_row(form.player_registration.shirt_size)}}
                     {{form_row(form.player_registration.short_size)}}
+                </div>
+            </fieldset>
+            <fieldset>
+                <div class="pull-left">
+                    {{ form_row(form.division) }}
+                </div>
+                <div class="pull-right">
+                    {{ form_row(form.team) }}
                 </div>
             </fieldset>
 			<div class="controls buttons">

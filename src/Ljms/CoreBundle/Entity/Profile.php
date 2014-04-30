@@ -5,7 +5,6 @@
     use Symfony\Component\Security\Core\User\UserInterface;
     use Doctrine\Common\Collections\ArrayCollection;
 
-
 	/**
 	 * @ORM\Entity
 	 * @ORM\Table(name="Profile")
@@ -86,10 +85,10 @@
     */
     protected $coach_role=0;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Address",cascade={"persist"})
-     * @ORM\JoinColumn(name="address_id", referencedColumnName="id")
-     */
+        /**
+         * @ORM\OneToOne(targetEntity="Address",cascade={"persist"})
+         * @ORM\JoinColumn(name="address_id", referencedColumnName="id")
+         */
     protected $address;
 
     /**
@@ -537,29 +536,6 @@
     }
 
     /**
-     * Set address
-     *
-     * @param \Ljms\CoreBundle\Entity\Address $address
-     * @return Profile
-     */
-    public function setAddress(\Ljms\CoreBundle\Entity\Address $address = null)
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    /**
-     * Get address
-     *
-     * @return \Ljms\CoreBundle\Entity\Address 
-     */
-    public function getAddress()
-    {
-        return $this->address;
-    }
-
-    /**
      * Set alt_contact
      *
      * @param \Ljms\CoreBundle\Entity\AltContact $altContact
@@ -712,5 +688,30 @@
     public function getManagerTeams()
     {
         return $this->manager_teams;
+    }
+
+
+
+    /**
+     * Set address
+     *
+     * @param \Ljms\CoreBundle\Entity\Address $address
+     * @return Profile
+     */
+    public function setAddress(\Ljms\CoreBundle\Entity\Address $address = null)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return \Ljms\CoreBundle\Entity\Address 
+     */
+    public function getAddress()
+    {
+        return $this->address;
     }
 }

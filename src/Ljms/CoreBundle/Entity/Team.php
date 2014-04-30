@@ -2,6 +2,7 @@
 	namespace Ljms\CoreBundle\Entity;
 
 	use Doctrine\ORM\Mapping as ORM;
+    use Doctrine\Common\Collections\ArrayCollection;
 
 	/**
 	 *@ORM\Entity
@@ -58,15 +59,9 @@
      */
     protected $visiting_games;
     /**
-     * @ORM\OneToMany(targetEntity="PlayerXteam", mappedBy="team")
+     * @ORM\OneToMany(targetEntity="Player", mappedBy="team")
      */
-    protected $team_players;
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-
+    protected $players;
 
     public function getId()
     {
@@ -215,8 +210,9 @@
      */
     public function __construct()
     {
-        $this->home_games = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->visiting_games = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->home_games = new ArrayCollection();
+        $this->visiting_games = new ArrayCollection();
+        $this->players = new ArrayCollection();
     }
 
     /**
@@ -285,36 +281,37 @@
         return $this->visiting_games;
     }
 
+
     /**
-     * Add team_players
+     * Add players
      *
-     * @param \Ljms\CoreBundle\Entity\PlayerXteam $teamPlayers
+     * @param \Ljms\CoreBundle\Entity\Player $players
      * @return Team
      */
-    public function addTeamPlayer(\Ljms\CoreBundle\Entity\PlayerXteam $teamPlayers)
+    public function addPlayer(\Ljms\CoreBundle\Entity\Player $players)
     {
-        $this->team_players[] = $teamPlayers;
+        $this->players[] = $players;
 
         return $this;
     }
 
     /**
-     * Remove team_players
+     * Remove players
      *
-     * @param \Ljms\CoreBundle\Entity\PlayerXteam $teamPlayers
+     * @param \Ljms\CoreBundle\Entity\Player $players
      */
-    public function removeTeamPlayer(\Ljms\CoreBundle\Entity\PlayerXteam $teamPlayers)
+    public function removePlayer(\Ljms\CoreBundle\Entity\Player $players)
     {
-        $this->team_players->removeElement($teamPlayers);
+        $this->players->removeElement($players);
     }
 
     /**
-     * Get team_players
+     * Get players
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getTeamPlayers()
+    public function getPlayers()
     {
-        return $this->team_players;
+        return $this->players;
     }
 }

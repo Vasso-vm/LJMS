@@ -701,7 +701,7 @@ fieldset div.row div.span3 p{
     height:30px;
     margin:0;
 }
-#assign_players,#not_assign_players{
+#assign_players,#assign_not_assign_players{
     height:250px;
     width:350px;
     margin-left:5px;

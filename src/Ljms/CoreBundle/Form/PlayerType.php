@@ -9,8 +9,7 @@
 	    {
 	        $builder
                 ->add('shares_guardian_address','checkbox',array(
-                    'label' => 'Address as Guardian',
-                    'required' => false,
+                    'required'=>false,
                 ))
 	            ->add('FirstName','text')
 	            ->add('LastName','text')
@@ -20,7 +19,20 @@
 	            ->add('note','textarea',array(
 	            	'required'    => false,
 	            	'label' => 'Allergies/Medical Conditions',
-	            	))	           
+	            	))
+                ->add('division','entity',array(
+                    'mapped'=>false,
+                    'class'=>'LjmsCoreBundle:Division',
+                    'required'=>false,
+                    'empty_value'=>'Select One',
+                    'property'=>'name',
+                ))
+                ->add('team','entity',array(
+                    'class' =>'LjmsCoreBundle:Team',
+                    'property' => 'name',
+                    'empty_value' =>'Select One',
+                    'required'=>false,
+                ))
 	            ->add('Save', 'submit');
 	        $builder->add('address', new AddressType());
             $builder->add('player_registration', new PlayerRegistrationType());
