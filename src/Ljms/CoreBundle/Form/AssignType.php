@@ -1,30 +1,34 @@
 <?php
 namespace Ljms\CoreBundle\Form;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class AssignType extends AbstractType{
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $id=$options['attr']['id'];
         $builder
             ->add('not_assign_players','entity',array(
                 'class'=>'LjmsCoreBundle:Player',
                 'property'=>'first_name',
                 'mapped' => false,
+                'required'=>false,
                 'multiple'=>true,
-                'label'=>'Players',
+                'label'=>'Not Assign Players',
                 'query_builder'=>function(EntityRepository $er){
                         return $er->createQueryBuilder('p')
-                            ->where('p.player_team is NULL');
+                            ->where('p.team is NULL');
                         },)
             )
-            ->add('assign_players','entity',array(
-                    'class'=>'LjmsCoreBundle:PlayerXteam',
-                    'property'=>'player.first_name',
-                    'mapped' => false,
+            ->add('players',null,array(
+                    //'class'=>'LjmsCoreBundle:Player',
+                    'property'=>'first_name',
+                    'mapped' => true,
+                    'required'=>false,
                     'multiple'=>true,
+                    'label'=>'Players',
 
             ))
             ->add('Save', 'submit');
@@ -36,9 +40,10 @@ class AssignType extends AbstractType{
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Ljms\CoreBundle\Entity\PlayerXteam',
+            'data_class' => 'Ljms\CoreBundle\Entity\Team',
         ));
     }
+
 }
 ?>
 

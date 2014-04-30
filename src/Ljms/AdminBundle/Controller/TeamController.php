@@ -2,7 +2,6 @@
 
 namespace Ljms\AdminBundle\Controller;
 use Ljms\CoreBundle\Entity\Team;
-use Ljms\CoreBundle\Entity\PlayerXteam;
 use Symfony\Component\HttpFoundation\Request;
 use Ljms\CoreBundle\Form\TeamType;
 use Ljms\CoreBundle\Form\AssignType;
@@ -127,12 +126,18 @@ class TeamController extends Controller
      */
     public function assignAction(Request $request,$id)
     {
-        $player_team = new PlayerXteam();
-        $form = $this->createForm(new AssignType(), $player_team);
+        $em=$this->getDoctrine()->getManager();
+        $team = $em->getRepository('LjmsCoreBundle:Team')->find($id);
+        if (!$team) {
+            throw $this->createNotFoundException(
+                'No profile found for id '.$id
+            );
+        }
+        $form = $this->createForm(new AssignType(), $team, array('attr'=>array('id'=>$id)));
         $form->handleRequest($request);
+        var_dump($form->getErrorsAsString());
+
         if ($form->isValid()){
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($player_team);
             $em->flush();
             return $this->redirect($this->generateUrl('team_index'));
         }

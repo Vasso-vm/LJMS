@@ -61,12 +61,12 @@
 					<td class="name">{{d.name}}</td>
 					<td> {% if d.teams!=NULL%}
                             {% for t in d.teams %}
-                                {{ t.name }}
+                                <p>{{ t.name }}</p>
                             {% endfor %}
                         {% endif %} </td>
 					<td>
 						{% if d.profile!=NULL%}
-							{{ d.profile.FirstName}},{{ d.profile.LastName}}
+							{{ d.profile.FirstName}}, {{ d.profile.LastName}}
 						{% endif %}	
 					</td>
                     <td>
