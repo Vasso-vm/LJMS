@@ -133,15 +133,28 @@ class TeamController extends Controller
                 'No profile found for id '.$id
             );
         }
-        $form = $this->createForm(new AssignType(), $team, array('attr'=>array('id'=>$id)));
+        $form = $this->createForm(new AssignType(),null, array('attr'=>array('id'=>$id,'team_name'=>$team->getName(),'division_name'=>$team->getDivision()->getName(),)));
         $form->handleRequest($request);
-        var_dump($form->getErrorsAsString());
-
-        if ($form->isValid()){
+        if ($request->request->get('assign')){
+            $assign=$request->request->get('assign');
+            if (isset($assign['players'])){
+                $assign_players=$em->getRepository('LjmsCoreBundle:Player')->findBy(array('id'=>$assign['players']));
+                foreach ($assign_players as $player){
+                    $player->setTeam($team);
+                }
+            }
+            if (isset($assign['not_assign_players'])){
+                $not_assign_players=$em->getRepository('LjmsCoreBundle:Player')->findBy(array('id'=>$assign['not_assign_players']));
+                foreach ($not_assign_players as $player){
+                    $player->setTeam(null);
+                }
+            }
             $em->flush();
             return $this->redirect($this->generateUrl('team_index'));
         }
-        return array('form'=>$form->createView(),'edit_id'=>$id);
+        return array(
+            'form'=>$form->createView(),
+            'edit_id'=>$id,);
     }
 
     /**

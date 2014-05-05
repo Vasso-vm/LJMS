@@ -28,6 +28,7 @@ $(document).ready(function(){
     });
     $("#add_assign_players").ready(function(){
         $("#add_assign_players").click(function(){
+            var $collection=$('#hidden');
             $("#assign_not_assign_players option:selected").each(function(){
                 $(this).appendTo("#assign_players");
             });
