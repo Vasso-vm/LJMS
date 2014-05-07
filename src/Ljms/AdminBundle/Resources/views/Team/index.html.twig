@@ -92,8 +92,11 @@
                         {% endfor %}
                         {{ ties }}
                     </td>
-                    <td>
-                        {{ (wins/(t.homeGames|length + t.visitingGames|length)*100)|number_format(1) }}
+                    <td>{% if (t.homeGames|length + t.visitingGames|length)!=0 %}
+                        {{ (wins/(t.homeGames|length + t.visitingGames|length)*100)|number_format(1) }} %
+                        {% else %}
+                            0 %
+                        {% endif %}
                     </td>
 					<td>
                         <a class="btn action add" href="{{path('team_assign',{'id':t.id}) }}" id="act">Assign player</a>

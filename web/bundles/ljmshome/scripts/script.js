@@ -28,6 +28,7 @@ $(document).ready(function(){
     });
     $("#add_assign_players").ready(function(){
         $("#add_assign_players").click(function(){
+            var $collection=$('#hidden');
             $("#assign_not_assign_players option:selected").each(function(){
                 $(this).appendTo("#assign_players");
             });
@@ -40,8 +41,8 @@ $(document).ready(function(){
             });
         });
     });
-    $("#go_assign_players").ready(function(){
-        $("#go_assign_players").click(function(){
+    $("#assign_Save").ready(function(){
+        $("#assign_Save").click(function(){
             $("#assign_players option").each(function(){
                 $(this).attr({selected: "selected"});
             });
