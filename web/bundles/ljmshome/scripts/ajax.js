@@ -111,11 +111,7 @@ $(function() {
 });
 var gameDay=0;
 function getSchedule(y,m){
-    var url=window.ajaxUrl;
-    var len=url.length;
-    url=url.substr(0,len-6);
-    window.url=url;
-    url=url+'/home/GetSchedule';
+    var url=window.Url;
     $.ajax({
         type:'post',
         url:url,
@@ -123,6 +119,7 @@ function getSchedule(y,m){
         dataType:'json',
         async:false,
         success: function(data){
+            var t=data;
             window.gameDay=data;
         }
     });

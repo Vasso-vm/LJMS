@@ -8,3 +8,6 @@ sponsors_index:
     pattern:  /sponsors
     defaults: { _controller: LjmsHomeBundle:Sponsors:index }
 
+schedule_get:
+    pattern:  /home/get
+    defaults: { _controller: LjmsHomeBundle:Home:get }

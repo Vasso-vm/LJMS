@@ -1,17 +1,27 @@
 <?php
 	namespace Ljms\HomeBundle\Controller;
     use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-	
-    
-    
-	class HomeController extends Controller
+    use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+    use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+    use Symfony\Component\HttpFoundation\Request;
+    use Symfony\Component\HttpFoundation\Response;
+
+
+    class HomeController extends Controller
     {
-        public function indexAction()
+
+        public function indexAction(Request $request)
         {
-            $hash=hash('md5','admin');
             return $this->render(
-        		'LjmsHomeBundle:Home:index.html.twig'
+        		'LjmsHomeBundle:Home:index.html.twig',array('url'=>'schedule_get')
             );
+        }
+
+        public function getAction(Request $request){
+            $year=$request->request->get('year');
+            $month=$request->request->get('month')+1;
+            $schedule=$this->getDoctrine()->getRepository('LjmsCoreBundle:Schedule')->getSchedules($year,$month);
+            return new Response(json_encode($schedule));
         }
     }
 

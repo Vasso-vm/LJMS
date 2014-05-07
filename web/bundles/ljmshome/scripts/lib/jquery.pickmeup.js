@@ -100,9 +100,13 @@
                 var len=window.gameDay.length;
                 var g=0;
 				for (var i = 0; i < 42; ++i) {
-                        if (days[i].text==window.gameDay[g] && g<=len){
-                            result	+= '<a class="game '+days[i].class_name +'" href="'+window.url+'/home/Schedule?year='+window.Year+'&month='+(window.Month+1)+'&day='+ days[i].text +'">' + days[i].text + '</a>'
-                            g++;
+                        if (g<len){
+                            if (days[i].text==window.gameDay[g]['date']){
+                                result	+= '<a class="game '+days[i].class_name +'" href="'+window.url+'/home/Schedule?year='+window.Year+'&month='+(window.Month+1)+'&day='+ days[i].text +'">' + days[i].text + '</a>'
+                                g++;
+                            }else{
+                                result	+= '<div class="' + days[i].class_name + ' day">' + days[i].text + '</div>'
+                            }
                         }else{
                             result	+= '<div class="' + days[i].class_name + ' day">' + days[i].text + '</div>'
                         }
