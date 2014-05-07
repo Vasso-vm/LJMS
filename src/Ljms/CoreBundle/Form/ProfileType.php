@@ -8,21 +8,37 @@ class ProfileType extends AbstractType{
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('FirstName','text')
+            ->add('FirstName','text',array(
+                'error_bubbling'=>true
+            ))
             ->add('email','repeated',array(
                 'type'=>'email',
-                'first_options'  => array('label' => 'Email'),
-                'second_options' => array('label' => 'Confirm Email'),
+                'first_options'  => array('label' => 'Email',),
+                'second_options' => array('label' => 'Confirm Email',),
+                'invalid_message'=>'The Email fields must match.',
+                'error_bubbling'=>true
             ))
             ->add('password','repeated',array(
                 'type'=>'password',
-                'first_options'  => array('label' => 'Password'),
-                'second_options' => array('label' => 'Confirm Password'),
+                'first_options'  => array('label' => 'Password','required'=>false,),
+                'second_options' => array('label' => 'Confirm Password','required'=>false,),
+                'error_bubbling'=>true,
+                'invalid_message'=>'The Password fields must match.',
             ))
-            ->add('LastName','text')
-            ->add('HomePhone','number')
-            ->add('CellPhone','number',array('required' => false))
-            ->add('AltPhone','number',array('required' => false))
+            ->add('LastName','text',array(
+                'error_bubbling'=>true,
+            ))
+            ->add('HomePhone','number',array(
+                'error_bubbling'=>true
+            ))
+            ->add('CellPhone','number',array(
+                'required' => false,
+                'error_bubbling'=>true
+            ))
+            ->add('AltPhone','number',array(
+                'required' => false,
+                'error_bubbling'=>true
+            ))
             ->add('Save', 'submit');
 
     }

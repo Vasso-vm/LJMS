@@ -14,33 +14,39 @@ class ScheduleType extends AbstractType{
             ->add('practice','checkbox',array(
                 'label' => 'Practice Game',
                 'required' => false,
+                'error_bubbling' =>true,
             ))
             ->add('date','datetime',array(
-                'with_seconds' => false
+                'with_seconds' => false,
+                'error_bubbling' =>true,
             ))
             ->add('division','entity',array(
                 'class'=> 'LjmsCoreBundle:Division',
                 'property' => 'name',
                 'mapped'=>false,
                 'empty_value' => 'Select One',
-                'required' =>false
+                'required' =>false,
+                'error_bubbling' =>true,
             ))
             ->add('home_team','entity',array(
                 'class' =>'LjmsCoreBundle:Team',
                 'property' => 'name',
                 'empty_value' =>'Select One',
                 'disabled' => false,
+                'error_bubbling' =>true,
             ))
             ->add('visiting_team','entity',array(
                 'class' =>'LjmsCoreBundle:Team',
                 'property' => 'name',
                 'empty_value' =>'Select One',
                 'disabled' => false,
+                'error_bubbling' =>true,
             ))
             ->add('location','entity',array(
                 'class' => 'LjmsCoreBundle:Location',
                 'property' => 'name',
                 'empty_value' => 'Select One',
+                'error_bubbling' =>true,
             ))
             ->add('Save', 'submit');
     }

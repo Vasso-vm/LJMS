@@ -8,9 +8,9 @@
 			{% endif %}
 		</h2>
 		{% if method=='add'%}
-			<form action="{{ path('player_add',{'id':guardian_id}) }}" method="post" class="form-horizontal" id="add_user_form">			
+			<form action="{{ path('player_add',{'id':guardian_id}) }}" novalidate="novalidate" method="post" class="form-horizontal" id="add_user_form">
 		{% else %}
-			<form action="{{ path('player_edit',{'id':edit_id}) }}" method="post" class="form-horizontal" id="edit_user_form">
+			<form action="{{ path('player_edit',{'id':edit_id}) }}" novalidate="novalidate" method="post" class="form-horizontal" id="edit_user_form">
 			
 		{% endif %}
 			<fieldset>

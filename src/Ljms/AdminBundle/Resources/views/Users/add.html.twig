@@ -8,21 +8,19 @@
 			{% endif %}
 		</h2>
 		{% if method=='add'%}
-			<form action="{{ path('users_add') }}" novalidate method="post" class="form-horizontal" id="add_user_form">			
+			<form action="{{ path('users_add') }}" method="post" class="form-horizontal" id="add_user_form">
 		{% else %}
-			<form action="{{ path('users_edit',{'id':edit_id}) }}" novalidate method="post" class="form-horizontal" id="edit_user_form">
-			
+			<form action="{{ path('users_edit',{'id':edit_id}) }}" method="post" class="form-horizontal" id="edit_user_form">
 		{% endif %}
 			<fieldset>
 				<h3>User information</h3>
-				{{ form_errors(form) }}				
-				<div class="pull-left">					
+				{{ form_errors(form) }}
+				<div class="pull-left">
 					{{form_row(form.FirstName)}}
 					{{form_row(form.address.address)}}
 					{{form_row(form.address.state)}}
-					{{form_row(form.email)}}					
-					{{form_row(form.password)}}
-							
+                    {{ form_row(form.email) }}
+                    {{ form_row(form.password) }}
 				</div>
 				<div class="pull-right">
 					{{form_row(form.LastName)}}
@@ -60,6 +58,7 @@
 						<td>Team</td>
 						<td></td>
 					</tr>
+                {% if profile is defined %}
                 {% if profile.adminRole!=0 %}
                     <tr class="1_undefined_undefined">
                         <input type="hidden" name="current_role[]" value="1|undefined|undefined">
@@ -110,6 +109,7 @@
                         <td></td>
                         <td class="delete"><input type="button" onclick="deleteRole(this)" value="Delete Role" class="5_undefined_undefined"></td>
                     </tr>
+                {% endif %}
                 {% endif %}
 				</table>
 				<div class="add_role">

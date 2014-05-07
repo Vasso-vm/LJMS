@@ -13,24 +13,32 @@
 	        $builder
 	            ->add('is_active','choice',array(
 	            		'choices'=>array('1'=>'Active','0'=>'Inactive'),
-	            		'empty_value' =>'Select One'
+	            		'empty_value' =>'Select One',
+                        'error_bubbling' =>true,
 	            	))
-	            ->add('name','text',array('label'=>'Division Name'))
+	            ->add('name','text',array(
+                    'label'=>'Division Name',
+                    'error_bubbling' =>true,
+                ))
 	            ->add('min_age','choice',array(
 	            	'choices'=>$array,
-	            	'empty_value'=>'Select One'
+	            	'empty_value'=>'Select One',
+                    'error_bubbling' =>true,
 	            	))
 	            ->add('max_age','choice',array(
 	            	'choices'=>$array,
-	            	'empty_value'=>'Select One'
+	            	'empty_value'=>'Select One',
+                    'error_bubbling' =>true,
 	            	))
 	            ->add('description','textarea',array(
 	            	'required'    => false,
 	            	'label' => 'Description',
+                    'error_bubbling' =>true,
 	            	))	   
             	->add('rules','textarea',array(
             		'required'    => false,
             		'label' => 'Rules',
+                    'error_bubbling' =>true,
             		))	            
 	            ->add('Save', 'submit');
 	    }

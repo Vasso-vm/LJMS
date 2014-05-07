@@ -9,14 +9,22 @@
 		public function buildForm(FormBuilderInterface $builder, array $options)
 	    {
 	    	$builder
-	    		->add('address','text')
+	    		->add('address','text',array(
+                    'error_bubbling' =>true,
+                ))
 	            ->add('state','entity',array(
                     'class' => 'LjmsCoreBundle:State',
                     'property' => 'name',
-                    'empty_value' => 'Select One'
+                    'empty_value' => 'Select One',
+                    'error_bubbling' =>true,
 	            	))
-	            ->add('city','text')
-	            ->add('zip','number');
+	            ->add('city','text',array(
+                    'error_bubbling' =>true,
+                ))
+	            ->add('zip','number',array(
+                    'error_bubbling' =>true,
+                    'invalid_message'=>'The field Zip must contain only numbers.',
+                    ));
 	    }
 
 	    public function setDefaultOptions(OptionsResolverInterface $resolver)

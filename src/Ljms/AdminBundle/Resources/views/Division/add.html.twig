@@ -9,7 +9,7 @@
 		</h2>
 		<div class="wrapper">
 			{% if method=='add'%}
-				<form action="{{ path('division_add') }}" method="post" class="form-horizontal division" id="division">			
+				<form action="{{ path('division_add') }}" method="post" class="form-horizontal division" id="division">
 			{% else %}
 				<form action="{{ path('division_edit',{'id':edit_id}) }}" method="post" class="form-horizontal division" id="division">
 				

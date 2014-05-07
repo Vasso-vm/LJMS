@@ -8,7 +8,7 @@
 			{% endif %}
 		</h2>
 		{% if method=='add'%}
-			<form action="{{ path('guardian_add') }}" novalidate="novalidate" method="post" class="form-horizontal" id="add_user_form">			
+			<form action="{{ path('guardian_add') }}" method="post" class="form-horizontal" id="add_user_form">
 		{% else %}
 			<form action="{{ path('guardian_edit',{'id':edit_id}) }}" method="post" class="form-horizontal" id="edit_user_form">
 			

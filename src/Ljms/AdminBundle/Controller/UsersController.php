@@ -53,7 +53,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
         $encoder = new MessageDigestPasswordEncoder('sha512', true, 10);
         $profile = new Profile();
         $profile->setAltContact(new AltContact());
-        $form = $this->createForm(new UserType(), $profile);
+        $form = $this->createForm(new UserType(), $profile,array('validation_groups' => array('Profile','Add','Address','AltContact'),));
         $form->handleRequest($request);
         if ($form->isValid()){
             $password = $encoder->encodePassword($profile->getPassword(), $profile->getSalt());

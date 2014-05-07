@@ -9,10 +9,23 @@
 		public function buildForm(FormBuilderInterface $builder, array $options)
 	    {
 	    	$builder
-	    		->add('altFirstName','text',array('required' => false))
-	            ->add('altLastName', 'text',array('required' => false))
-	            ->add('altEmail','text',array('required' => false))
-	            ->add('altPhone','number',array('required' => false));
+	    		->add('altFirstName','text',array(
+                    'required' => false,
+                    'error_bubbling' =>true,
+                ))
+	            ->add('altLastName', 'text',array(
+                    'required' => false,
+                    'error_bubbling' =>true,
+                ))
+	            ->add('altEmail','text',array(
+                    'required' => false,
+                    'error_bubbling' =>true,
+                ))
+	            ->add('altPhone','number',array(
+                    'required' => false,
+                    'error_bubbling' =>true,
+                    'invalid_message'=>'The field Alt Phone must contain only numbers.',
+                ));
 	    }
 
 	    public function setDefaultOptions(OptionsResolverInterface $resolver)

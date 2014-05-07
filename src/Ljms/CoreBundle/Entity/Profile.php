@@ -4,11 +4,12 @@
 	use Doctrine\ORM\Mapping as ORM;
     use Symfony\Component\Security\Core\User\UserInterface;
     use Doctrine\Common\Collections\ArrayCollection;
+    use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 	/**
 	 * @ORM\Entity
 	 * @ORM\Table(name="Profile")
-     * @ORM\Entity(repositoryClass="Ljms\CoreBundle\Repository\ProfileRepository")     
+     * @ORM\Entity(repositoryClass="Ljms\CoreBundle\Repository\ProfileRepository")
 	*/
 	class Profile implements UserInterface, \Serializable
 	{
@@ -30,8 +31,8 @@
     */
     protected $last_name;
     /**
-        * @ORM\Column(type="string", length=100 , unique=true)
-    */
+      * @ORM\Column(type="string", length=100 , unique=true)
+      */
     protected $email;
     /**
      * @ORM\Column(type="string", length=255)

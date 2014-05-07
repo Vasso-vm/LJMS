@@ -10,12 +10,25 @@
 {% endspaceless %}
 {% endblock form_row %}
 
+
+
 {% block row_addRole %}
 	<div class="add_role">
 	{{ form_widget(form.AddRole)}}
 	</div>
 {% endblock %}
 
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            <ul>
+                {% for error in errors %}
+                <p class="alert alert-error">{{ error.message }}</p>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}
 
 {% block _schedule_home_team_row %}
     <div class="control-group">

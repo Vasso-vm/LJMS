@@ -36,7 +36,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
     {
         $encoder = new MessageDigestPasswordEncoder('sha512', true, 10);
         $guardian = new Profile();
-        $form = $this->createForm(new UserType(), $guardian);
+        $form = $this->createForm(new UserType(), $guardian,array('validation_groups' => array('Profile','Add','Address','AltContact'),'attr'=>array('guardian'=>true)));
         $form->handleRequest($request);
         if ($form->isValid()){
             $password = $encoder->encodePassword($guardian->getPassword(), $guardian->getSalt());
@@ -64,7 +64,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
                 'No profile found for id '.$id
             );
         }
-        $form = $this->createForm(new UserType(), $guardian);
+        $form = $this->createForm(new UserType(), $guardian,array('attr'=>array('guardian'=>true)));
         $form->handleRequest($request);
         if ($form->isValid()){
             $password = $encoder->encodePassword($guardian->getPassword(), $guardian->getSalt());
