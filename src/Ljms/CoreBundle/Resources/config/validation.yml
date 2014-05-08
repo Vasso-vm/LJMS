@@ -153,6 +153,12 @@ Ljms\CoreBundle\Entity\Division:
         rules:
                   - Length:
                       max: 500
+        file:
+                  - Image:
+                      maxWidth: 640
+                      maxHeight: 480
+                  - File:
+                      maxSize: 5M
 Ljms\CoreBundle\Entity\Team:
     constraints:
             - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:

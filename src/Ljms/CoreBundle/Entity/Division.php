@@ -2,10 +2,12 @@
 	namespace Ljms\CoreBundle\Entity;
     use Doctrine\Common\Collections\ArrayCollection;
 	use Doctrine\ORM\Mapping as ORM;
+    use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 	/**
 	 *@ORM\Entity
 	 *@ORM\Table(name="Division")
+     * @ORM\HasLifecycleCallbacks
      * @ORM\Entity(repositoryClass="Ljms\CoreBundle\Repository\DivisionRepository")
 	 */
 	class Division{
@@ -50,7 +52,9 @@
      * @ORM\Column(type="string" , nullable=true)
      */
 	protected $photo;
-	
+
+    private $file;
+    private $temp;
     /**
      * @ORM\ManyToOne(targetEntity="Ljms\CoreBundle\Entity\Profile")
      * @ORM\JoinColumn(name="profile_id", referencedColumnName="id")
@@ -65,6 +69,101 @@
     public function __construct()
     {
         $this->teams = new ArrayCollection();
+    }
+    public function getAbsolutePath()
+    {
+        return null === $this->photo
+            ? null
+            : $this->getUploadRootDir().'/'.$this->photo;
+    }
+    public function getWebPath()
+    {
+        return null === $this->photo
+            ? null
+            : '/web/'.$this->getUploadDir().'/'.$this->photo;
+    }
+    protected function getUploadRootDir()
+    {
+        // the absolute directory path where uploaded
+        // documents should be saved
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        // get rid of the __DIR__ so it doesn't screw up
+        // when displaying uploaded doc/image in the view.
+        return 'bundles/ljmshome/avatars';
+    }
+    /**
+     * Set file
+     *
+     * @param UploadedFile $file
+     *
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+        if (isset($this->photo)) {
+            // store the old name to delete after the update
+            $this->temp = $this->photo;
+            $this->photo = null;
+        } else {
+            $this->photo = 'initial';
+        }
+    }
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function preUpload()
+    {
+        if (null !== $this->getFile()) {
+            // do whatever you want to generate a unique name
+            $filename = sha1(uniqid(mt_rand(), true));
+            $this->photo = $filename.'.'.$this->getFile()->guessExtension();
+        }
+    }
+    /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function upload()
+    {
+        if (null === $this->getFile()) {
+            return;
+        }
+
+        // if there is an error when moving the file, an exception will
+        // be automatically thrown by move(). This will properly prevent
+        // the entity from being persisted to the database on error
+        $this->getFile()->move($this->getUploadRootDir(), $this->photo);
+        // check if we have an old image
+        if (isset($this->temp)) {
+            // delete the old image
+            unlink($this->getUploadRootDir().'/'.$this->temp);
+            // clear the temp image path
+            $this->temp = null;
+        }
+        $this->file = null;
+    }
+    /**
+     * Get file
+     *
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeUpload()
+    {
+        if ($file = $this->getAbsolutePath()) {
+            unlink($file);
+        }
     }
     /**
      * Get id
@@ -145,28 +244,7 @@
         return $this->description;
     }
 
-    /**
-     * Set photo
-     *
-     * @param string $photo
-     * @return Division
-     */
-    public function setPhoto($photo)
-    {
-        $this->photo = $photo;
 
-        return $this;
-    }
-
-    /**
-     * Get photo
-     *
-     * @return string 
-     */
-    public function getPhoto()
-    {
-        return $this->photo;
-    }
 
     /**
      * Set min_age
@@ -291,5 +369,28 @@
     public function getTeams()
     {
         return $this->teams;
+    }
+
+    /**
+     * Set photo
+     *
+     * @param string $photo
+     * @return Division
+     */
+    public function setPhoto($photo)
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * Get photo
+     *
+     * @return string 
+     */
+    public function getPhoto()
+    {
+        return $this->photo;
     }
 }

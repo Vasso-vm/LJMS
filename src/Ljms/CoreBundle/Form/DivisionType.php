@@ -39,7 +39,11 @@
             		'required'    => false,
             		'label' => 'Rules',
                     'error_bubbling' =>true,
-            		))	            
+            		))
+                ->add('file','file',array(
+                    'error_bubbling' =>true,
+                    'label'=>'Logo',
+                ))
 	            ->add('Save', 'submit');
 	    }
 	    public function getName()

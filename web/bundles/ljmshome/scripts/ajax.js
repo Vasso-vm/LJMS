@@ -68,7 +68,6 @@ $(document).ready(function(){
 //upload division logo (division)
 function uploadFile(files) {
     var url=window.ajaxUrl;
-    url=url+'/divisions/AddLogo';
     var data = new FormData();
     for (var i = 0, file; file = files[i]; ++i) {
         data.append('logo', file);
@@ -79,7 +78,7 @@ function uploadFile(files) {
     xhr.onload = function(e) {
         if (this.status == 200) {
             if (!/\s/.test(this.responseText)){
-                parent.document.getElementById("imageId").innerHTML='<img src="/img/tmp_avatar/'+(this.responseText)+'">';
+                parent.document.getElementById("imageId").innerHTML='<img src="'+this.responseText+'">';
             }else{
                 parent.document.getElementById("imageId").innerHTML='<p class="alert alert-error">'+(this.responseText)+'</p>';
             }

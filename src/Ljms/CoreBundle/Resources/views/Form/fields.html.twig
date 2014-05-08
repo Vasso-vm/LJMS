@@ -10,8 +10,16 @@
 {% endspaceless %}
 {% endblock form_row %}
 
-
-
+{% block _division_file_row %}
+    <div class="control-group">
+        {{form_label(form,null,{label_attr:{'class': 'control-label'}})}}
+        {{ form_errors(form) }}
+        <div class="controls">
+            {{ form_widget(form,{attr:{'class': 'input-large','onchange':'return uploadFile(this.files);'}}) }}
+            <span class="help-block">Recommended dimensions of 640×480<br>Maximum file size of 4MB </span>
+        </div>
+    </div>
+{% endblock %}
 {% block row_addRole %}
 	<div class="add_role">
 	{{ form_widget(form.AddRole)}}

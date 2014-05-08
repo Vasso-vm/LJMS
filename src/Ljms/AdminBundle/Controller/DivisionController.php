@@ -14,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
      */
 class DivisionController extends Controller
 {
+    const DIR='/home/vasiliy/www/web/bundles/ljmshome/tmp';
     /**
      * @Route("", name="division_index")
      * @Template()
@@ -42,7 +43,11 @@ class DivisionController extends Controller
             $em->flush();           
             return $this->redirect($this->generateUrl('division_index'));
         }
-        return array('method'=>'add','form'=>$form->createView());
+        return array(
+            'method'=>'add',
+            'form'=>$form->createView(),
+            'ajaxUrl'=>'division_add_logo',
+        );
     }
     /**
      * @Route("/edit/{id}", name="division_edit")
@@ -66,7 +71,13 @@ class DivisionController extends Controller
             $em->flush();           
             return $this->redirect($this->generateUrl('division_index'));
         }
-        return array('method'=>'edit','form'=>$form->createView(),'edit_id'=>$id);
+        return array(
+            'method'=>'edit',
+            'form'=>$form->createView(),
+            'photo'=>$division->getWebPath(),
+            'edit_id'=>$id,
+            'ajaxUrl'=>'division_add_logo',
+        );
     }
     /**
      * @Route("/delete/{id}", name="division_delete")
@@ -119,6 +130,19 @@ class DivisionController extends Controller
     public function getAction(){
         $division_list=$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisions();
         return new Response(json_encode($division_list));
+    }
+    /**
+     * @Route("/logo", name="division_add_logo")
+     */
+    public function addLogoAction(Request $request){
+        $file=$request->files->get('logo');
+        $extension = $file->guessExtension();
+        if (!$extension) {
+            $extension = 'bin';
+        }
+        $name=rand(1,999).'.'.$extension;
+        $file->move(self::DIR,$name);
+        return new Response('/web/bundles/ljmshome/tmp/'.$name);
     }
 }
 ?>

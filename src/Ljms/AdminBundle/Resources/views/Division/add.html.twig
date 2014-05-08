@@ -9,9 +9,9 @@
 		</h2>
 		<div class="wrapper">
 			{% if method=='add'%}
-				<form action="{{ path('division_add') }}" method="post" class="form-horizontal division" id="division">
+				<form action="{{ path('division_add') }}" method="post" {{ form_enctype(form) }} class="form-horizontal division" id="division">
 			{% else %}
-				<form action="{{ path('division_edit',{'id':edit_id}) }}" method="post" class="form-horizontal division" id="division">
+				<form action="{{ path('division_edit',{'id':edit_id}) }}" method="post" {{ form_enctype(form) }} class="form-horizontal division" id="division">
 				
 			{% endif %}
 				<fieldset>
@@ -21,7 +21,9 @@
 					{{form_row(form.min_age)}}
 					{{form_row(form.max_age)}}					
 					{{form_row(form.description)}}
-					{{form_row(form.rules)}}				
+					{{form_row(form.rules)}}
+                    <div id="imageId">{% if photo is defined %} <img src="{{ photo }}">{% endif %}</div>
+                    {{ form_row(form.file) }}
 				</fieldset>
 				<div class="controls buttons">
 					{{form_widget(form.Save,{attr:{'class':'btn'}})}}
