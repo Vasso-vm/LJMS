@@ -120,7 +120,7 @@
 					<a href="{{path ('users_edit',{'id':u.id}) }}">
 					<img src="{{ asset('bundles/ljmshome/images/edit.png') }}">
 					</a>
-					<a href="" onclick='deleteEntity({{u.id}});return false;'>
+					<a href="{{ path('users_delete',{'id':u.id}) }}" data-confirm-text="Do you want to delete user?" data-method="delete" data-csrf="_token:{{ csrf }}" class="confirmable as-form">
 					    <img src="{{ asset('bundles/ljmshome/images/delete.png') }}">
 					</a>
 					</td>
@@ -130,6 +130,6 @@
 			</table>
 		</form>
         <form action="{{path ('users_index')}}" method="post" id="delete_form">
-            {{form_rest(delete_form)}}
+
         </form>
 	{% endblock %}

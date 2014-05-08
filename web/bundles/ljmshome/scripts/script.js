@@ -112,9 +112,3 @@ $(document).ready(function(){
 });
 var month1=4;
 
-function deleteEntity(id){
-    $("#form_id").val(id);
-    if (confirm("Do you want to delete user?")) {
-        $("#delete_form").submit();
-    }
-}

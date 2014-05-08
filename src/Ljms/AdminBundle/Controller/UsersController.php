@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
 
     /**
      * UsersController - edit/delete operations for backend-users (admins)
@@ -28,19 +30,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
     {
         $filter['status']=$request->get('status');
         $filter['division']=$request->get('division');
-        $delete_form=$this->createFormBuilder()
-            ->add('id','hidden')
-            ->getForm();
-        $delete_form->handleRequest($request);
-        if ($delete_form->isValid()){
-            $data=$delete_form->getData();
-            $this->delete($data['id']);
-        }
+
         return array (
             'users'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Profile')->findUsers($filter),
             'filter'=>$filter,
             'division_list'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisionList(),
-            'delete_form'=>$delete_form->createView(),
+            'csrf' => $this->get('form.csrf_provider')->generateCsrfToken('delete_user')
         );
     }
 
@@ -103,7 +98,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
             'ajaxUrl'=>'division_get');
     }
 
-    private function delete($id){
+        /**
+         * @Route("/delete/{id}", name="users_delete")
+         * @Method("DELETE")
+         * @CsrfProtector(intention="delete_user", name="_token")
+         */
+        public function deleteAction(Request $request,$id){
         $em=$this->getDoctrine()->getManager();
         $profile = $em->getRepository('LjmsCoreBundle:Profile')->find($id);
         $em->remove($profile);
