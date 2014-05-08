@@ -9,19 +9,19 @@
 		public function buildForm(FormBuilderInterface $builder, array $options)
 	    {
 	    	$builder
-	    		->add('altFirstName','text',array(
+	    		->add('alt_first_name','text',array(
                     'required' => false,
                     'error_bubbling' =>true,
                 ))
-	            ->add('altLastName', 'text',array(
+	            ->add('alt_last_name', 'text',array(
                     'required' => false,
                     'error_bubbling' =>true,
                 ))
-	            ->add('altEmail','text',array(
+	            ->add('alt_email','text',array(
                     'required' => false,
                     'error_bubbling' =>true,
                 ))
-	            ->add('altPhone','number',array(
+	            ->add('alt_phone','number',array(
                     'required' => false,
                     'error_bubbling' =>true,
                     'invalid_message'=>'The field Alt Phone must contain only numbers.',

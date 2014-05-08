@@ -3,12 +3,18 @@
 
 	use Doctrine\ORM\Mapping as ORM;
     use Doctrine\Common\Collections\ArrayCollection;
+    use Symfony\Component\Validator\Constraints as Assert;
+    use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 	/**
-	 *@ORM\Entity
-	 *@ORM\Table(name="Team")
+	 * @ORM\Entity
+	 * @ORM\Table(name="Team")
      * @ORM\Entity(repositoryClass="Ljms\CoreBundle\Repository\TeamRepository")
-	*/
+     * @UniqueEntity(
+     *      fields = "name",
+     *      message = "This Team name is already used."
+     * )
+	 */
 	class Team
 	{
 
@@ -21,21 +27,28 @@
 
 	/**
      * @ORM\Column(type="string", length=100 , unique=true)
+     * @Assert\NotBlank(message="Field Division name is required.")
+     * @Assert\Length(
+     *     max = "100"
+     * )
      */
 	protected $name;
 
 	/**
      * @ORM\Column(type="boolean" , options={"default" = 0})
+     * @Assert\NotBlank(message="Field is Visitor is required.")
      */
 	protected $traveling;
 
 	/**
      * @ORM\Column(type="boolean" , options={"default" = 1})
+     * @Assert\NotBlank(message="Field is Active is required.")
      */
 	protected $is_active;
 	/**
      * @ORM\ManyToOne(targetEntity="Ljms\CoreBundle\Entity\Division")
      * @ORM\JoinColumn(name="division_id", referencedColumnName="id")
+     * @Assert\NotBlank(message="Field Division is required.")
      */
     protected $division;
     /**
@@ -58,6 +71,7 @@
      * @ORM\OneToMany(targetEntity="Schedule", mappedBy="visiting_team")
      */
     protected $visiting_games;
+
     /**
      * @ORM\OneToMany(targetEntity="Player", mappedBy="team",cascade={"persist"})
      */

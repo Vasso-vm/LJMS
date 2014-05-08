@@ -2,10 +2,16 @@
 	namespace Ljms\CoreBundle\Entity;
 
 	use Doctrine\ORM\Mapping as ORM;
+    use Symfony\Component\Validator\Constraints as Assert;
+    use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 	/**
-	 *@ORM\Entity
-	 *@ORM\Table(name="PlayerRegistration")
+	 * @ORM\Entity
+	 * @ORM\Table(name="PlayerRegistration")
+     * @UniqueEntity(
+     *      fields = "name",
+     *      message = "This Jersey number is already used."
+     * )
 	*/
 	class PlayerRegistration
 	{
@@ -18,36 +24,49 @@
 	protected $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string" , length=30)
+     * @Assert\NotBlank(message="Field Jersey name is required.")
+     * @Assert\Length(
+     *      min = "2",
+     *      max = "30"
+     * )
      */
     protected $jersey_name;
 
     /**
      * @ORM\Column(type="string" , length=3 , unique=true)
+     * @Assert\NotBlank(message="Field Jersey number is required.")
+     * @Assert\Length(
+     *      max = "3"
+     * )
      */
     protected $jersey_number;
 
     /**
      * @ORM\ManyToOne(targetEntity="TypeUniformGroup")
      * @ORM\JoinColumn(name="shirt_type_id", referencedColumnName="id")
+     * @Assert\NotBlank(message="Field Shirt type is required.")
      */
     protected $shirt_type;
 
     /**
      * @ORM\ManyToOne(targetEntity="TypeUniformGroup")
      * @ORM\JoinColumn(name="short_type_id", referencedColumnName="id")
+     * @Assert\NotBlank(message="Field Short type is required.")
      */
     protected $short_type;
 
     /**
      * @ORM\ManyToOne(targetEntity="TypeUniformSize")
      * @ORM\JoinColumn(name="shirt_size_id", referencedColumnName="id")
+     * @Assert\NotBlank(message="Field Shirt size is required.")
      */
 	protected $shirt_size;
 
     /**
      * @ORM\ManyToOne(targetEntity="TypeUniformSize")
      * @ORM\JoinColumn(name="short_size_id", referencedColumnName="id")
+     * @Assert\NotBlank(message="Field Short size is required.")
      */
 	protected $short_size;
 

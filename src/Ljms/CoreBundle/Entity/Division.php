@@ -3,12 +3,18 @@
     use Doctrine\Common\Collections\ArrayCollection;
 	use Doctrine\ORM\Mapping as ORM;
     use Symfony\Component\HttpFoundation\File\UploadedFile;
+    use Symfony\Component\Validator\Constraints as Assert;
+    use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 	/**
-	 *@ORM\Entity
-	 *@ORM\Table(name="Division")
+	 * @ORM\Entity
+	 * @ORM\Table(name="Division")
      * @ORM\HasLifecycleCallbacks
      * @ORM\Entity(repositoryClass="Ljms\CoreBundle\Repository\DivisionRepository")
+     * @UniqueEntity(
+     *      fields = "name",
+     *      message = "This Division name is already used."
+     * )
 	 */
 	class Division{
 
@@ -21,30 +27,50 @@
 
 	/**
      * @ORM\Column(type="string", length=100 , unique=true)
+     * @Assert\NotBlank(message="Field Division name is required.")
+     * @Assert\Length(
+     *     max = "100"
+     * )
      */
 	protected $name;
 
 	/**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string" , length=2)
+     * @Assert\NotBlank(message="Field min age is required.")
+     * @Assert\Length(
+     *     max = "2"
+     * )
      */
     protected $min_age;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string" , length=2)
+     * @Assert\NotBlank(message="Field max age is required.")
+     * @Assert\Length(
+     *     max = "2"
+     * )
      */
     protected $max_age;
+
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="boolean")
+     * @Assert\NotBlank(message="Field is Active is required.")
      */
 	protected $is_active;
 
 	/**
-     * @ORM\Column(type="text",nullable=true)
+     * @ORM\Column(type="text" , nullable=true)
+     * @Assert\Length(
+     *     max = "500"
+     * )
      */
 	protected $description;
 	
 	/**
-     * @ORM\Column(type="text",nullable=true)
+     * @ORM\Column(type="text" , nullable=true)
+     * @Assert\Length(
+     *     max = "500"
+     * )
      */
 	protected $rules;
 	
@@ -53,7 +79,17 @@
      */
 	protected $photo;
 
-    private $file;
+    /**
+     * @Assert\File(
+     *     maxSize = "4M"
+     * )
+     * @Assert\Image(
+     *     maxWidth = "640",
+     *     maxHeight = "480"
+     * )
+     */
+    protected $file;
+
     private $temp;
     /**
      * @ORM\ManyToOne(targetEntity="Ljms\CoreBundle\Entity\Profile")

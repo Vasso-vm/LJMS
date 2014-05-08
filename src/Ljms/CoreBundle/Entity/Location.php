@@ -2,11 +2,17 @@
 	namespace Ljms\CoreBundle\Entity;
 
 	use Doctrine\ORM\Mapping as ORM;
+    use Symfony\Component\Validator\Constraints as Assert;
+    use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 	/**
-	 *@ORM\Entity
-	 *@ORM\Table(name="Location")
-     *@ORM\Entity(repositoryClass="Ljms\CoreBundle\Repository\LocationRepository")
+	 * @ORM\Entity
+	 * @ORM\Table(name="Location")
+     * @ORM\Entity(repositoryClass="Ljms\CoreBundle\Repository\LocationRepository")
+     * @UniqueEntity(
+     *      fields = "name",
+     *      message = "This Location name is already used."
+     * )
 	 */
 	class Location
 	{
@@ -20,53 +26,71 @@
 
 	/**
      * @ORM\Column(type="string", length=100 , unique=true)
+     * @Assert\NotBlank(message="Field Location name is required.")
+     * @Assert\Length(
+     *      max = "100"
+     * )
      */
 	protected $name;
 
 	/**
      * @ORM\Column(type="string" , length=100 , nullable=true)
+     * @Assert\Length(
+     *      max = "100"
+     * )
      */
 	protected $address;
 	
 	/**
      * @ORM\Column(type="string" , length=100 , nullable=true)
+     * @Assert\Length(
+     *      max = "100"
+     * )
      */
 	protected $city;
 
 	/**
      * @ORM\Column(type="string" , length=20 , nullable=true)
+     * @Assert\Length(
+     *      max = "20"
+     * )
      */
 	protected $phone;
 
 	/**
      * @ORM\Column(type="string" , length=10 , nullable=true)
+     * @Assert\Length(
+     *      max = "10"
+     * )
      */
 	protected $zip;
 
 	/**
      * @ORM\Column(type="text" , nullable=true)
+     * @Assert\Length(
+     *      max = "500"
+     * )
      */
 	protected $url;
 
 	/**
      * @ORM\Column(type="text" , nullable=true)
+     *
      */
 	protected $google_map_link;
 
 	/**
      * @ORM\Column(type="boolean" , options={"default" = 1})
+     * @Assert\NotBlank(message="Field is Active is required.")
      */
 	protected $is_active;
 
     /**
      * @ORM\OneToOne(targetEntity="State")
      * @ORM\JoinColumn(name="state_id", referencedColumnName="id")
+     * @Assert\NotBlank(message="Field State is required.")
      */
     protected $state;
-
-
-
-
 
     /**
      * Get id

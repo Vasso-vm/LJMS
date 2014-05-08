@@ -42,6 +42,7 @@
             		))
                 ->add('file','file',array(
                     'error_bubbling' =>true,
+                    'required'=>false,
                     'label'=>'Logo',
                 ))
 	            ->add('Save', 'submit');

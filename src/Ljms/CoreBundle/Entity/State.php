@@ -3,10 +3,11 @@
 
 	use Doctrine\ORM\Mapping as ORM;
 
+
 	/**
-	 *@ORM\Entity
-	 *@ORM\Table(name="State")
-	*/
+	 * @ORM\Entity
+	 * @ORM\Table(name="State")
+	 */
 	class State
 	{
 
@@ -18,7 +19,7 @@
 	protected $id;
 
 	/**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100 , unique=true)
      */
 	protected $name;	
 	

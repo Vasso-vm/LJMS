@@ -2,6 +2,7 @@
 	namespace Ljms\CoreBundle\Entity;
 
 	use Doctrine\ORM\Mapping as ORM;
+    use Symfony\Component\Validator\Constraints as Assert;
 
 	/**
 	 *@ORM\Entity
@@ -20,16 +21,25 @@
 
 	/**
      * @ORM\Column(type="datetime")
+     * @Assert\Date()
      */
 	protected $date;
 
 	/**
-     * @ORM\Column(type="string" , length=3)     
+     * @ORM\Column(type="string" , length=3)
+     * @Assert\NotBlank(message="Field Home Team Score is required.")
+     * @Assert\Length(
+     *     max = "3"
+     * )
      */
 	protected $home_team_score=0;
 
 	/**
-     * @ORM\Column(type="string" , length=3)     
+     * @ORM\Column(type="string" , length=3)
+     * @Assert\NotBlank(message="Field Visiting Team Score is required.")
+     * @Assert\Length(
+     *     max = "3"
+     * )
      */
 	protected $visiting_team_score=0;
 
@@ -40,31 +50,24 @@
     /**
      * @ORM\ManyToOne(targetEntity="Location")
      * @ORM\JoinColumn(name="location_id", referencedColumnName="id")
+     * @Assert\NotBlank(message="Field Location is required.")
      */
 	protected $location;
 
     /**
      * @ORM\ManyToOne(targetEntity="Team")
      * @ORM\JoinColumn(name="home_team_id", referencedColumnName="id")
+     * @Assert\NotBlank(message="Field Home team is required.")
      */
     protected $home_team;
 
     /**
      * @ORM\ManyToOne(targetEntity="Team")
      * @ORM\JoinColumn(name="visiting_team_id", referencedColumnName="id")
+     * @Assert\NotBlank(message="Field Visiting team is required.")
      */
     protected $visiting_team;
 
-        public function setDivision($date)
-        {
-            $this->division = $date;
-
-            return $this;
-        }
-        public function getDivision()
-        {
-            return $this->division;
-        }
     /**
      * Get id
      *

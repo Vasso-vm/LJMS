@@ -2,12 +2,15 @@
 	namespace Ljms\CoreBundle\Entity;
 
 	use Doctrine\ORM\Mapping as ORM;
+    use Symfony\Component\Validator\Constraints as Assert;
+    use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 	/**
-	 *@ORM\Entity
-	 *@ORM\Table(name="Player")
+	 * @ORM\Entity
+	 * @ORM\Table(name="Player")
      * @ORM\Entity(repositoryClass="Ljms\CoreBundle\Repository\PlayerRepository")
-	*/
+     * @Assert\GroupSequence({"Player"})
+	 */
 	class Player
 	{
 
@@ -20,21 +23,33 @@
 
 	/**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="Field First Name is required.")
+     * @Assert\Length(
+     *      min = "2",
+     *      max = "100"
+     * )
      */
 	protected $first_name;
 
 	/**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="Field Last Name is required.")
+     * @Assert\Length(
+     *      min = "2",
+     *      max = "100"
+     * )
      */
 	protected $last_name;
 
 	/**
      * @ORM\Column(type="boolean" , options={"default" = 0})
+     *
      */
 	protected $shares_guardian_address;
 
 	/**
-     * @ORM\Column(type="datetime")     
+     * @ORM\Column(type="datetime")
+     * @Assert\Date()
      */
 	protected $birth_date;
 	
@@ -45,6 +60,9 @@
     
     /**
      * @ORM\Column(type="text" , nullable=true)
+     * @Assert\Length(
+     *     max = "500"
+     * )
      */
     protected $note;
 

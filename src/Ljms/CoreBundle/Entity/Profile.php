@@ -4,13 +4,19 @@
 	use Doctrine\ORM\Mapping as ORM;
     use Symfony\Component\Security\Core\User\UserInterface;
     use Doctrine\Common\Collections\ArrayCollection;
+    use Symfony\Component\Validator\Constraints as Assert;
     use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 	/**
 	 * @ORM\Entity
 	 * @ORM\Table(name="Profile")
      * @ORM\Entity(repositoryClass="Ljms\CoreBundle\Repository\ProfileRepository")
-	*/
+     * @Assert\GroupSequence({"Profile", "Add"})
+     * @UniqueEntity(
+     *      fields = "email",
+     *      message = "This email is already used."
+     * )
+	 */
 	class Profile implements UserInterface, \Serializable
 	{
 
@@ -22,74 +28,115 @@
 	private $id;
 
 	/**
-    	* @ORM\Column(type="string", length=100)
-    */
+     * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="Field First Name is required.")
+     * @Assert\Length(
+     *      min = "2",
+     *      max = "100"
+     * )
+     */
     protected $first_name;
 
     /**
-    	* @ORM\Column(type="string", length=100)
-    */
+     * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="Field Last Name is required.")
+     * @Assert\Length(
+     *      min = "2",
+     *      max = "100"
+     * )
+     */
     protected $last_name;
+
     /**
-      * @ORM\Column(type="string", length=100 , unique=true)
-      */
+     * @ORM\Column(type="string", length=100 , unique=true)
+     * @Assert\Email()
+     * @Assert\NotBlank(message="Field Email is required.")
+     * @Assert\Length(
+     *      max = "100"
+     * )
+     */
     protected $email;
+
     /**
      * @ORM\Column(type="string", length=255)
-     *
      * @var string salt
      */
     protected $salt;
 
     /**
-        * @ORM\Column(type="string", length=255)
-    */
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Field Password is required." , groups={"Add"})
+     * @Assert\Length(
+     *      min = "5",
+     *      max = "30"
+     * )
+     */
     protected $password;
+
     /**
         * @ORM\Column(type="string", length=32 , nullable=true)
     */
     protected $verification;
+
     /**
-        * @ORM\Column(type="string", length=20)
-    */
+     * @ORM\Column(type="string", length=20)
+     * @Assert\NotBlank(message="Field Home Phone is required.")
+     * @Assert\Length(
+     *      max = "20"
+     * )
+     */
     protected $home_phone;
+
     /**
      * @ORM\Column(type="string", length=20 , nullable=true)
+     * @Assert\Length(
+     *      max = "20"
+     * )
      */
     protected $cell_phone;
+
     /**
      * @ORM\Column(type="decimal", length=10 , nullable=true)
-    */
+     * @Assert\Length(
+     *      max = "20"
+     * )
+     */
     protected $alt_phone;
+
     /**
      * @ORM\Column(type="boolean" , options={"default" = 1})
-    */
+     */
     protected $is_active=1;
+
     /**
-        * @ORM\Column(type="boolean" , options={"default" = 0})
-    */
+     * @ORM\Column(type="boolean" , options={"default" = 0})
+     */
     protected $admin_role=0;
+
     /**
-        * @ORM\Column(type="boolean" , options={"default" = 0})
-    */
+     * @ORM\Column(type="boolean" , options={"default" = 0})
+     */
     protected $director_role=0;
+
     /**
-        * @ORM\Column(type="boolean" , options={"default" = 0})
-    */
+     * @ORM\Column(type="boolean" , options={"default" = 0})
+     */
     protected $guardian_role=0;
+
     /**
-        * @ORM\Column(type="boolean" , options={"default" = 0})
-    */
+     * @ORM\Column(type="boolean" , options={"default" = 0})
+     */
     protected $manager_role=0;
+
     /**
-        * @ORM\Column(type="boolean" , options={"default" = 0})
-    */
+     * @ORM\Column(type="boolean" , options={"default" = 0})
+     */
     protected $coach_role=0;
 
-        /**
-         * @ORM\OneToOne(targetEntity="Address",cascade={"persist"})
-         * @ORM\JoinColumn(name="address_id", referencedColumnName="id")
-         */
+    /**
+     * @ORM\OneToOne(targetEntity="Address",cascade={"persist"})
+     * @ORM\JoinColumn(name="address_id", referencedColumnName="id")
+     */
     protected $address;
 
     /**
@@ -118,6 +165,9 @@
      */
     protected $manager_teams;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->salt = md5(uniqid(null, true));

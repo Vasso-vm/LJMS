@@ -2,6 +2,7 @@
 	namespace Ljms\CoreBundle\Entity;
 	use Doctrine\ORM\Mapping as ORM;
     use Symfony\Component\Security\Core\User\UserInterface;
+    use Symfony\Component\Validator\Constraints as Assert;
 
     /**
 	 * @ORM\Entity
@@ -15,29 +16,51 @@
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
-    */
+     */
 	protected $id;
 
 	/**
      * @ORM\Column(type="string" , length=100)
+     * @Assert\NotBlank(message="Field Address is required.")
+     * @Assert\Length(
+     *      max = "100"
+     * )
      */
     protected $address;
 
     /**
      * @ORM\Column(type="string" , length=100)
+     * @Assert\NotBlank(message="Field City is required.")
+     * @Assert\Length(
+     *      max = "100"
+     * )
      */
     protected $city;
     /**
      * @ORM\Column(type="string" , length=10)
+     * @Assert\NotBlank(message="Field Zip is required.")
+     * @Assert\Length(
+     *      max = "10"
+     * )
      */
     protected $zip;
     /**
      * @ORM\ManyToOne(targetEntity="State")
      * @ORM\JoinColumn(name="state_id", referencedColumnName="id")
+     * @Assert\NotBlank(message="Field State is required.")
      */
     protected $state;
 
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->state = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+
+        /**
      * Get id
      *
      * @return integer 
@@ -137,13 +160,6 @@
     public function getState()
     {
         return $this->state;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->state = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
