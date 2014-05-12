@@ -21,11 +21,37 @@ class DivisionController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $divisions=false;
+        $pagination=false;
         $filter['status']=$request->get('status');
         $filter['division']=$request->get('division');
+        $page=$request->get('page');
+        $limit=$request->get('limit');
+        if ($page===null){
+            $page=1;
+        }
+        if ($limit===null){
+            $limit=10;
+        }
+        if ($filter['division']===null){
+            $filter['division']='all';
+        }
+        if ($filter['status']===null){
+            $filter['status']='all';
+        }
+        $paginator=$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->findDivisions($filter,$page,$limit);
+        if ($paginator!=false){
+            if ($limit!='all'){
+                $pagination=$this->generateNavigation($paginator,$page);
+            }
+            $divisions=$paginator->getQuery()->getResult();
+        }
         return array (
-            'divisions'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->findDivisions($filter),
+            'divisions'=>$divisions,
             'filter'=>$filter,
+            'pagination'=>$pagination,
+            'page'=>$page,
+            'limit'=>$limit,
             'division_list'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisionList(),
         );
     }
@@ -144,5 +170,38 @@ class DivisionController extends Controller
         $file->move(self::DIR,$name);
         return new Response('/web/bundles/ljmshome/tmp/'.$name);
     }
+    private function generateNavigation($paginator,$page){
+        $totalItems=count($paginator);
+        $pagination['count_pages']=ceil($totalItems / $paginator->getQuery()->getMaxResults());
+        $pagination['center']=ceil($pagination['count_pages']/2);
+        if ($pagination['count_pages']>7){
+            $pagination['end']=$page+3;
+            $pagination['i']=$page-3;
+            if ( $pagination['end']>$pagination['count_pages']){
+                $pagination['end']=$pagination['count_pages'];
+                $pagination['i']=$pagination['end']-6;
+            }
+            if ($pagination['i']<=0){
+                $pagination['i']=1;
+                switch ($page){
+                    case 1:
+                        $pagination['end']=$page+6;
+                        break;
+                    case 2:
+                        $pagination['end']=$page+5;
+                        break;
+                    case 3:
+                        $pagination['end']=$page+4;
+                        break;
+                }
+            }
+        }
+        else{
+            $pagination['i']=1;
+            $pagination['end']=$pagination['count_pages'];
+        }
+        return $pagination;
+    }
+
 }
 ?>

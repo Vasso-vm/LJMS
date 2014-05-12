@@ -1,27 +1,47 @@
 <?php
 	namespace Ljms\CoreBundle\Repository;
 	use Doctrine\ORM\EntityRepository;
+    use Doctrine\ORM\Tools\Pagination\Paginator;
 
 	class TeamRepository extends EntityRepository
 	{
 		const TABLE_ALIAS = 'team';
-		public function findTeams($filter)
+		public function findTeams($filter,$page,$limit)
 		{
-            $qb = $this->createQueryBuilder(self::TABLE_ALIAS);
+            if ($page<=0 or $limit<0){
+                return false;
+            }
+            if ($limit>0){
+                $page=($page-1)*$limit;
+            }
             switch ($filter['status']){
                 case 'active':
-                    $qb->where(self::TABLE_ALIAS.'.is_active=1');
+                    $status=0;
                     break;
                 case 'inactive':
-                    $qb->where(self::TABLE_ALIAS.'.is_active=0');
+                    $status=1;
                     break;
+                default:
+                    $status=2;
             }
-            $qb->leftJoin(self::TABLE_ALIAS.'.division','d');
-            if(($filter['division']!==null) and ($filter['division']!='all') ){
-                $division=$filter['division'];
-                $qb->andwhere(" d.name ='$division'");
+            $where='t.is_active<>:status';
+            $join=null;
+            if($filter['division']!='all'){
+                $where='(t.is_active<>:status and d.name=:division)';
+                $join='JOIN t.divisions d';
             }
-            return $qb->getQuery()->getResult();
+            $dql="SELECT t FROM Ljms\CoreBundle\Entity\Team t ".$join." WHERE ".$where." ORDER BY t.id ASC";
+            $query = $this->getEntityManager()->createQuery($dql);
+            $query->setParameter('status',$status);
+            if ($limit!='all'){
+                $query->setFirstResult($page);
+                $query->setMaxResults($limit);
+            }
+            if($filter['division']!='all'){
+                $query->setParameter('division',$filter['division']);
+            }
+            $paginator = new Paginator($query, $fetchJoinCollection = true);
+            Return $paginator;
 		}   
 		 
 	}

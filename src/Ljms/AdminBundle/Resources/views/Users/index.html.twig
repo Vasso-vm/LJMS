@@ -33,17 +33,17 @@
 			</div>
 			<div class="pagination pull-right">
 				<ul>
-					<li class="active">
-						<a href="">10</a>
+					<li {% if limit==10 %}class="active"{% endif %}>
+                        <a href="{{ path('users_index') }}?division={{ filter.division }}&status={{ filter.status }}&page=1&limit=10">10</a>
 					</li>
-					<li class="active">
-						<a href="">20</a>
+					<li {% if limit==20 %}class="active"{% endif %}>
+                        <a href="{{ path('users_index') }}?division={{ filter.division }}&status={{ filter.status }}&page=1&limit=20">20</a>
 					</li>
-					<li class="active">
-						<a href="">30</a>
+					<li {% if limit==30 %}class="active"{% endif %}>
+                        <a href="{{ path('users_index') }}?division={{ filter.division }}&status={{ filter.status }}&page=1&limit=30">30</a>
 					</li>
-					<li class="active">
-						<a href="">All</a>
+					<li {% if limit=='all' %}class="active"{% endif %}>
+                        <a href="{{ path('users_index') }}?division={{ filter.division }}&status={{ filter.status }}&page=1&limit=all">all</a>
 					</li>		
 				</ul>
 			</div>
@@ -59,7 +59,7 @@
 					<td>TEAMS</td>
 					<td>ACTION</td>
 				</tr>
-				{% for u in users%}
+				{% for u in users %}
 				<tr {% if u.isActive==0 %} class="muted content"{% else %}class="content"{% endif %} >
 					<td> <input type="checkbox" class="checkbox" name="check[]" value={{u.id}}> </td>
 					<td class="name">{{u.firstname}}</td>
@@ -129,7 +129,31 @@
 				</tbody>
 			</table>
 		</form>
-        <form action="{{path ('users_index')}}" method="post" id="delete_form">
-
-        </form>
+        {% if limit!='all' and limit!=false and pagination.count_pages>0 %}
+            <div class="pagination">
+                <ul>
+                    {% if page!=1 %}
+                        <li><a href="{{ path('users_index') }}?division={{ filter.division }}&status={{ filter.status }}&page=1&limit={{ limit }}">To Start</a></li>
+                        <li><a href="{{ path('users_index') }}?division={{ filter.division }}&status={{ filter.status }}&page={{ page-1 }}&limit={{ limit }}">Previous</a></li>
+                    {% endif %}
+                    {% if pagination.count_pages>20 and page-3>pagination.center %}
+                        <li><a href="{{ path('users_index') }}?division={{ filter.division }}&status={{ filter.status }}&page={{ pages/2|round }}&limit={{ limit }}">To Start</a></li>
+                        <li><span class="invizible">...</span></li>
+                    {% endif %}
+                    {% for i in pagination.i..pagination.end %}
+                        <li{% if i==page %} class="active"{% endif %}>
+                            <a href="{{ path('users_index') }}?division={{ filter.division }}&status={{ filter.status }}&page={{ i }}&limit={{ limit }}">{{ i }}</a>
+                        </li>
+                    {% endfor %}
+                    {% if pagination.count_pages>20 and page+3<pagination.center %}
+                        <li><span class="invizible">...</span></li>
+                        <li><a href="{{ path('users_index') }}?division={{ filter.division }}&status={{ filter.status }}&page={{ pages/2|round }}&limit={{ limit }}">To Start</a></li>
+                    {% endif %}
+                    {% if page!=pagination.count_pages %}
+                        <li><a href="{{ path('users_index') }}?division={{ filter.division }}&status={{ filter.status }}&page={{ page+1 }}&limit={{ limit }}">Next</a></li>
+                        <li><a href="{{ path('users_index') }}?division={{ filter.division }}&status={{ filter.status }}&page={{ pagination.count_pages }}&limit={{ limit }}">To end</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        {% endif %}
 	{% endblock %}
