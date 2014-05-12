@@ -102,7 +102,7 @@
 				for (var i = 0; i < 42; ++i) {
                         if (g<len){
                             if (days[i].text==window.gameDay[g]['date']){
-                                result	+= '<a class="game '+days[i].class_name +'" href="'+window.url+'/home/Schedule?year='+window.Year+'&month='+(window.Month+1)+'&day='+ days[i].text +'">' + days[i].text + '</a>'
+                                result	+= '<a class="game '+days[i].class_name +'" href="'+window.Url+'/'+window.Year+'/'+(window.Month+1)+'/'+ days[i].text +'">' + days[i].text + '</a>'
                                 g++;
                             }else{
                                 result	+= '<div class="' + days[i].class_name + ' day">' + days[i].text + '</div>'

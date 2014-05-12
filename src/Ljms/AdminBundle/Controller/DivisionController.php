@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
     /**
      * DivisionController - edit/delete operations for backend-users (admins)
      * @Route("admin/divisions")
@@ -53,6 +55,7 @@ class DivisionController extends Controller
             'page'=>$page,
             'limit'=>$limit,
             'division_list'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisionList(),
+            'csrf' => $this->get('form.csrf_provider')->generateCsrfToken('delete_division')
         );
     }
     /**
@@ -107,6 +110,8 @@ class DivisionController extends Controller
     }
     /**
      * @Route("/delete/{id}", name="division_delete")
+     * @Method("DELETE")
+     * @CsrfProtector(intention="delete_division", name="_token")
      */
     public function deleteAction(Request $request,$id){
         $em=$this->getDoctrine()->getManager();

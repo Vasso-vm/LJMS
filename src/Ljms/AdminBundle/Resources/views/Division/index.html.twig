@@ -73,7 +73,7 @@
 						<a href="{{path ('division_edit',{'id':d.id}) }}">
 							<img src="{{ asset('bundles/ljmshome/images/edit.png') }}">
 						</a>
-						<a href="{{path ('division_delete',{'id':d.id})}}" onclick="return confirm ('Do you want to delete division?');">
+						<a href="{{path ('division_delete',{'id':d.id})}}" data-confirm-text="Do you want to delete division?" data-method="delete" data-csrf="_token:{{ csrf }}" class="confirmable as-form">
 							<img src="{{ asset('bundles/ljmshome/images/delete.png') }}">
 						</a>
 					</td>

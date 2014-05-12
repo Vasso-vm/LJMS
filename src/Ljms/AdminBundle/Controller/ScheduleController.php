@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
 /**
  * ScheduleController - edit/delete operations for backend-users (admins)
  * @Route("admin/schedule")
@@ -49,6 +51,7 @@ class ScheduleController extends Controller
             'page'=>$page,
             'limit'=>$limit,
             'division_list'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisionList(),
+            'csrf' => $this->get('form.csrf_provider')->generateCsrfToken('delete_schedule')
         );
 
     }
@@ -100,6 +103,8 @@ class ScheduleController extends Controller
 
     /**
      * @Route("/delete/{id}", name="schedule_delete")
+     * @Method("DELETE")
+     * @CsrfProtector(intention="delete_schedule", name="_token")
      */
     public function deleteAction($id){
         $em=$this->getDoctrine()->getManager();

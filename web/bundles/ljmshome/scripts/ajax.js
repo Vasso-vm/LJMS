@@ -110,7 +110,7 @@ $(function() {
 });
 var gameDay=0;
 function getSchedule(y,m){
-    var url=window.Url;
+    var url=window.ajaxUrl;
     $.ajax({
         type:'post',
         url:url,

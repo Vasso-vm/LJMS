@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
     /**
      * GuardianController - edit/delete operations for backend-users (admins)
      * @Route("admin/guardian")
@@ -49,6 +51,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
            'pagination'=>$pagination,
            'page'=>$page,
            'limit'=>$limit,
+           'csrf' => $this->get('form.csrf_provider')->generateCsrfToken('delete_guardian')
         );
     }
     /**
@@ -102,6 +105,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
     }
     /**
      * @Route("/delete/{id}", name="guardian_delete")
+     * @Method("DELETE")
+     * @CsrfProtector(intention="delete_guardian", name="_token")
      */
     public function deleteAction(Request $request,$id){
         $em=$this->getDoctrine()->getManager();

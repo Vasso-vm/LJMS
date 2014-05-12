@@ -68,7 +68,7 @@
 						<a href="{{path ('schedule_edit',{'id':s.id}) }}">
 							<img src="{{ asset('bundles/ljmshome/images/edit.png') }}">
 						</a>
-						<a href="{{path ('schedule_delete',{'id':s.id})}}" onclick="return confirm ('Do you want to delete schedule?');">
+						<a href="{{path ('schedule_delete',{'id':s.id})}}" data-confirm-text="Do you want to delete schedule?" data-method="delete" data-csrf="_token:{{ csrf }}" class="confirmable as-form">
 							<img src="{{ asset('bundles/ljmshome/images/delete.png') }}">
 						</a>
 					</td>

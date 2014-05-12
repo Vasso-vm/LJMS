@@ -3,14 +3,23 @@
 
 	use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 	use Symfony\Component\HttpFoundation\Response;
+    use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+    use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
+    /**
+     * AboutController - edit/delete operations for backend-users (admins)
+     * @Route("/about")
+     */
 	class AboutController extends Controller
-{
-    public function indexAction()
     {
-        return $this->render(
-        		'LjmsHomeBundle:Home:about.html.twig'
-        	);
+        /**
+         * @Route("", name="about_index")
+         * @Template()
+         */
+        public function indexAction()
+        {
+            return array();
+        }
     }
-}
 
 ?>

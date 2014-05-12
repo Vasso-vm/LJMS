@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
     /**
      * TeamController - edit/delete operations for backend-users (admins)
      * @Route("admin/teams")
@@ -53,6 +55,7 @@ class TeamController extends Controller
             'page'=>$page,
             'limit'=>$limit,
             'division_list'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisionList(),
+            'csrf' => $this->get('form.csrf_provider')->generateCsrfToken('delete_team')
         );
     }
     /**
@@ -99,11 +102,13 @@ class TeamController extends Controller
     }
     /**
      * @Route("/delete/{id}", name="team_delete")
+     * @Method("DELETE")
+     * @CsrfProtector(intention="delete_team", name="_token")
      */
-    public function deleteAction($id){
+    public function deleteAction(Request $request,$id){
         $em=$this->getDoctrine()->getManager();
-        $team = $em->getRepository('LjmsCoreBundle:Team')->find($id);
-        $em->remove($team);
+        $profile = $em->getRepository('LjmsCoreBundle:Team')->find($id);
+        $em->remove($profile);
         $em->flush();
         return $this->redirect($this->generateUrl('team_index'));
     }

@@ -9,6 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
     /**
      * GuardianController - edit/delete operations for backend-users (admins)
      * @Route("admin/players")
@@ -50,7 +52,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
                 'pagination'=>$pagination,
                 'page'=>$page,
                 'limit'=>$limit,
-                'guardian'=>true
+                'guardian'=>true,
+                'csrf' => $this->get('form.csrf_provider')->generateCsrfToken('delete_player')
             );
         }
         return array (
@@ -59,7 +62,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
             'pagination'=>$pagination,
             'page'=>$page,
             'limit'=>$limit,
-            'guardian'=>false
+            'guardian'=>false,
+            'csrf' => $this->get('form.csrf_provider')->generateCsrfToken('delete_player')
         );
     }
     /**
@@ -113,6 +117,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
     }
     /**
      * @Route("/delete/{id}", name="player_delete")
+     * @Method("DELETE")
+     * @CsrfProtector(intention="delete_player", name="_token")
      */
     public function deleteAction(Request $request,$id){
         $em=$this->getDoctrine()->getManager();

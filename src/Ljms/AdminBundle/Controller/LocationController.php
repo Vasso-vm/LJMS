@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
     /**
      * LocationController - edit/delete operations for backend-users (admins)
      * @Route("admin/location")
@@ -47,6 +49,7 @@ class LocationController extends Controller
             'pagination'=>$pagination,
             'page'=>$page,
             'limit'=>$limit,
+            'csrf' => $this->get('form.csrf_provider')->generateCsrfToken('delete_location')
         );
     }
     /**
@@ -89,6 +92,8 @@ class LocationController extends Controller
     }
     /**
      * @Route("/delete/{id}", name="location_delete")
+     * @Method("DELETE")
+     * @CsrfProtector(intention="delete_location", name="_token")
      */
     public function deleteAction(Request $request,$id){
         $em=$this->getDoctrine()->getManager();

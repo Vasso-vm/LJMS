@@ -23,6 +23,7 @@
             <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/form_validation.js')}}"></script>
             <script>
                 {% if url is defined %} var Url='{{path(url)}}';{% endif %}
+                {% if ajaxUrl is defined %} var ajaxUrl='{{path(ajaxUrl)}}';{% endif %}
             </script>
         {% endblock %}
 

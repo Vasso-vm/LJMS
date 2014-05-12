@@ -3,8 +3,8 @@ ljms_core:
     prefix:   /
 
 ljms_home:
-    resource: "@LjmsHomeBundle/Resources/config/routing.yml"
-    prefix:   /
+    resource: "@LjmsHomeBundle/Controller"
+    type:     annotation
 ljms_admin:
     resource: "@LjmsAdminBundle/Controller"
     type:     annotation   
