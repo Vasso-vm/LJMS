@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
+use Ljms\CoreBundle\Component\Pagination;
     /**
      * GuardianController - edit/delete operations for backend-users (admins)
      * @Route("admin/guardian")
@@ -38,12 +39,18 @@ use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
         if ($filter['status']===null){
             $filter['status']='all';
         }
-        $paginator=$this->getDoctrine()->getRepository('LjmsCoreBundle:Profile')->findGuardians($filter,$page,$limit);
+        if ($this->get('security.context')->isGranted('ROLE_ADMIN')){
+            $paginator=$this->getDoctrine()->getRepository('LjmsCoreBundle:Profile')->findGuardians($filter,$page,$limit);
+        }else{
+            $id=$this->getUser()->getId();
+            $paginator=$this->getDoctrine()->getRepository('LjmsCoreBundle:Profile')->findGuardians($filter,$page,$limit,$id);
+        }
         if ($paginator!=false){
             if ($limit!='all'){
-                $pagination=$this->generateNavigation($paginator,$page);
+                $pagination= new Pagination();
+                $pagination=$pagination->generate($paginator,$page);
             }
-            $guardians=$paginator->getQuery()->getArrayResult();
+            $guardians=$paginator->getQuery()->getResult();
         }
        return array (
            'guardians'=>$guardians,
@@ -82,6 +89,9 @@ use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
      * @Template("LjmsAdminBundle:Guardian:add.html.twig")
      */
     public function editAction(Request $request,$id){
+        if ((!$this->get('security.context')->isGranted('ROLE_ADMIN'))and($id!=$this->getUser()->getId())){
+            return $this->redirect($this->generateUrl('guardian_index'));
+        }
         $encoder = new MessageDigestPasswordEncoder('sha512', true, 10);
         $em=$this->getDoctrine()->getManager();
         $guardian = $em->getRepository('LjmsCoreBundle:Profile')->find($id);
@@ -150,37 +160,6 @@ use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
         }
         $em->flush();
     }
-        private function generateNavigation($paginator,$page){
-            $totalItems=count($paginator);
-            $pagination['count_pages']=ceil($totalItems / $paginator->getQuery()->getMaxResults());
-            $pagination['center']=ceil($pagination['count_pages']/2);
-            if ($pagination['count_pages']>7){
-                $pagination['end']=$page+3;
-                $pagination['i']=$page-3;
-                if ( $pagination['end']>$pagination['count_pages']){
-                    $pagination['end']=$pagination['count_pages'];
-                    $pagination['i']=$pagination['end']-6;
-                }
-                if ($pagination['i']<=0){
-                    $pagination['i']=1;
-                    switch ($page){
-                        case 1:
-                            $pagination['end']=$page+6;
-                            break;
-                        case 2:
-                            $pagination['end']=$page+5;
-                            break;
-                        case 3:
-                            $pagination['end']=$page+4;
-                            break;
-                    }
-                }
-            }
-            else{
-                $pagination['i']=1;
-                $pagination['end']=$pagination['count_pages'];
-            }
-            return $pagination;
-        }
+
     }
 ?>

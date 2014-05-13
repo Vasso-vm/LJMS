@@ -239,11 +239,24 @@
      */
     public function getRoles()
     {
+        $role=array();
         if ($this->admin_role==1){
-            return array('ROLE_ADMIN');
-        }else if ($this->director_role==1){
-            return array('ROLE_DIRECTOR');
-        }        
+            array_push($role,'ROLE_ADMIN');
+            return $role;
+        }
+        if ($this->director_role==1){
+            array_push($role,'ROLE_DIRECTOR');
+        }
+        if ($this->guardian_role==1){
+            array_push($role,'ROLE_GUARDIAN');
+        }
+        if ($this->coach_role==1){
+            array_push($role,'ROLE_COACH');
+        }
+        if ($this->manager_role==1){
+            array_push($role,'ROLE_MANAGER');
+        }
+        return $role;
     }
 
     public function serialize()

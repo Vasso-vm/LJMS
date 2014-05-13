@@ -12,7 +12,9 @@
 			<input class="btn filter" type="submit" value="filter" >
 		</form>
 		 <div class="pull-right">
-			<a href="{{ path('guardian_add') }}" class="btn action add" id="act">Add guardian</a>
+             {% if is_granted('ROLE_ADMIN') %}
+			    <a href="{{ path('guardian_add') }}" class="btn action add" id="act">Add guardian</a>
+             {% endif %}
 		</div>
 		<form action="{{path ('guardian_group')}}" method="post" id="system_users_form">
 			<div class="pull-left">
@@ -50,23 +52,23 @@
 					<td>ACTION</td>
 				</tr>
 				{% for g in guardians %}
-				<tr {% if g[0].is_active==0 %} class="muted content"{% else %}class="content"{% endif %} >
-					<td> <input type="checkbox" class="checkbox" name="check[]" value={{g[0].id}}> </td>
-					<td class="name">{{g[0].first_name}} , {{g[0].last_name}}</td>
-					<td> {{g[0].home_phone}}</td>
-					<td class="email">{{ g[0].email}}</td>
-					<td>{% if g.num_players>0 %}
-                            <a href="{{ path('player_index') }}?id={{ g[0].id }}">({{ g.num_players }})</a>
+				<tr {% if g.isActive==0 %} class="muted content"{% else %}class="content"{% endif %} >
+					<td> <input type="checkbox" class="checkbox" name="check[]" value={{g.id}}> </td>
+					<td class="name">{{g.FirstName}} , {{g.LastName}}</td>
+					<td> {{g.HomePhone}}</td>
+					<td class="email">{{ g.email}}</td>
+					<td>{% if g.players|length>0 %}
+                            <a href="{{ path('player_index') }}?id={{ g.id }}">({{ g.players|length }})</a>
                         {% else %}
                             (0)
                         {%  endif %}
                     </td>
 					<td>
-						<a class="btn action add" href="{{path('player_add',{'id':g[0].id}) }}" id="act">Add player</a>
-						<a href="{{path ('guardian_edit',{'id':g[0].id}) }}">
+						<a class="btn action add" href="{{path('player_add',{'id':g.id}) }}" id="act">Add player</a>
+						<a href="{{path ('guardian_edit',{'id':g.id}) }}">
 							<img src="{{ asset('bundles/ljmshome/images/edit.png') }}">
 						</a>
-						<a href="{{ path ('guardian_delete',{'id':g[0].id}) }}" data-confirm-text="Do you want to delete guardian?" data-method="delete" data-csrf="_token:{{ csrf }}" class="confirmable as-form">
+						<a href="{{ path ('guardian_delete',{'id':g.id}) }}" data-confirm-text="Do you want to delete guardian?" data-method="delete" data-csrf="_token:{{ csrf }}" class="confirmable as-form">
 							<img src="{{ asset('bundles/ljmshome/images/delete.png') }}">
 						</a>
 					</td>
@@ -75,7 +77,7 @@
 				</tbody>
 			</table>
 		</form>
-        {% if limit!='all' and limit!=false and pagination.count_pages>0  %}
+        {% if limit!='all' and limit!=false and pagination!=false %}
             <div class="pagination">
                 <ul>
                     {% if page!=1 %}

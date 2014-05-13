@@ -22,7 +22,7 @@
             <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/script.js')}}"></script>
             <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/form_validation.js')}}"></script>
             <script>
-                {% if url is defined %} var Url='{{path(url)}}';{% endif %}
+                {% if url is defined %} var Url='{{path(url,{'year':0,'month':0,'day':0})}}';{% endif %}
                 {% if ajaxUrl is defined %} var ajaxUrl='{{path(ajaxUrl)}}';{% endif %}
             </script>
         {% endblock %}

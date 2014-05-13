@@ -51,13 +51,41 @@
 	            <div class="navbar menu">
 		            <div class="navbar-inner ">
 		                <ul class="nav">
-		                	<li><a href="{{url ('users_index')}}">System Users</a></li>
-		                	<li><a href="{{url ('guardian_index')}}">Guardians</a></li>
+                            {% if is_granted('ROLE_ADMIN') %}
+                            <li><a href="{{url ('users_index')}}">System Users</a></li>
+                            {% else %}
+                                <li><a name="" class="disabled">System Users</a></li>
+                            {% endif %}
+                            {% if is_granted('ROLE_GUARDIAN') %}
+		                	    <li><a href="{{url ('guardian_index')}}">Guardians</a></li>
+                            {% else %}
+                                <li><a name="" class="disabled">Guardians</a></li>
+                            {% endif %}
+                            {% if is_granted('ROLE_GUARDIAN') or is_granted('ROLE_COACH') %}
 		                	<li><a href="{{url ('player_index')}}">Players</a></li>
+                            {% else %}
+                                <li><a name="" class="disabled">Players</a></li>
+                            {% endif %}
+                            {% if is_granted('ROLE_DIRECTOR') %}
 		                	<li><a href="{{url ('division_index')}}">Divisions</a></li>
+                            {% else %}
+                                <li><a name="" class="disabled">Divisions</a></li>
+                            {% endif %}
+                            {% if is_granted('ROLE_COACH') or is_granted('ROLE_MANAGER') or is_granted('ROLE_DIRECTOR') %}
 		                	<li><a href="{{url ('team_index')}}">Teams</a></li>
+                            {% else %}
+                                <li><a name="" class="disabled">Teams</a></li>
+                            {% endif %}
+                            {% if is_granted('ROLE_MANAGER') or is_granted('ROLE_COACH') %}
 		                	<li><a href="{{url ('schedule_index')}}">Game Schedule</a></li>
+                            {% else %}
+                                <li><a name="" class="disabled">Game Schedule</a></li>
+                            {% endif %}
+                            {% if is_granted('ROLE_MANAGER') %}
 		                	<li><a href="{{url ('location_index')}}">Locations</a></li>
+                            {% else %}
+                                <li><a name="" class="disabled">Locations</a></li>
+                            {% endif %}
 		                </ul>
 		            </div>
 	        	</div>    	

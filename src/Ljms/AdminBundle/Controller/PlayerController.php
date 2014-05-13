@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
+use Ljms\CoreBundle\Component\Pagination;
     /**
      * GuardianController - edit/delete operations for backend-users (admins)
      * @Route("admin/players")
@@ -28,6 +29,9 @@ use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
         $filter['status']=$request->get('status');
         $page=$request->get('page');
         $limit=$request->get('limit');
+        $guardian_id=$request->get('id');
+        $coach_id=null;
+        $id=$this->getUser()->getId();
         if ($page===null){
             $page=1;
         }
@@ -37,24 +41,21 @@ use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
         if ($filter['status']===null){
             $filter['status']='all';
         }
-        $paginator=$this->getDoctrine()->getRepository('LjmsCoreBundle:Player')->findPlayers($filter,$page,$limit);
+        if (!$this->get('security.context')->isGranted('ROLE_ADMIN')){
+            if ($this->get('security.context')->isGranted('ROLE_GUARDIAN')){
+                $guardian_id=$this->getUser()->getId();
+            }
+            if ($this->get('security.context')->isGranted('ROLE_COACH')){
+                $coach_id=$this->getUser()->getId();
+            }
+        }
+        $paginator=$this->getDoctrine()->getRepository('LjmsCoreBundle:Player')->findPlayers($filter,$page,$limit,$guardian_id,$coach_id);
         if ($paginator!=false){
             if ($limit!='all'){
-                $pagination=$this->generateNavigation($paginator,$page);
+                $pagination= new Pagination();
+                $pagination=$pagination->generate($paginator,$page);
             }
             $players=$paginator->getQuery()->getResult();
-        }
-        if ($request->get('id')){
-            $id=$request->get('id');
-            return array (
-                'profile'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Profile')->find($id),
-                'filter'=>$filter,
-                'pagination'=>$pagination,
-                'page'=>$page,
-                'limit'=>$limit,
-                'guardian'=>true,
-                'csrf' => $this->get('form.csrf_provider')->generateCsrfToken('delete_player')
-            );
         }
         return array (
             'players'=>$players,
@@ -63,6 +64,7 @@ use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
             'page'=>$page,
             'limit'=>$limit,
             'guardian'=>false,
+            'id'=>$id,
             'csrf' => $this->get('form.csrf_provider')->generateCsrfToken('delete_player')
         );
     }
@@ -94,6 +96,9 @@ use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
     public function editAction(Request $request,$id){
         $em=$this->getDoctrine()->getManager();
         $player = $em->getRepository('LjmsCoreBundle:Player')->find($id);
+        if ((!$this->get('security.context')->isGranted('ROLE_ADMIN'))and($player->getProfile()->getId()!=$this->getUser()->getId())){
+            return $this->redirect($this->generateUrl('player_index'));
+        }
         if (!$player) {
             throw $this->createNotFoundException(
                 'No profile found for id '.$id
@@ -162,37 +167,6 @@ use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
         }
         $em->flush();
     }
-        private function generateNavigation($paginator,$page){
-            $totalItems=count($paginator);
-            $pagination['count_pages']=ceil($totalItems / $paginator->getQuery()->getMaxResults());
-            $pagination['center']=ceil($pagination['count_pages']/2);
-            if ($pagination['count_pages']>7){
-                $pagination['end']=$page+3;
-                $pagination['i']=$page-3;
-                if ( $pagination['end']>$pagination['count_pages']){
-                    $pagination['end']=$pagination['count_pages'];
-                    $pagination['i']=$pagination['end']-6;
-                }
-                if ($pagination['i']<=0){
-                    $pagination['i']=1;
-                    switch ($page){
-                        case 1:
-                            $pagination['end']=$page+6;
-                            break;
-                        case 2:
-                            $pagination['end']=$page+5;
-                            break;
-                        case 3:
-                            $pagination['end']=$page+4;
-                            break;
-                    }
-                }
-            }
-            else{
-                $pagination['i']=1;
-                $pagination['end']=$pagination['count_pages'];
-            }
-            return $pagination;
-        }
+
 }
 ?>

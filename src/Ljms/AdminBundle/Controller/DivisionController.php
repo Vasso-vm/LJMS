@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
+use Ljms\CoreBundle\Component\Pagination;
     /**
      * DivisionController - edit/delete operations for backend-users (admins)
      * @Route("admin/divisions")
@@ -41,10 +42,16 @@ class DivisionController extends Controller
         if ($filter['status']===null){
             $filter['status']='all';
         }
-        $paginator=$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->findDivisions($filter,$page,$limit);
+        if ($this->get('security.context')->isGranted('ROLE_ADMIN')){
+            $paginator=$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->findDivisions($filter,$page,$limit);
+        }else{
+            $id=$this->getUser()->getId();
+            $paginator=$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->findDivisions($filter,$page,$limit,$id);
+        }
         if ($paginator!=false){
             if ($limit!='all'){
-                $pagination=$this->generateNavigation($paginator,$page);
+                $pagination= new Pagination();
+                $pagination=$pagination->generate($paginator,$page);
             }
             $divisions=$paginator->getQuery()->getResult();
         }
@@ -83,12 +90,15 @@ class DivisionController extends Controller
      * @Template("LjmsAdminBundle:Division:add.html.twig")
      */
     public function editAction(Request $request,$id){
-        if (isset ($_GET['id'])){
+        if ($request->get('id')!==null){
             $session=$request->getSession();
-            $session->set('edit_id',$_GET['id']);
+            $session->set('edit_id',$request->get('id'));
         }    
         $em=$this->getDoctrine()->getManager();
         $division = $em->getRepository('LjmsCoreBundle:Division')->find($id);
+        if ((!$this->get('security.context')->isGranted('ROLE_ADMIN'))and($division->getProfile()->getId()!=$this->getUser()->getId())){
+            return $this->redirect($this->generateUrl('division_index'));
+        }
         if (!$division) {
             throw $this->createNotFoundException(
                 'No profile found for id '.$id
@@ -175,38 +185,7 @@ class DivisionController extends Controller
         $file->move(self::DIR,$name);
         return new Response('/web/bundles/ljmshome/tmp/'.$name);
     }
-    private function generateNavigation($paginator,$page){
-        $totalItems=count($paginator);
-        $pagination['count_pages']=ceil($totalItems / $paginator->getQuery()->getMaxResults());
-        $pagination['center']=ceil($pagination['count_pages']/2);
-        if ($pagination['count_pages']>7){
-            $pagination['end']=$page+3;
-            $pagination['i']=$page-3;
-            if ( $pagination['end']>$pagination['count_pages']){
-                $pagination['end']=$pagination['count_pages'];
-                $pagination['i']=$pagination['end']-6;
-            }
-            if ($pagination['i']<=0){
-                $pagination['i']=1;
-                switch ($page){
-                    case 1:
-                        $pagination['end']=$page+6;
-                        break;
-                    case 2:
-                        $pagination['end']=$page+5;
-                        break;
-                    case 3:
-                        $pagination['end']=$page+4;
-                        break;
-                }
-            }
-        }
-        else{
-            $pagination['i']=1;
-            $pagination['end']=$pagination['count_pages'];
-        }
-        return $pagination;
-    }
+
 
 }
 ?>

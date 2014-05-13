@@ -10,7 +10,14 @@
 	{
 		const TABLE_ALIAS = 'profile';
 
-		public function findGuardians($filter,$page,$limit){
+        /**
+         * Find Guardians for guardians grid
+         * @param array $filter
+         * @param int $page
+         * @param int $limit
+         * @return bool|Paginator
+         */
+        public function findGuardians($filter,$page,$limit,$id=''){
             if ($page<=0 or $limit<0){
                 return false;
             }
@@ -27,7 +34,10 @@
                 default:
                     $status=2;
             }
-            $dql="SELECT p , count (players.id) as num_players FROM Ljms\CoreBundle\Entity\Profile p JOIN p.players players WHERE (p.is_active<>:status and p.guardian_role=1) group by players.profile ORDER BY p.id ASC";
+            if ($id!==''){
+                $id=" and p.id=".$id;
+            }
+            $dql="SELECT p FROM Ljms\CoreBundle\Entity\Profile p WHERE (p.is_active<>:status and p.guardian_role=1".$id.") ORDER BY p.id ASC";
             $query = $this->getEntityManager()->createQuery($dql)
                 ->setParameter('status',$status);
             if ($limit!='all'){
@@ -37,12 +47,14 @@
             $paginator = new Paginator($query, $fetchJoinCollection = true);
             Return $paginator;
 		}
+        public function findGuardian($filter,$page,$limit){
 
+        }
         /**
-         *
-         * @param type $filter
-         * @param $page
-         * @param $limit
+         * Find Users for system users grid
+         * @param array $filter
+         * @param int $page
+         * @param int $limit
          * @return bool|Paginator
          */
 

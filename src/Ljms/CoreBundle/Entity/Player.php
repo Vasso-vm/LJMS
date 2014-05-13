@@ -72,7 +72,7 @@
      */
     protected $address;
     /**
-     * @ORM\ManyToOne(targetEntity="Ljms\CoreBundle\Entity\Profile",inversedBy="players")
+     * @ORM\ManyToOne(targetEntity="Ljms\CoreBundle\Entity\Profile")
      * @ORM\JoinColumn(name="profile_id", referencedColumnName="id")
      */
     protected $profile;

@@ -98,11 +98,13 @@
 			days	: function (days) {
 				var result	= '';
                 var len=window.gameDay.length;
+                var url=window.Url;
+                url=url.substr(0,url.length-6);
                 var g=0;
 				for (var i = 0; i < 42; ++i) {
                         if (g<len){
                             if (days[i].text==window.gameDay[g]['date']){
-                                result	+= '<a class="game '+days[i].class_name +'" href="'+window.Url+'/'+window.Year+'/'+(window.Month+1)+'/'+ days[i].text +'">' + days[i].text + '</a>'
+                                result	+= '<a class="game '+days[i].class_name +'" href="'+url+'/'+window.Year+'/'+(window.Month+1)+'/'+ days[i].text +'">' + days[i].text + '</a>'
                                 g++;
                             }else{
                                 result	+= '<div class="' + days[i].class_name + ' day">' + days[i].text + '</div>'

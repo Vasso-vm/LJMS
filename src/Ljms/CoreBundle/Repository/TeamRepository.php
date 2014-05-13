@@ -6,7 +6,7 @@
 	class TeamRepository extends EntityRepository
 	{
 		const TABLE_ALIAS = 'team';
-		public function findTeams($filter,$page,$limit)
+		public function findTeams($filter,$page,$limit,$director_id,$coach_id,$manager_id)
 		{
             if ($page<=0 or $limit<0){
                 return false;
@@ -24,21 +24,36 @@
                 default:
                     $status=2;
             }
-            $where='t.is_active<>:status';
-            $join=null;
-            if($filter['division']!='all'){
-                $where='(t.is_active<>:status and d.name=:division)';
-                $join='JOIN t.divisions d';
-            }
-            $dql="SELECT t FROM Ljms\CoreBundle\Entity\Team t ".$join." WHERE ".$where." ORDER BY t.id ASC";
-            $query = $this->getEntityManager()->createQuery($dql);
-            $query->setParameter('status',$status);
+            $query = $this->createQueryBuilder(self::TABLE_ALIAS);
+            $query->where(self::TABLE_ALIAS.".is_active!='$status'");
             if ($limit!='all'){
                 $query->setFirstResult($page);
                 $query->setMaxResults($limit);
             }
             if($filter['division']!='all'){
-                $query->setParameter('division',$filter['division']);
+                $division=$filter['division'];
+                $query->leftJoin(self::TABLE_ALIAS.'.division','d')
+                    ->andwhere("d.name='$division'");
+            }
+            if ($director_id!==null and $coach_id!==null){
+                $query->leftJoin(self::TABLE_ALIAS.'.division','division')
+                    ->leftJoin('division.profile','profile')
+                    ->leftJoin(self::TABLE_ALIAS.'.coach_profile','coach')
+                    ->andwhere("(profile.id='$director_id' or coach.id='$coach_id')");
+            }else{
+                if ($director_id!==null){
+                    $query->leftJoin(self::TABLE_ALIAS.'.division','division')
+                        ->leftJoin('division.profile','profile')
+                        ->andwhere("profile.id='$director_id'");
+                }
+                if ($coach_id!==null){
+                    $query->leftJoin(self::TABLE_ALIAS.'.coach_profile','coach')
+                        ->andwhere("coach.id='$coach_id'");
+                }
+            }
+            if ($manager_id!==null){
+                $query->leftJoin(self::TABLE_ALIAS.'.manager_profile','manager')
+                    ->andwhere("manager.id='$manager_id'");
             }
             $paginator = new Paginator($query, $fetchJoinCollection = true);
             Return $paginator;

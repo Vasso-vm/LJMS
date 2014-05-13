@@ -6,7 +6,13 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 class ScheduleRepository extends EntityRepository
 {
     const TABLE_ALIAS = 'ScheduleGame';
-
+    /**
+     * Find Schedule for schedules grid
+     * @param array $filter
+     * @param int $page
+     * @param int $limit
+     * @return bool|Paginator
+     */
     public function findSchedules($filter,$page,$limit)
     {
         if ($page<=0 or $limit<0){
@@ -31,6 +37,12 @@ class ScheduleRepository extends EntityRepository
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         Return $paginator;
     }
+    /**
+     * Get Schedule for schedule datepicker
+     * @param int $y
+     * @param int $m
+     * @return array
+     */
     public function getSchedules($y,$m){
         $qb=$this->createQueryBuilder(self::TABLE_ALIAS);
         $qb->select('DAY('.self::TABLE_ALIAS.'.date)as date');

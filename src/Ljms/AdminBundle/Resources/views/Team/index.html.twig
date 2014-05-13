@@ -19,7 +19,9 @@
 			<input class="btn filter" type="submit" value="filter" >
 		</form>
 		 <div class="pull-right">
-			<a class="btn action add" href={{path('team_add')}} id="act" >Add team</a>
+             {% if is_granted('ROLE_DIRECTOR') %}
+			    <a class="btn action add" href={{path('team_add')}} id="act" >Add team</a>
+             {% endif %}
 		</div>
 		<form action="{{path ('team_group')}}" method="post" id="system_users_form">
 			<div class="pull-left">
@@ -100,13 +102,17 @@
                         {% endif %}
                     </td>
 					<td>
-                        <a class="btn action add" href="{{path('team_assign',{'id':t.id}) }}" id="act">Assign player</a>
-						<a href="{{path ('team_edit',{'id':t.id}) }}">
-							<img src="{{ asset('bundles/ljmshome/images/edit.png') }}">
-						</a>
-						<a href="{{path ('team_delete',{'id':t.id}) }}" data-confirm-text="Do you want to delete team?" data-method="delete" data-csrf="_token:{{ csrf }}" class="confirmable as-form">
-							<img src="{{ asset('bundles/ljmshome/images/delete.png') }}">
-						</a>
+                        {% if ( is_granted('ROLE_COACH')) or (t.coachProfile!=null and t.coachProfile.id==id) %}
+                            <a class="btn action add" href="{{path('team_assign',{'id':t.id}) }}" id="act">Assign player</a>
+                        {% endif %}
+                        {% if ( is_granted('ROLE_DIRECTOR')) or (t.division.profile!=null and t.division.profile.id==id) %}
+                            <a href="{{path ('team_edit',{'id':t.id}) }}">
+                                <img src="{{ asset('bundles/ljmshome/images/edit.png') }}">
+                            </a>
+                            <a href="{{path ('team_delete',{'id':t.id}) }}" data-confirm-text="Do you want to delete team?" data-method="delete" data-csrf="_token:{{ csrf }}" class="confirmable as-form">
+                                <img src="{{ asset('bundles/ljmshome/images/delete.png') }}">
+                            </a>
+                        {% endif %}
 					</td>
 				</tr>
 				{%endfor%}

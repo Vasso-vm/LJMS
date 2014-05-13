@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
+use Ljms\CoreBundle\Component\Pagination;
     /**
      * TeamController - edit/delete operations for backend-users (admins)
      * @Route("admin/teams")
@@ -29,6 +30,10 @@ class TeamController extends Controller
         $filter['division']=$request->get('division');
         $page=$request->get('page');
         $limit=$request->get('limit');
+        $director_id=null;
+        $coach_id=null;
+        $manager_id=null;
+        $id=$this->getUser()->getId();
         if ($page===null){
             $page=1;
         }
@@ -41,10 +46,22 @@ class TeamController extends Controller
         if ($filter['status']===null){
             $filter['status']='all';
         }
-        $paginator=$this->getDoctrine()->getRepository('LjmsCoreBundle:Team')->findTeams($filter,$page,$limit);
+        if (!$this->get('security.context')->isGranted('ROLE_ADMIN')){
+            if ($this->get('security.context')->isGranted('ROLE_DIRECTOR')){
+                $director_id=$this->getUser()->getId();
+            }
+            if ($this->get('security.context')->isGranted('ROLE_COACH')){
+                $coach_id=$this->getUser()->getId();
+            }
+            if ($this->get('security.context')->isGranted('ROLE_MANAGER')){
+                $manager_id=$this->getUser()->getId();
+            }
+        }
+        $paginator=$this->getDoctrine()->getRepository('LjmsCoreBundle:Team')->findTeams($filter,$page,$limit,$director_id,$coach_id,$manager_id);
         if ($paginator!=false){
             if ($limit!='all'){
-                $pagination=$this->generateNavigation($paginator,$page);
+                $pagination= new Pagination();
+                $pagination=$pagination->generate($paginator,$page);
             }
             $teams=$paginator->getQuery()->getResult();
         }
@@ -54,6 +71,7 @@ class TeamController extends Controller
             'pagination'=>$pagination,
             'page'=>$page,
             'limit'=>$limit,
+            'id'=>$id,
             'division_list'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisionList(),
             'csrf' => $this->get('form.csrf_provider')->generateCsrfToken('delete_team')
         );
@@ -64,7 +82,11 @@ class TeamController extends Controller
      */
     public function addAction(Request $request){
         $team = new Team();
-        $form = $this->createForm(new TeamType(), $team);
+        $id=null;
+        if (!$this->get('security.context')->isGranted('ROLE_ADMIN')){
+            $id=$this->getUser()->getId();
+        }
+        $form = $this->createForm(new TeamType(), $team, array('attr'=>array('id'=>$id)));
         $form->handleRequest($request);
         if ($form->isValid()){
             $em = $this->getDoctrine()->getManager();
@@ -84,12 +106,22 @@ class TeamController extends Controller
     public function editAction(Request $request,$id){
         $em=$this->getDoctrine()->getManager();
         $team = $em->getRepository('LjmsCoreBundle:Team')->find($id);
+        $profile=$team->getDivision()->getProfile();
+        if (!$this->get('security.context')->isGranted('ROLE_ADMIN')){
+            $id=$this->getUser()->getId();
+            if ($profile===null){
+                return $this->redirect($this->generateUrl('team_index'));
+            }
+            if ($profile->getId()!=$this->getUser()->getId()){
+                return $this->redirect($this->generateUrl('team_index'));
+            }
+        }
         if (!$team) {
             throw $this->createNotFoundException(
                 'No profile found for id '.$id
             );
         }
-        $form = $this->createForm(new TeamType(), $team);
+        $form = $this->createForm(new TeamType(), $team,array('attr'=>array('id'=>$id)));
         $form->handleRequest($request);
         if ($form->isValid()){
             $em->flush();           
@@ -158,6 +190,15 @@ class TeamController extends Controller
     {
         $em=$this->getDoctrine()->getManager();
         $team = $em->getRepository('LjmsCoreBundle:Team')->find($id);
+        $coach=$team->getCoachProfile();
+        if (!$this->get('security.context')->isGranted('ROLE_ADMIN')){
+            if ($coach===null){
+                return $this->redirect($this->generateUrl('team_index'));
+            }
+            if ($coach->getId()!=$this->getUser()->getId()){
+                return $this->redirect($this->generateUrl('team_index'));
+            }
+        }
         if (!$team) {
             throw $this->createNotFoundException(
                 'No profile found for id '.$id
@@ -194,38 +235,6 @@ class TeamController extends Controller
         $id=intval($_POST['id']);
         $team_list=$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getTeams($id);
         return new Response(json_encode($team_list));
-    }
-    private function generateNavigation($paginator,$page){
-        $totalItems=count($paginator);
-        $pagination['count_pages']=ceil($totalItems / $paginator->getQuery()->getMaxResults());
-        $pagination['center']=ceil($pagination['count_pages']/2);
-        if ($pagination['count_pages']>7){
-            $pagination['end']=$page+3;
-            $pagination['i']=$page-3;
-            if ( $pagination['end']>$pagination['count_pages']){
-                $pagination['end']=$pagination['count_pages'];
-                $pagination['i']=$pagination['end']-6;
-            }
-            if ($pagination['i']<=0){
-                $pagination['i']=1;
-                switch ($page){
-                    case 1:
-                        $pagination['end']=$page+6;
-                        break;
-                    case 2:
-                        $pagination['end']=$page+5;
-                        break;
-                    case 3:
-                        $pagination['end']=$page+4;
-                        break;
-                }
-            }
-        }
-        else{
-            $pagination['i']=1;
-            $pagination['end']=$pagination['count_pages'];
-        }
-        return $pagination;
     }
 
 }

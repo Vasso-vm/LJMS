@@ -6,7 +6,7 @@
 	class DivisionRepository extends EntityRepository
 	{
 		const TABLE_ALIAS = 'division';
-		public function findDivisions($filter,$page,$limit)
+		public function findDivisions($filter,$page,$limit,$id=null)
 		{
             if ($page<=0 or $limit<0){
                 return false;
@@ -24,20 +24,19 @@
                 default:
                     $status=2;
             }
-            $where='d.is_active<>:status';
-            $join=null;
-            if($filter['division']!='all'){
-                $where='(d.is_active<>:status and d.name=:division)';
-            }
-            $dql="SELECT d FROM Ljms\CoreBundle\Entity\Division d WHERE ".$where." ORDER BY d.id ASC";
-            $query = $this->getEntityManager()->createQuery($dql);
-            $query->setParameter('status',$status);
+            $query = $this->createQueryBuilder(self::TABLE_ALIAS);
+            $query->where(self::TABLE_ALIAS.".is_active!='$status'");
             if ($limit!='all'){
                 $query->setFirstResult($page);
                 $query->setMaxResults($limit);
             }
             if($filter['division']!='all'){
-                $query->setParameter('division',$filter['division']);
+                $division=$filter['division'];
+                $query->andwhere(self::TABLE_ALIAS.".name='$division'");
+            }
+            if ($id!==null){
+                $query->leftJoin(self::TABLE_ALIAS.'.profile','profile')
+                    ->andwhere("profile.id='$id'");
             }
             $paginator = new Paginator($query, $fetchJoinCollection = true);
             Return $paginator;
