@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new Ljms\AdminBundle\LjmsAdminBundle(),
             new Ljms\CoreBundle\LjmsCoreBundle(),
             new Umbrellaweb\Bundle\UsefulAnnotationsBundle\UmbrellawebUsefulAnnotationsBundle(),
+            new Ljms\TplBundle\LjmsTplBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -64,10 +64,14 @@
                     <td> <a href="{{l.googlemaplink}}">map</a></td>
                     <td>
 						<a href="{{path ('location_edit',{'id':l.id}) }}">
-							<img src="{{ asset('bundles/ljmshome/images/edit.png') }}">
+                            {% image '@LjmsTplBundle/Resources/public/images/images/edit.png' %}
+                            <img src="{{ asset_url }}" alt="edit" />
+                            {% endimage %}
 						</a>
 						<a href="{{path ('location_delete',{'id':l.id})}}" data-confirm-text="Do you want to delete location?" data-method="delete" data-csrf="_token:{{ csrf }}" class="confirmable as-form">
-							<img src="{{ asset('bundles/ljmshome/images/delete.png') }}">
+                            {% image '@LjmsTplBundle/Resources/public/images/images/delete.png' %}
+                            <img src="{{ asset_url }}" alt="delete" />
+                            {% endimage %}
 						</a>
 					</td>
 				</tr>

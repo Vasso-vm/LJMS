@@ -30,12 +30,12 @@ twig:
     strict_variables: "%kernel.debug%"
     form:
          resources:
-             - 'LjmsCoreBundle:Form:fields.html.twig'
+             - 'LjmsTplBundle:Form:form.html.twig'
 # Assetic Configuration
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [ ]
+    bundles:        [LjmsHomeBundle, LjmsAdminBundle, LjmsTplBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~

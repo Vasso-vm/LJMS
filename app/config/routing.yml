@@ -1,3 +1,6 @@
+ljms_tpl:
+    resource: "@LjmsTplBundle/Resources/config/routing.yml"
+    prefix:   /
 ljms_core:
     resource: "@LjmsCoreBundle/Resources/config/routing.yml"
     prefix:   /

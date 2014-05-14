@@ -1,51 +1,11 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>{% block title %}Test Application{% endblock %}</title>
-        {% block stylesheets %}
-            <link href="{{ asset('bundles/ljmshome/css/bootstrap.css') }}" type="text/css" rel="stylesheet" /> 
-            <link href="{{ asset('bundles/ljmshome/css/index.css') }}" type="text/css" rel="stylesheet" />
-            <link href="{{ asset('bundles/ljmshome/css/pickmeup.css')}}" rel="stylesheet">
-            <link href="{{ asset('bundles/ljmshome/css/jquery.ui.timepicker.css')}}" rel="stylesheet">
-            <link href="{{ asset('bundles/ljmshome/css/jquery-ui-1.10.4.custom.min.css')}}" rel="stylesheet">    
-        {% endblock %}
+{% extends 'LjmsTplBundle:Default:base.html.twig' %}
         {% block scripts %}
-            <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/lib/jquery-1.10.2.js')}}"></script>
-            <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/lib/jquery.validate.js')}}"></script>
-            <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/lib/jquery-ui-1.10.4.custom.min.js')}}"></script>
-            <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/lib/jquery.inputmask.js')}}"></script>
-            <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/lib/jquery.ui.timepicker.js')}}"></script>
-            <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/lib/jquery.pickmeup.js')}}"></script>
-            <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/ajax.js')}}"></script>
-            <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/upload.js')}}>"></script>
-            <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/script.js')}}"></script>
-
-            <script type="text/javascript" src="{{ asset('bundles/ljmshome/scripts/lib/link-handler.js')}}"></script>
             <script>
                 {% if url is defined %} var Url='{{path(url)}}';{% endif %}
                 {% if ajaxUrl is defined %} var ajaxUrl='{{path(ajaxUrl)}}';{% endif %}
             </script>
         {% endblock %}
-    </head>
-    <body>
-        <header>
-            <h1><a href="{{url ('home_index')}}"><img src="{{ asset('bundles/ljmshome/images/logo.jpg') }}"></a></h1>
-            <div class="login pull-right">
-                <strong><a href="{{ path('profile_index') }}">Profile</a></strong>
-                <strong><a href="{{ path('logout') }}">Log Out</a></strong>
-            </div>
-            <div class="navbar">
-                <div class="navbar-inner">
-                    <ul class="nav">
-                        <li><a href="{{url ('home_index')}}">Home</a></li>
-                        <li><a href="{{path('about_index')}}">About</a></li>
-                        <li><a href="{{path ('sponsors_index')}}">Sponsors</a></li>
-                        <li><a href="">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
-        </header>
+        {% block section %}
         <section>
             <div class="row">
 	            <div class="navbar menu">
@@ -94,16 +54,7 @@
                 </div>                                
             </div>
         </section>
-        <footer>        
-            <ul class="unstyled pull-left nav nav-pills">
-                <li><a href="{{url ('home_index')}}">Home</a></li>
-                <li><a href="{{path('about_index')}}">About</a></li>
-                <li><a href="{{path ('sponsors_index')}}">Sponsors</a></li>
-                <li><a href="">Contact</a></li>
-            </ul>
-            <p class="pull-right">Copyright 2008 Lockport Junior Miss Softball</p>
-        </footer>
-    </body>
-</html>
+        {% endblock %}
+
 
 		

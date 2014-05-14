@@ -22,6 +22,7 @@
         public function indexAction(Request $request)
         {
             return array(
+                'division_list'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisions(),
                 'ajaxUrl'=>'home_get_schedule',
                 'url'=>'home_schedule'
             );
@@ -41,11 +42,23 @@
          * @Template()
          */
         public function scheduleAction(Request $request,$year,$month,$day){
-
             return array(
                 'schedule'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Schedule')->findGames($year,$month,$day),
+                'division_list'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisions(),
                 'ajaxUrl'=>'home_get_schedule',
                 'url'=>'home_schedule'
+            );
+        }
+        /**
+         * @Route("/division", name="home_division_info")
+         * @Template()
+         */
+        public function divisionAction(Request $request){
+            $division_id=$request->get('division');
+            return array(
+                'division'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->find($division_id),
+                'division_list'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisions(),
+
             );
         }
     }

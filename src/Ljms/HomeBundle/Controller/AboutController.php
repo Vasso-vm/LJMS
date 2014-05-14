@@ -18,7 +18,7 @@
          */
         public function indexAction()
         {
-            return array();
+            return array('division_list'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisions(),);
         }
     }
 
