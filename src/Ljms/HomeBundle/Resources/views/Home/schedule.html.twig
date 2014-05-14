@@ -1,0 +1,44 @@
+{% extends 'LjmsHomeBundle:Default:base.html.twig' %}
+{% block content %}
+    <div class="span5">
+        <h2>Games on {{ schedule.0.date|date("l, d m Y") }} </h2>
+        <table class="system_users">
+            <tbody>
+            <tr class="header">
+                <td>
+                    DATE
+                </td>
+                <td>
+                    TIME
+                </td>
+                <td>
+                    DIVISION
+                </td>
+                <td>
+                    HOME
+                </td>
+                <td>
+                    VISITOR
+                </td>
+                <td>
+                    PRACTICE
+                </td>
+                <td>
+                    LOCATION
+                </td>
+            </tr>
+            {% for s in schedule%}
+                <tr>
+                    <td>{{s.date|date("m-d-Y")}}</td>
+                    <td>{{ s.date|date("h-i A", false) }}</td>
+                    <td>{{ s.hometeam.division.name }}</td>
+                    <td>{{ s.hometeam.name }}</td>
+                    <td>{{ s.visitingteam.name }}</td>
+                    <td>{% if s.practice==1 %} Yes {% else %} No {% endif %}</td>
+                    <td>{{ s.location.name }}</td>
+                </tr>
+            {%endfor%}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

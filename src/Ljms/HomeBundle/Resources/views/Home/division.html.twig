@@ -1,0 +1,122 @@
+{% extends 'LjmsHomeBundle:Default:base.html.twig' %}
+{% block content %}
+    <div class="span7">
+        <h2>{{ division.name }}</h2>
+        <p>{{ division.description }}</p>
+        <h3>Division rules</h3>
+        <p>{{ division.rules }}</p>
+        <h3>Division Representives</h3>
+        <table class="system_users">
+            <tbody>
+            <tr class="header">
+                <td>DIRECTOR NAME</td>
+                <td>CONTACT</td>
+            </tr>
+            <tr>
+                <td>{% if division.profile!=null %}{{ division.profile.firstName }}, {{ division.profile.lastName }}{% endif %}</td>
+                <td>{% if division.profile!=null %}{{ division.profile.email }}<br> {{ division.profile.homePhone }}{% endif %}</td>
+            </tr>
+            </tbody>
+        </table>
+        <h3>LJMS Teams</h3>
+        <table class="system_users">
+            <tbody>
+            <tr class="header">
+                <td>
+                    TEAM
+                </td>
+                <td>
+                    WINS
+                </td>
+                <td>
+                    LOSES
+                </td>
+                <td>
+                    TIES
+                </td>
+                <td>
+                    AVERAGE
+                </td>
+            </tr>
+            {% for t in division.teams if division.teams!=null %}
+                <tr>
+                    <td>{{ t.name }}</td>
+                    <td>
+                        {% set wins=0 %}{% for h in t.homeGames if h.homeTeamScore>h.visitingTeamScore %}
+                            {% set wins=wins+1 %}
+                        {% endfor %}
+                        {% for v in t.visitingGames if v.homeTeamScore<v.visitingTeamScore %}
+                            {% set wins=wins+1 %}
+                        {% endfor %}
+                        {{ wins }}
+                    </td>
+                    <td>
+                        {% set loses=0 %}{% for h in t.homeGames if h.homeTeamScore<h.visitingTeamScore %}
+                            {% set loses=loses+1 %}
+                        {% endfor %}
+                        {% for v in t.visitingGames if v.homeTeamScore>v.visitingTeamScore %}
+                            {% set loses=loses+1 %}
+                        {% endfor %}
+                        {{ loses }}
+                    </td>
+                    <td>
+                        {% set ties=0 %}{% for h in t.homeGames if h.homeTeamScore==h.visitingTeamScore %}
+                            {% set ties=ties+1 %}
+                        {% endfor %}
+                        {% for v in t.visitingGames if v.homeTeamScore==v.visitingTeamScore %}
+                            {% set ties=ties+1 %}
+                        {% endfor %}
+                        {{ ties }}
+                    </td>
+                    <td>{% if (t.homeGames|length + t.visitingGames|length)!=0 %}
+                            {{ (wins/(t.homeGames|length + t.visitingGames|length)*100)|number_format(1) }} %
+                        {% else %}
+                            0 %
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <h3>Game schedule</h3>
+        <table class="system_users">
+            <tbody>
+            <tr class="header">
+                <td>
+                    DATE
+                </td>
+                <td>
+                    TIME
+                </td>
+                <td>
+                    HOME
+                </td>
+                <td>
+                    VISITOR
+                </td>
+                <td>
+                    PRACTICE
+                </td>
+                <td>
+                    LOCATION
+                </td>
+            </tr>
+            {% for t in division.teams if division.teams!=null %}
+                {% for s in t.homegames if t.homegames!=null %}
+            <tr>
+                <td>{{s.date|date("m-d-Y")}}</td>
+                <td>{{ s.date|date("h-i A", false) }}</td>
+                <td>{{ s.hometeam.name }}</td>
+                <td>{{ s.visitingteam.name }}</td>
+                <td>{% if s.practice==1 %} Yes {% else %} No {% endif %}</td>
+                <td>{{ s.location.name }}</td>
+            </tr>
+                {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block rightside %}
+{% endblock %}
+
