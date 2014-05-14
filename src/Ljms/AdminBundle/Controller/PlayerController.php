@@ -13,7 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
 use Ljms\CoreBundle\Component\Pagination;
     /**
-     * GuardianController - edit/delete operations for backend-users (admins)
+     * PlayerController - edit/delete operations for backend-users (admins)
      * @Route("admin/players")
      */
     class PlayerController extends Controller

@@ -19,7 +19,6 @@ security:
                 logout:
                     path:   /logout
                     target: /home
-
     access_control:
         - { path: ^/admin/users , roles: ROLE_ADMIN }
         - { path: ^/admin/guardian/add , roles: ROLE_ADMIN }
@@ -31,6 +30,12 @@ security:
         - { path: ^/admin/teams/edit , roles: ROLE_DIRECTOR }
         - { path: ^/admin/teams/add , roles: ROLE_DIRECTOR }
         - { path: ^/admin/teams , roles: [ROLE_DIRECTOR, ROLE_COACH, ROLE_MANAGER]}
+        - { path: ^/admin/schedule/add , roles: ROLE_MANAGER }
+        - { path: ^/admin/schedule/edit , roles: ROLE_MANAGER }
+        - { path: ^/admin/schedule/result , roles: ROLE_MANAGER }
+        - { path: ^/admin/schedule , roles: [ROLE_COACH, ROLE_MANAGER] }
+        - { path: ^/admin/location , roles: ROLE_MANAGER }
+
 
 
 

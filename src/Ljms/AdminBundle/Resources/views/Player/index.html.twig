@@ -56,7 +56,7 @@
 					<td>{% if p.team!=null %}{{ p.team.name }}{% endif %}</td>
 					<td><a href="{{ path ('guardian_edit',{'id':p.profile.id}) }}">{{p.profile.FirstName}}, {{p.profile.LastName}}</a></td>
 					<td>
-                    {% if p.profile.id==id %}
+                    {% if p.profile.id==id or is_granted('ROLE_ADMIN')%}
 					    <a href="{{path ('player_edit',{'id':p.id}) }}">
 					        <img src="{{ asset('bundles/ljmshome/images/edit.png') }}">
 					    </a>

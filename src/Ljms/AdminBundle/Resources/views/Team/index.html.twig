@@ -102,10 +102,10 @@
                         {% endif %}
                     </td>
 					<td>
-                        {% if ( is_granted('ROLE_COACH')) or (t.coachProfile!=null and t.coachProfile.id==id) %}
+                        {% if (t.coachProfile!=null and t.coachProfile.id==id) or is_granted('ROLE_ADMIN') %}
                             <a class="btn action add" href="{{path('team_assign',{'id':t.id}) }}" id="act">Assign player</a>
                         {% endif %}
-                        {% if ( is_granted('ROLE_DIRECTOR')) or (t.division.profile!=null and t.division.profile.id==id) %}
+                        {% if ( is_granted('ROLE_ADMIN')) or (t.division.profile!=null and t.division.profile.id==id) %}
                             <a href="{{path ('team_edit',{'id':t.id}) }}">
                                 <img src="{{ asset('bundles/ljmshome/images/edit.png') }}">
                             </a>

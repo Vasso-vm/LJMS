@@ -35,26 +35,30 @@
                 $query->leftJoin(self::TABLE_ALIAS.'.division','d')
                     ->andwhere("d.name='$division'");
             }
-            if ($director_id!==null and $coach_id!==null){
-                $query->leftJoin(self::TABLE_ALIAS.'.division','division')
-                    ->leftJoin('division.profile','profile')
-                    ->leftJoin(self::TABLE_ALIAS.'.coach_profile','coach')
-                    ->andwhere("(profile.id='$director_id' or coach.id='$coach_id')");
-            }else{
+            if (!($coach_id===null and $manager_id===null and $director_id===null)){
+                $where="(";
                 if ($director_id!==null){
-                    $query->leftJoin(self::TABLE_ALIAS.'.division','division')
-                        ->leftJoin('division.profile','profile')
-                        ->andwhere("profile.id='$director_id'");
+                    $where=$where."profile.id='$director_id'";
                 }
-                if ($coach_id!==null){
-                    $query->leftJoin(self::TABLE_ALIAS.'.coach_profile','coach')
-                        ->andwhere("coach.id='$coach_id'");
+                if ($manager_id!==null){
+                    if ($director_id!==null){
+                        $where=$where. " OR manager.id='$manager_id'";
+                    }else{
+                        $where=$where."manager.id='$manager_id'";
+                    }
                 }
+                if ($coach_id!==null and $manager_id===null and $director_id===null){
+                    $where=$where."coach.id='$coach_id'";
+                }else{
+                    $where=$where." OR coach.id='$coach_id'";
+                }
+                $where=$where.")";
+                $query->andwhere($where);
             }
-            if ($manager_id!==null){
-                $query->leftJoin(self::TABLE_ALIAS.'.manager_profile','manager')
-                    ->andwhere("manager.id='$manager_id'");
-            }
+            $query->leftJoin(self::TABLE_ALIAS.'.division','division')
+                ->leftJoin('division.profile','profile')
+                ->leftJoin(self::TABLE_ALIAS.'.coach_profile','coach')
+                ->leftJoin(self::TABLE_ALIAS.'.manager_profile','manager');
             $paginator = new Paginator($query, $fetchJoinCollection = true);
             Return $paginator;
 		}   

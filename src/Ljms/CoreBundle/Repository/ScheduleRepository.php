@@ -13,7 +13,7 @@ class ScheduleRepository extends EntityRepository
      * @param int $limit
      * @return bool|Paginator
      */
-    public function findSchedules($filter,$page,$limit)
+    public function findSchedules($filter,$page,$limit,$coach_id,$manager_id)
     {
         if ($page<=0 or $limit<0){
             return false;
@@ -21,18 +21,38 @@ class ScheduleRepository extends EntityRepository
         if ($limit>0){
             $page=($page-1)*$limit;
         }
-        $where=null;
-        if($filter['division']!='all'){
-            $where='WHERE d.name=:division';
+        $query = $this->createQueryBuilder(self::TABLE_ALIAS)
+            ->leftJoin(self::TABLE_ALIAS.'.home_team','home')
+            ->leftJoin(self::TABLE_ALIAS.'.visiting_team','visiting');
+        if ($limit!='all'){
+            $query->setFirstResult($page);
+            $query->setMaxResults($limit);
         }
-        $dql="SELECT s FROM Ljms\CoreBundle\Entity\Schedule s JOIN s.home_team h JOIN h.division d ".$where." ORDER BY s.id ASC";
-        $query = $this->getEntityManager()->createQuery($dql);
+        if ($manager_id!==null and $coach_id!==null){
+            $query->leftJoin('home.manager_profile','home_manager')
+                ->leftJoin('visiting.manager_profile','visiting_manager')
+                ->leftJoin('home.coach_profile','home_coach')
+                ->leftJoin('visiting.coach_profile','visiting_coach')
+                ->where("((home_manager.id ='$manager_id' OR visiting_manager.id ='$manager_id') OR (home_coach.id ='$coach_id' OR visiting_coach.id ='$coach_id'))");
+        }
+        if ($manager_id===null and $coach_id!==null){
+            $query->leftJoin('home.coach_profile','home_coach')
+                ->leftJoin('visiting.coach_profile','visiting_coach')
+                ->where("(home_coach.id ='$coach_id' OR visiting_coach.id ='$coach_id')");
+        }
+        if ($manager_id!==null and $coach_id===null){
+            $query->leftJoin('home.manager_profile','home_manager')
+                ->leftJoin('visiting.manager_profile','visiting_manager')
+                ->where("(home_manager.id ='$manager_id' OR visiting_manager.id ='$manager_id')");
+        }
         if ($limit!='all'){
             $query->setFirstResult($page);
             $query->setMaxResults($limit);
         }
         if($filter['division']!='all'){
-            $query->setParameter('division',$filter['division']);
+            $division=$filter['division'];
+            $query->leftJoin('home.division','d')
+                ->andwhere("d.name='$division'");
         }
         $paginator = new Paginator($query, $fetchJoinCollection = true);
         Return $paginator;

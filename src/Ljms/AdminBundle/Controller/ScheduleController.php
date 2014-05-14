@@ -29,6 +29,9 @@ class ScheduleController extends Controller
         $filter['division']=$request->get('division');
         $page=$request->get('page');
         $limit=$request->get('limit');
+        $manager_id=null;
+        $coach_id=null;
+        $id=$this->getUser()->getId();
         if ($page===null){
             $page=1;
         }
@@ -38,7 +41,15 @@ class ScheduleController extends Controller
         if ($filter['division']===null){
             $filter['division']='all';
         }
-        $paginator=$this->getDoctrine()->getRepository('LjmsCoreBundle:Schedule')->findSchedules($filter,$page,$limit);
+        if (!$this->get('security.context')->isGranted('ROLE_ADMIN')){
+            if ($this->get('security.context')->isGranted('ROLE_MANAGER')){
+                $manager_id=$this->getUser()->getId();
+            }
+            if ($this->get('security.context')->isGranted('ROLE_COACH')){
+                $coach_id=$this->getUser()->getId();
+            }
+        }
+        $paginator=$this->getDoctrine()->getRepository('LjmsCoreBundle:Schedule')->findSchedules($filter,$page,$limit,$coach_id,$manager_id);
         if ($paginator!=false){
             if ($limit!='all'){
                 $pagination= new Pagination();
@@ -51,6 +62,7 @@ class ScheduleController extends Controller
             'filter'=>$filter,
             'pagination'=>$pagination,
             'page'=>$page,
+            'id'=>$id,
             'limit'=>$limit,
             'division_list'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisionList(),
             'csrf' => $this->get('form.csrf_provider')->generateCsrfToken('delete_schedule')
@@ -85,6 +97,13 @@ class ScheduleController extends Controller
     public function editAction(Request $request,$id){
         $em=$this->getDoctrine()->getManager();
         $schedule = $em->getRepository('LjmsCoreBundle:Schedule')->find($id);
+        $profile=$schedule->getHomeTeam()->getManagerProfile();
+        $profile1=$schedule->getVisitingTeam()->getManagerProfile();
+        if (!$this->get('security.context')->isGranted('ROLE_ADMIN')){
+            if (($profile===null or $profile->getId()!=$this->getUser()->getId()) and ($profile1===null or $profile1->getId()!=$this->getUser()->getId()) ){
+                return $this->redirect($this->generateUrl('schedule_index'));
+            }
+        }
         if (!$schedule) {
             throw $this->createNotFoundException(
                 'No profile found for id '.$id
@@ -123,6 +142,13 @@ class ScheduleController extends Controller
     public function resultAction(Request $request,$id){
         $em=$this->getDoctrine()->getManager();
         $schedule = $em->getRepository('LjmsCoreBundle:Schedule')->find($id);
+        $profile=$schedule->getHomeTeam()->getManagerProfile();
+        $profile1=$schedule->getVisitingTeam()->getManagerProfile();
+        if (!$this->get('security.context')->isGranted('ROLE_ADMIN')){
+            if (($profile===null or $profile->getId()!=$this->getUser()->getId()) and ($profile1===null or $profile1->getId()!=$this->getUser()->getId()) ){
+                return $this->redirect($this->generateUrl('schedule_index'));
+            }
+        }
         if (!$schedule) {
             throw $this->createNotFoundException(
                 'No profile found for id '.$id
