@@ -1,0 +1,31 @@
+{% extends 'LjmsHomeBundle:Default:base.html.twig' %}
+{% block content %}
+    <div class="span5">
+        <h2>Contact Us</h2>
+        <p><strong>Lockport Junior Miss Softball</strong></p>
+        <p>PO Box 305</p>
+        <p>Lockport, IL 60441</p>
+        <p>Phone: (630) 453-0166 (Scott McCarthy)</p>
+        <form action="{{ path('contact_index') }}" method="post" class="form-horizontal well" id="contact_form">
+            {% for label, flashes in app.session.flashbag.all %}
+                {% for flash in flashes %}
+                    <div class="alert alert-{{ label }}">
+                        {{ flash }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            <fieldset>
+                {{ form_errors(form) }}
+                {{form_row(form.name)}}
+                {{form_row(form.email)}}
+                {{form_row(form.subject)}}
+                {{form_row(form.message)}}
+                {{ form_widget(form.captcha) }}
+            </fieldset>
+            <div class="controls buttons">
+                {{form_widget(form.Submit,{attr:{'class':'btn'}})}}
+            </div>
+            {{form_rest(form)}}
+        </form>
+    </div>
+{% endblock %}

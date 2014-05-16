@@ -107,12 +107,12 @@
                         {% endif %}
                         {% if ( is_granted('ROLE_ADMIN')) or (t.division.profile!=null and t.division.profile.id==id) %}
                             <a href="{{path ('team_edit',{'id':t.id}) }}">
-                                {% image '@LjmsTplBundle/Resources/public/images/images/edit.png' %}
+                                {% image '@LjmsTplBundle/Resources/public/images/edit.png' %}
                                 <img src="{{ asset_url }}" alt="edit" />
                                 {% endimage %}
                             </a>
                             <a href="{{path ('team_delete',{'id':t.id}) }}" data-confirm-text="Do you want to delete team?" data-method="delete" data-csrf="_token:{{ csrf }}" class="confirmable as-form">
-                                {% image '@LjmsTplBundle/Resources/public/images/images/delete.png' %}
+                                {% image '@LjmsTplBundle/Resources/public/images/delete.png' %}
                                 <img src="{{ asset_url }}" alt="delete" />
                                 {% endimage %}
                             </a>

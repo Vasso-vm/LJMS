@@ -66,12 +66,12 @@
 					<td>
 						<a class="btn action add" href="{{path('player_add',{'id':g.id}) }}" id="act">Add player</a>
 						<a href="{{path ('guardian_edit',{'id':g.id}) }}">
-                            {% image '@LjmsTplBundle/Resources/public/images/images/edit.png' %}
+                            {% image '@LjmsTplBundle/Resources/public/images/edit.png' %}
                             <img src="{{ asset_url }}" alt="edit" />
                             {% endimage %}
 						</a>
 						<a href="{{ path ('guardian_delete',{'id':g.id}) }}" data-confirm-text="Do you want to delete guardian?" data-method="delete" data-csrf="_token:{{ csrf }}" class="confirmable as-form">
-                            {% image '@LjmsTplBundle/Resources/public/images/images/delete.png' %}
+                            {% image '@LjmsTplBundle/Resources/public/images/delete.png' %}
                             <img src="{{ asset_url }}" alt="delete" />
                             {% endimage %}
 						</a>

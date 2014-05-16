@@ -92,7 +92,7 @@
 
     private $temp;
     /**
-     * @ORM\ManyToOne(targetEntity="Ljms\CoreBundle\Entity\Profile")
+     * @ORM\ManyToOne(targetEntity="Ljms\CoreBundle\Entity\Profile", inversedBy="divisions")
      * @ORM\JoinColumn(name="profile_id", referencedColumnName="id")
      */
     protected $profile;

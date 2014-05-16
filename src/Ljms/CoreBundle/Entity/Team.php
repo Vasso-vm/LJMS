@@ -46,18 +46,18 @@
      */
 	protected $is_active;
 	/**
-     * @ORM\ManyToOne(targetEntity="Ljms\CoreBundle\Entity\Division")
+     * @ORM\ManyToOne(targetEntity="Ljms\CoreBundle\Entity\Division", inversedBy="teams")
      * @ORM\JoinColumn(name="division_id", referencedColumnName="id")
      * @Assert\NotBlank(message="Field Division is required.")
      */
     protected $division;
     /**
-     * @ORM\ManyToOne(targetEntity="Ljms\CoreBundle\Entity\Profile")
+     * @ORM\ManyToOne(targetEntity="Ljms\CoreBundle\Entity\Profile", inversedBy="coach_teams")
      * @ORM\JoinColumn(name="coach_profile_id", referencedColumnName="id")
      */
     protected $coach_profile;
     /**
-     * @ORM\ManyToOne(targetEntity="Ljms\CoreBundle\Entity\Profile")
+     * @ORM\ManyToOne(targetEntity="Ljms\CoreBundle\Entity\Profile", inversedBy="manager_teams")
      * @ORM\JoinColumn(name="manager_profile_id", referencedColumnName="id")
      */
     protected $manager_profile;

@@ -1,0 +1,33 @@
+{% extends 'LjmsHomeBundle:Default:base.html.twig' %}
+{% block content %}
+    <div class="span5">
+    {% if new_password==true %}
+        <h2>New Password</h2>
+        <p>A new password has been sent to your e-mail address.</p>
+        <a href="{{ path('login') }}">Login</a>
+    {% else %}
+        <form action="" method="post" class="form-horizontal" name="form_login" id="forgot_password_form">
+            <fieldset>
+                <legend><strong>Forgot Password</strong></legend>
+                    {% if message is not null %}
+                        {% if message==true %}
+                            <p class="alert alert-success">You will receive a link to create a new password via email.</p>
+                        {% endif %}
+                        {% if message==false %}
+                            <p class="alert alert-error">This email is wrong.</p>
+                        {% endif %}
+                    {% endif %}
+                <div class="control-group" >
+                    <label class="control-label" for="email">Email</label>
+                    <div class="controls">
+                        <input class="input-large" type="text" name="email" id="email">
+                    </div>
+                </div>
+                <div class="controls">
+                    <input type="submit" class="btn" value="Submit" >
+                </div>
+            </fieldset>
+        </form>
+    {% endif %}
+    </div>
+{% endblock %}

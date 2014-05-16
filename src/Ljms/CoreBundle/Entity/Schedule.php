@@ -55,14 +55,14 @@
 	protected $location;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Team")
+     * @ORM\ManyToOne(targetEntity="Team", inversedBy="home_games")
      * @ORM\JoinColumn(name="home_team_id", referencedColumnName="id")
      * @Assert\NotBlank(message="Field Home team is required.")
      */
     protected $home_team;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Team")
+     * @ORM\ManyToOne(targetEntity="Team", inversedBy="visiting_games")
      * @ORM\JoinColumn(name="visiting_team_id", referencedColumnName="id")
      * @Assert\NotBlank(message="Field Visiting team is required.")
      */

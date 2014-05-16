@@ -24,22 +24,20 @@
             if ($limit>0){
                 $page=($page-1)*$limit;
             }
+            $query = $this->createQueryBuilder(self::TABLE_ALIAS)
+                ->where(self::TABLE_ALIAS.'.guardian_role=1')
+                ->orderBy(self::TABLE_ALIAS.'.id','ASC');
             switch ($filter['status']){
                 case 'active':
-                    $status=0;
+                    $query->andwhere(self::TABLE_ALIAS.'.is_active=1');
                     break;
                 case 'inactive':
-                    $status=1;
+                    $query->andwhere(self::TABLE_ALIAS.'.is_active=0');
                     break;
-                default:
-                    $status=2;
             }
             if ($id!==''){
-                $id=" and p.id=".$id;
+                $query->andwhere(self::TABLE_ALIAS.".id='$id'");
             }
-            $dql="SELECT p FROM Ljms\CoreBundle\Entity\Profile p WHERE (p.is_active<>:status and p.guardian_role=1".$id.") ORDER BY p.id ASC";
-            $query = $this->getEntityManager()->createQuery($dql)
-                ->setParameter('status',$status);
             if ($limit!='all'){
                 $query->setFirstResult($page);
                 $query->setMaxResults($limit);

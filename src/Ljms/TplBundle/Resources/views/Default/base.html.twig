@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    {% block title %}
+        <title>Test Application</title>
+    {% endblock %}
+    {% stylesheets  output="css/style.css"
+        'bundles/ljmstpl/css/bootstrap.css'
+        'bundles/ljmstpl/css/index.css'
+        'bundles/ljmstpl/css/jquery-ui-1.10.4.custom.min.css'
+        'bundles/ljmstpl/css/jquery.ui.timepicker.css'
+        'bundles/ljmstpl/css/pickmeup.css'
+        filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+    {% javascripts
+        '@LjmsTplBundle/Resources/public/js/lib/*'
+        '@LjmsTplBundle/Resources/public/js/*' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% block scripts %}
+
+    {% endblock %}
+</head>
+<body>
+    <header>
+        <h1><a href="{{url ('home_index')}}">
+                {% image '@LjmsTplBundle/Resources/public/images/logo.jpg' %}
+                    <img src="{{ asset_url }}" alt="Logo" />
+                {% endimage %}
+        </a></h1>
+        {% if app.user!=null %}
+            <div class="login pull-right">
+                <strong><a href="{{ path('profile_index') }}">Profile</a></strong>
+                <strong><a href="{{ path('logout') }}">Log Out</a></strong>
+            </div>
+        {% endif %}
+        <div class="navbar">
+            <div class="navbar-inner">
+                <ul class="nav">
+                    <li><a href="{{url ('home_index')}}">Home</a></li>
+                    <li><a href="{{path('about_index')}}">About</a></li>
+                    <li><a href="{{path ('sponsors_index')}}">Sponsors</a></li>
+                    <li><a href="{{ path ('contact_index') }}">Contact us</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    {% block section %}
+    {% endblock %}
+    <footer>
+        <ul class="unstyled pull-left nav nav-pills">
+            <li><a href="{{url ('home_index')}}">Home</a></li>
+            <li><a href="{{path('about_index')}}">About</a></li>
+            <li><a href="{{path ('sponsors_index')}}">Sponsors</a></li>
+            <li><a href="{{ path ('contact_index') }}">Contact</a></li>
+        </ul>
+        <p class="pull-right">Copyright 2008 Lockport Junior Miss Softball</p>
+    </footer>
+</body>

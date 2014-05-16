@@ -1,0 +1,7 @@
+parameters:
+#    ljms_tpl.example.class: Ljms\TplBundle\Example
+
+services:
+#    ljms_tpl.example:
+#        class: %ljms_tpl.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
