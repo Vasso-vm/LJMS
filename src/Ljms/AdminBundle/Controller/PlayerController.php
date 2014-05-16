@@ -11,7 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
-use Ljms\CoreBundle\Component\Pagination;
+use Ljms\CoreBundle\Component\Pagination\Pagination;
     /**
      * PlayerController - edit/delete operations for backend-users (admins)
      * @Route("admin/players")

@@ -1,0 +1,38 @@
+<?php
+	namespace Ljms\CoreBundle\Entity;
+
+	use Doctrine\ORM\Mapping as ORM;
+
+	/**
+	 *@ORM\Entity
+	 *@ORM\Table(name="ScheduleGame")
+     *@ORM\Entity(repositoryClass="Ljms\CoreBundle\Repository\ScheduleGameRepository")
+	*/
+	class ScheduleGame
+	{
+
+	/**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+	protected $id;
+
+	/**
+     * @ORM\Column(type="datetime")
+     */
+	protected $date;
+
+	/**
+     * @ORM\Column(type="string" , length=3)     
+     */
+	protected $home_team_score;
+
+	/**
+     * @ORM\Column(type="string" , length=3)     
+     */
+	protected $visiting_team_score;
+
+	
+
+}
