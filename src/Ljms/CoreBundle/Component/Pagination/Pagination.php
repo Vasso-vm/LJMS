@@ -1,5 +1,5 @@
 <?php
-    namespace Ljms\CoreBundle\Component;
+    namespace Ljms\CoreBundle\Component\Pagination;
     class Pagination
     {
         public function generate($paginator,$page)

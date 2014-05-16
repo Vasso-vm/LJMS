@@ -19,6 +19,6 @@
 web/upload/division/photo/*
 !/web/upload/division/photo/index.html
 
-# CACHED MEDIA #
+# CACHED MEDIA#
 web/media/*
 !web/media/index.html
