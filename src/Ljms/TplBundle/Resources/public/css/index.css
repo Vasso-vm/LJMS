@@ -14,7 +14,7 @@ header{
     margin-top:90px;
     position: relative;
     height:245px;
-    background: url('../images/images/header1.jpg') no-repeat top right;
+    background: url('../images/header1.jpg') no-repeat top right;
 }
 h1{
     position:absolute;
@@ -83,7 +83,7 @@ div.span5{
     padding-top:14px;
     padding-bottom: 100px;
     min-height:280px;
-    background: url("../images/images/section2.jpg") no-repeat bottom right;
+    background: url("../images/section2.jpg") no-repeat bottom right;
 }
 div.span2 img{
     border-bottom:1px solid #7F7F7F;
@@ -125,7 +125,7 @@ section img.pull-left{
     margin-right:6px;
 }
 div.left{
-    background: url("../images/images/section1.jpg") no-repeat top right;
+    background: url("../images/section1.jpg") no-repeat top right;
     padding-right:8px;
 }
 section a.click{
