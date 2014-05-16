@@ -1,5 +1,5 @@
 {% extends 'LjmsHomeBundle:Default:base.html.twig' %}
-{% block section %}
+{% block content %}
     <div class="span5">
         <form action="{{ path('login_check') }}" method="post" class="form-horizontal" name="form_login" id="admin_login_form">
             <fieldset>
@@ -24,6 +24,6 @@
                 </div>       
             </fieldset>
         </form>
-        <p><a href="">Forgot password? Click here</a></p>
+        <p><a href="{{ path('admin_recover') }}">Forgot password? Click here</a></p>
     </div>
 {% endblock %}
