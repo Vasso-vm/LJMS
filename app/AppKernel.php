@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new Ljms\CoreBundle\LjmsCoreBundle(),
             new Umbrellaweb\Bundle\UsefulAnnotationsBundle\UmbrellawebUsefulAnnotationsBundle(),
             new Ljms\TplBundle\LjmsTplBundle(),
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

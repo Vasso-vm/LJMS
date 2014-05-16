@@ -32,5 +32,13 @@ monolog:
 assetic:
     use_controller: true
 
-#swiftmailer:
-#    delivery_address: me@example.com
+swiftmailer:
+    transport:            smtp
+    username:             ~
+    password:             ~
+    host:                 localhost
+    port:                 false
+    spool:
+        type:                 file
+        path:                 "%kernel.cache_dir%/swiftmailer/spool"
+    delivery_address: me@example.com
