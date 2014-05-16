@@ -1,0 +1,24 @@
+/web/bundles/
+/web/css/
+/web/js/
+/app/bootstrap.php.cache
+/app/cache/*
+/app/config/parameters.yml
+/app/logs/*
+!app/cache/.gitkeep
+!app/logs/.gitkeep
+/build/
+/vendor/
+/bin/
+/composer.phar
+
+# PHPSTORM PROJECT FILES #
+.idea/
+
+# UPLOADS #
+web/upload/division/photo/*
+!/web/upload/division/photo/index.html
+
+# CACHED MEDIA #
+web/media/*
+!web/media/index.html
