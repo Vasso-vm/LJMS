@@ -18,7 +18,11 @@
          */
         public function indexAction()
         {
-            return array('division_list'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisions(),);
+            return array(
+                'division_list'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisions(),
+                'ajaxUrl'=>'home_get_schedule',
+                'url'=>'home_schedule'
+            );
         }
     }
 
