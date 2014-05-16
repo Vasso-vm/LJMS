@@ -63,9 +63,9 @@ doctrine:
         auto_mapping: true
         dql:
                     datetime_functions:
-                        month: Ljms\CoreBundle\Dql\Month
-                        day: Ljms\CoreBundle\Dql\Day
-                        year: Ljms\CoreBundle\Dql\Year
+                        month: Ljms\CoreBundle\Component\Dql\Month
+                        day: Ljms\CoreBundle\Component\Dql\Day
+                        year: Ljms\CoreBundle\Component\Dql\Year
 
 # Swiftmailer Configuration
 swiftmailer:
