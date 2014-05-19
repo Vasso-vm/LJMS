@@ -99,10 +99,10 @@ class Role implements RoleInterface
     /**
      * Add users
      *
-     * @param \Ljms\CoreBundle\Entity\User $users
+     * @param \Ljms\CoreBundle\Entity\Profile $users
      * @return Role
      */
-    public function addUser(\Ljms\CoreBundle\Entity\User $users)
+    public function addUser(\Ljms\CoreBundle\Entity\Profile $users)
     {
         $this->users[] = $users;
 
@@ -112,9 +112,9 @@ class Role implements RoleInterface
     /**
      * Remove users
      *
-     * @param \Ljms\CoreBundle\Entity\User $users
+     * @param \Ljms\CoreBundle\Entity\Profile $users
      */
-    public function removeUser(\Ljms\CoreBundle\Entity\User $users)
+    public function removeUser(\Ljms\CoreBundle\Entity\Profile $users)
     {
         $this->users->removeElement($users);
     }

@@ -74,56 +74,60 @@
 					<td class="email">{{ u.email}}</td>
 					<td class="role">
                         {% for role in u.roles if role!=null %}
-                            {% if role.id == 1%}
+                            {% if role.name == 'Admin'%}
                                 <p>Admin</p>
                             {% endif %}
-                            {% if role.id == 2%}
+                            {% if role.name == 'Director'%}
                                 Director
                                 {% for d in u.divisions %}<br>{% endfor %}
                             {% endif %}
-                            {% if role.id == 3%}
+                            {% if role.name == 'Coach'%}
                                 Coach
                                 {% for c in u.coachTeams %}<br>{% endfor %}
                             {% endif %}
-                            {% if role.id == 4%}
+                            {% if role.name == 'Manager'%}
                                 <p>Manager</p>
                             {% endif %}
-                            {% if role.id == 5%}
+                            {% if role.name == 'Guardian'%}
                                 <p>Guardian</p>
                             {% endif %}
                         {% endfor %}
                     </td>
 					<td class="division">
-                        {% if u.adminRole ==1 %}<br>{% endif %}
-                        {% if u.directorRole==1 %}
-                            {% for d in u.divisions %}
-                               <p>{{ d.name }}</p>
-                            {% endfor %}
-                        {% endif %}
-                        {% if u.coachRole==1 %}
-                            {% for c in u.coachTeams %}
-                                <p>{{ c.division.name }}</p>
-                            {% endfor %}
-                        {% endif %}
-                        {% if u.managerRole==1 %}
-                            {% for m in u.managerTeams %}
-                                <p>{{ m.division.name }}</p>
-                            {% endfor %}
-                        {% endif %}
+                        {% for role in u.roles if role!=null %}
+                            {% if role.name == 'Admin'%}<br>{% endif %}
+                            {% if role.name == 'Director'%}
+                                {% for d in u.divisions %}
+                                   <p>{{ d.name }}</p>
+                                {% endfor %}
+                            {% endif %}
+                            {% if role.name == 'Coach'%}
+                                {% for c in u.coachTeams %}
+                                    <p>{{ c.division.name }}</p>
+                                {% endfor %}
+                            {% endif %}
+                            {% if role.name == 'Manager'%}
+                                {% for m in u.managerTeams %}
+                                    <p>{{ m.division.name }}</p>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
                     </td>
 					<td class="team">
-                        {% if u.adminRole==1 %}<br>{% endif %}
-                        {% if u.directorRole==1 %}{% for d in u.divisions %}<br>{% endfor %}{% endif %}
-                        {% if u.coachRole==1 %}
+                        {% for role in u.roles if role!=null %}
+                        {% if role.name == 'Admin'%}<br>{% endif %}
+                        {% if role.name == 'Director'%}{% for d in u.divisions %}<br>{% endfor %}{% endif %}
+                        {% if role.name == 'Coach'%}
                             {% for c in u.coachTeams %}
                                 <p>{{ c.name }}</p>
                             {% endfor %}
                         {% endif %}
-                        {% if u.managerRole==1 %}
+                        {% if role.name == 'Manager'%}
                             {% for m in u.managerTeams %}
                                 <p>{{ m.name }}</p>
                             {% endfor %}
                         {% endif %}
+                        {% endfor %}
 					</td>
 					<td>
 					<a href="{{path ('users_edit',{'id':u.id}) }}">

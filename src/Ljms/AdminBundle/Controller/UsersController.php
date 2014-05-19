@@ -201,31 +201,31 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
                 $em=$this->getDoctrine()->getManager();
                 switch ($role){
                     case '1':
-                        $role=$em->getRepository('LjmsCoreBundle:Role')->find('1');
+                        $role=$em->getRepository('LjmsCoreBundle:Role')->findOneBy(array('name'=>'Admin'));
                         $profile->addRole($role);
                         break;
                     case '2':
-                        $role=$em->getRepository('LjmsCoreBundle:Role')->find('2');
+                        $role=$em->getRepository('LjmsCoreBundle:Role')->findOneBy(array('name'=>'Director'));
                         $profile->addRole($role);
                         $division = $em->getRepository('LjmsCoreBundle:Division')->find($division_id);
                         $division->setProfile($profile);
                         $em->flush();
                         break;
                     case '3':
-                        $role=$em->getRepository('LjmsCoreBundle:Role')->find('3');
+                        $role=$em->getRepository('LjmsCoreBundle:Role')->findOneBy(array('name'=>'Coach'));
                         $profile->addRole($role);
                         $team = $em->getRepository('LjmsCoreBundle:Team')->find($team_id);
                         $team->setCoachProfile($profile);
                         $em->flush();
                         break;
                     case '4':
-                        $role=$em->getRepository('LjmsCoreBundle:Role')->find('4');
+                        $role=$em->getRepository('LjmsCoreBundle:Role')->findOneBy(array('name'=>'Manager'));
                         $profile->addRole($role);
                         $team = $em->getRepository('LjmsCoreBundle:Team')->find($team_id);
                         $team->setManagerProfile($profile);
                         $em->flush();
                     case '5':
-                        $role=$em->getRepository('LjmsCoreBundle:Role')->find('5');
+                        $role=$em->getRepository('LjmsCoreBundle:Role')->findOneBy(array('name'=>'Guardian'));
                         $profile->addRole($role);
                 }
             }

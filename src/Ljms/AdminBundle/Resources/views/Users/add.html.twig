@@ -60,7 +60,7 @@
 					</tr>
                 {% if profile is defined %}
                 {% for role in profile.roles if profile.roles!=null %}
-                {% if role.id==1 %}
+                {% if role.name=='Admin' %}
                     <tr class="1_undefined_undefined">
                         <input type="hidden" name="current_role[]" value="1|undefined|undefined">
                         <td>Admin</td>
@@ -69,7 +69,7 @@
                         <td class="delete"><input type="button" onclick="deleteRole(this)" value="Delete Role" class="1_undefined_undefined"></td>
                     </tr>
                 {% endif %}
-                {% if role.id==2 %}
+                    {% if role.name=='Director' %}
                     {% for d in profile.divisions %}
                     <tr class="2_{{ d.id }}_undefined">
                         <input type="hidden" name="current_role[]" value="2|{{ d.id }}|undefined">
@@ -80,7 +80,7 @@
                     </tr>
                     {% endfor %}
                 {% endif %}
-                {% if role.id==3 %}
+                    {% if role.name=='Coach' %}
                     {% for c in profile.coachTeams %}
                         <tr class="3_{{ c.division.id }}_{{ c.id }}">
                             <input type="hidden" name="current_role[]" value="3|{{ c.division.id }}|{{ c.id }}">
@@ -91,7 +91,7 @@
                         </tr>
                     {% endfor %}
                 {% endif %}
-                {% if role.id==4 %}
+                    {% if role.name=='Manager' %}
                     {% for m in profile.managerTeams %}
                         <tr class="4_{{ m.division.id }}_{{ m.id }}">
                             <input type="hidden" name="current_role[]" value="4|{{ m.division.id }}|{{ m.id }}">
@@ -102,7 +102,7 @@
                         </tr>
                     {% endfor %}
                 {% endif %}
-                {% if role.id==5 %}
+                    {% if role.name=='Guardian' %}
                     <tr class="5_undefined_undefined">
                         <input type="hidden" name="current_role[]" value="5|undefined|undefined">
                         <td>Guardian</td>
