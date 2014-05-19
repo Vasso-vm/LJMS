@@ -1,6 +1,7 @@
 <?php
 
 namespace Ljms\AdminBundle\Controller;
+
 use Ljms\CoreBundle\Entity\Division;
 use Ljms\CoreBundle\Form\DivisionType;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +18,11 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
      */
 class DivisionController extends Controller
 {
-    const DIR='/home/vasiliy/www/web/bundles/ljmshome/tmp';
+    /*
+     * Directory for preview uploaded image
+     */
+    const TMP_DIR='/web/upload/tmp';
+
     /**
      * @Route("", name="division_index")
      * @Template()
@@ -66,6 +71,7 @@ class DivisionController extends Controller
         );
     }
     /**
+     * Add new division
      * @Route("/add", name="division_add")
      * @Template()
      */
@@ -86,6 +92,7 @@ class DivisionController extends Controller
         );
     }
     /**
+     * Edit division
      * @Route("/edit/{id}", name="division_edit")
      * @Template("LjmsAdminBundle:Division:add.html.twig")
      */
@@ -131,6 +138,7 @@ class DivisionController extends Controller
         return $this->redirect($this->generateUrl('division_index'));
     }
     /**
+     * Multiple delete,edit status
      * @Route("/group", name="division_group")
      */
     public function groupAction(Request $request)
@@ -156,6 +164,12 @@ class DivisionController extends Controller
         }
         return $this->redirect($this->generateUrl('division_index'));
     }
+
+    /**
+     * Multiple change status
+     * @param array $check
+     * @param boolean $is_active
+     */
     private function active($check,$is_active)
     {
         $em=$this->getDoctrine()->getManager();
@@ -166,6 +180,8 @@ class DivisionController extends Controller
         $em->flush();
     }
     /**
+     * Get division list for change director
+     * @Return array (int id, str name)
      * @Route("/get", name="division_get")
      */
     public function getAction(){
@@ -173,19 +189,18 @@ class DivisionController extends Controller
         return new Response(json_encode($division_list));
     }
     /**
+     * Ajax upload photo
      * @Route("/logo", name="division_add_logo")
      */
     public function addLogoAction(Request $request){
         $file=$request->files->get('logo');
         $extension = $file->guessExtension();
         if (!$extension) {
-            $extension = 'bin';
+            return null;
         }
         $name=rand(1,999).'.'.$extension;
-        $file->move(self::DIR,$name);
-        return new Response('/web/bundles/ljmshome/tmp/'.$name);
+        $file->move(__DIR__.'/../../../..'.self::TMP_DIR,$name);
+        return new Response(self::TMP_DIR.'/'.$name);
     }
-
-
 }
 ?>

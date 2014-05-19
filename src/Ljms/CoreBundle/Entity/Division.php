@@ -18,6 +18,7 @@
 	 */
 	class Division{
 
+    const UPLOAD_PHOTO_DIR='upload/division/photo';
 	/**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -129,7 +130,7 @@
     {
         // get rid of the __DIR__ so it doesn't screw up
         // when displaying uploaded doc/image in the view.
-        return 'bundles/ljmshome/avatars';
+        return self::UPLOAD_PHOTO_DIR;
     }
     /**
      * Set file
@@ -169,10 +170,6 @@
         if (null === $this->getFile()) {
             return;
         }
-
-        // if there is an error when moving the file, an exception will
-        // be automatically thrown by move(). This will properly prevent
-        // the entity from being persisted to the database on error
         $this->getFile()->move($this->getUploadRootDir(), $this->photo);
         // check if we have an old image
         if (isset($this->temp)) {
@@ -235,9 +232,8 @@
     }
 
     /**
-     * Set isActive
-     *
-     * @param boolean $isActive
+     * Set IsActive
+     * @param boolean $is_active
      * @return Division
      */
     public function setIsActive($is_active)
@@ -279,8 +275,6 @@
     {
         return $this->description;
     }
-
-
 
     /**
      * Set min_age
