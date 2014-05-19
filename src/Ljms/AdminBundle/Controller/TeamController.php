@@ -148,6 +148,7 @@ class TeamController extends Controller
     }
 
     /**
+     * Multiple change status
      * @Route("/group", name="team_group")
      */
     public function groupAction(Request $request)
@@ -173,7 +174,11 @@ class TeamController extends Controller
         }
         return $this->redirect($this->generateUrl('team_index'));
     }
-
+    /**
+     * Multiple change status
+     * @param array $check
+     * @param boolean $is_active
+     */
     private function active($check,$is_active)
     {
         $em=$this->getDoctrine()->getManager();
@@ -185,6 +190,7 @@ class TeamController extends Controller
     }
 
     /**
+     * Assign players to team
      * @Route("/assign/{id}", name="team_assign")
      * @Template()
      */
@@ -233,8 +239,8 @@ class TeamController extends Controller
     /**
      * @Route("/get", name="team_get")
      */
-    public function getAction(){
-        $id=intval($_POST['id']);
+    public function getAction(Request $request){
+        $id=$request->request->get('id');
         $team_list=$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getTeams($id);
         return new Response(json_encode($team_list));
     }

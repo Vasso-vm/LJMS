@@ -27,6 +27,7 @@ class SecurityController extends Controller
         ));
     }
     /**
+     * Recover password
      * @Route("/forgot", name="security_recover")
      * @Template()
      */
@@ -61,6 +62,12 @@ class SecurityController extends Controller
             'new_password'=>$new_password,
         );
     }
+
+    /**
+     * Send verification token to user email
+     * @param $email
+     * @param $token
+     */
     private function sendToken($email,$token){
         $link=$this->generateUrl('security_recover',array('token'=>$token),true);
         $message = \Swift_Message::newInstance()
@@ -71,6 +78,12 @@ class SecurityController extends Controller
         ;
         $this->get('mailer')->send($message);
     }
+
+    /**
+     * Send new password to user email
+     * @param $email
+     * @param $password
+     */
     private function sendPassword($email,$password){
         $message = \Swift_Message::newInstance()
             ->setSubject('New Password')

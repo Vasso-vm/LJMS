@@ -7,8 +7,6 @@
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\Response;
 
-
-
     /**
      * HomeController - edit/delete operations for backend-users (admins)
      * @Route("/home")

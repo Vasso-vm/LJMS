@@ -132,6 +132,11 @@ class LocationController extends Controller
         }
         return $this->redirect($this->generateUrl('location_index'));
     }
+    /**
+     * Multiple change status
+     * @param array $check
+     * @param boolean $is_active
+     */
     private function active($check,$is_active)
     {
         $em=$this->getDoctrine()->getManager();

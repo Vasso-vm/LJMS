@@ -142,6 +142,7 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
     }
 
     /**
+     * Multiple change status
      * @Route("/group", name="users_group")
      */
     public function groupAction(Request $request)
@@ -167,7 +168,11 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
         }
         return $this->redirect($this->generateUrl('users_index'));
     }
-
+    /**
+     * Multiple change status
+     * @param array $check
+     * @param boolean $is_active
+     */
     private function active($check,$is_active)
     {
         $em=$this->getDoctrine()->getManager();
@@ -178,6 +183,11 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
         $em->flush();
     }
 
+    /**
+     * Set role for user
+     * @param $role
+     * @param $profile
+     */
     private function setRole($role,&$profile)
     {
         $this->deleteRole($profile);
@@ -217,6 +227,10 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
         }
     }
 
+    /**
+     * Delete role from user
+     * @param $profile
+     */
     private function deleteRole(&$profile)
     {
         $profile->setAdminRole(0);

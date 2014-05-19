@@ -153,6 +153,11 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
         }
         return $this->redirect($this->generateUrl('guardian_index'));
     }
+    /**
+     * Multiple change status
+     * @param array $check
+     * @param boolean $is_active
+     */
     private function active($check,$is_active)
     {
         $em=$this->getDoctrine()->getManager();
