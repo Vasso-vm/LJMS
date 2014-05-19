@@ -6,6 +6,7 @@
     use Doctrine\Common\Collections\ArrayCollection;
     use Symfony\Component\Validator\Constraints as Assert;
     use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+    use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 
 	/**
 	 * @ORM\Entity
@@ -777,5 +778,27 @@
     public function getAddress()
     {
         return $this->address;
+    }
+    public function GeneratePassword($length){
+        $chars = 'abdefhiknrstyzABDEFGHKNQRSTYZ23456789';
+        $numChars = strlen($chars);
+        $string = '';
+        for ($i = 0; $i < $length; $i++){
+            $string .= substr($chars, rand(1, $numChars) - 1, 1);
+        }
+        return $string;
+    }
+    public function generateToken(){
+        $token=md5($this->GeneratePassword(6));
+        $this->setVerification($token);
+        return true;
+    }
+    public function confirmPassword(){
+        $pass=$this->GeneratePassword(6);
+        $encoder = new MessageDigestPasswordEncoder('sha512', true, 10);
+        $password = $encoder->encodePassword($pass, $this->getSalt());
+        $this->setPassword($password);
+        $this->setVerification(null);
+        return $pass;
     }
 }
