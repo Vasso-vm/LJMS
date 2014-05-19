@@ -74,7 +74,8 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
         if ($form->isValid()){
             $password = $encoder->encodePassword($guardian->getPassword(), $guardian->getSalt());
             $guardian->setPassword($password);
-            $guardian->setGuardianRole(1);
+            $role=$this->getDoctrine()->getRepository('LjmsCoreBundle:Role')->findOneBy(array('name'=>'Guardian'));
+            $guardian->addRole($role);
             $em = $this->getDoctrine()->getManager();
             $em->persist($guardian);
             $em->flush();

@@ -26,7 +26,8 @@
                 $page=($page-1)*$limit;
             }
             $query = $this->createQueryBuilder(self::TABLE_ALIAS)
-                ->where(self::TABLE_ALIAS.'.guardian_role=1')
+                ->leftJoin(self::TABLE_ALIAS.'.roles','role')
+                ->where("role.name='Guardian'")
                 ->orderBy(self::TABLE_ALIAS.'.id','ASC');
             switch ($filter['status']){
                 case 'active':

@@ -224,6 +224,7 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
                         $team = $em->getRepository('LjmsCoreBundle:Team')->find($team_id);
                         $team->setManagerProfile($profile);
                         $em->flush();
+                        break;
                     case '5':
                         $role=$em->getRepository('LjmsCoreBundle:Role')->findOneBy(array('name'=>'Guardian'));
                         $profile->addRole($role);
