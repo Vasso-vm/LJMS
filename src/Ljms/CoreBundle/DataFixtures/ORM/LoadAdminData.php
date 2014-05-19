@@ -25,7 +25,7 @@ class LoadAdminData extends AbstractFixture implements OrderedFixtureInterface
         $userAdmin->setLastname('admin');
         $userAdmin->setEmail('admin@admin.com');
         $userAdmin->setHomePhone('123');
-        $userAdmin->setAdminRole(true);
+        $userAdmin->addRole($this->getReference('role'));
         $userAdmin->setAddress($this->getReference('address'));
         $manager->persist($userAdmin);
         $manager->flush();
@@ -35,7 +35,7 @@ class LoadAdminData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function getOrder()
     {
-        return 3; // the order in which fixtures will be loaded
+        return 4; // the order in which fixtures will be loaded
     }
 }
 ?>
