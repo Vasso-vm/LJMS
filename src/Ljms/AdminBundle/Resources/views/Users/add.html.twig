@@ -59,7 +59,8 @@
 						<td></td>
 					</tr>
                 {% if profile is defined %}
-                {% if profile.adminRole!=0 %}
+                {% for role in profile.roles if profile.roles!=null %}
+                {% if role.id==1 %}
                     <tr class="1_undefined_undefined">
                         <input type="hidden" name="current_role[]" value="1|undefined|undefined">
                         <td>Admin</td>
@@ -68,7 +69,7 @@
                         <td class="delete"><input type="button" onclick="deleteRole(this)" value="Delete Role" class="1_undefined_undefined"></td>
                     </tr>
                 {% endif %}
-                {% if profile.directorRole!=0 %}
+                {% if role.id==2 %}
                     {% for d in profile.divisions %}
                     <tr class="2_{{ d.id }}_undefined">
                         <input type="hidden" name="current_role[]" value="2|{{ d.id }}|undefined">
@@ -79,7 +80,7 @@
                     </tr>
                     {% endfor %}
                 {% endif %}
-                {% if profile.coachRole!=0 %}
+                {% if role.id==3 %}
                     {% for c in profile.coachTeams %}
                         <tr class="3_{{ c.division.id }}_{{ c.id }}">
                             <input type="hidden" name="current_role[]" value="3|{{ c.division.id }}|{{ c.id }}">
@@ -90,7 +91,7 @@
                         </tr>
                     {% endfor %}
                 {% endif %}
-                {% if profile.managerRole!=0 %}
+                {% if role.id==4 %}
                     {% for m in profile.managerTeams %}
                         <tr class="4_{{ m.division.id }}_{{ m.id }}">
                             <input type="hidden" name="current_role[]" value="4|{{ m.division.id }}|{{ m.id }}">
@@ -101,7 +102,7 @@
                         </tr>
                     {% endfor %}
                 {% endif %}
-                {% if profile.guardianRole!=0 %}
+                {% if role.id==5 %}
                     <tr class="5_undefined_undefined">
                         <input type="hidden" name="current_role[]" value="5|undefined|undefined">
                         <td>Guardian</td>
@@ -110,6 +111,7 @@
                         <td class="delete"><input type="button" onclick="deleteRole(this)" value="Delete Role" class="5_undefined_undefined"></td>
                     </tr>
                 {% endif %}
+                {% endfor %}
                 {% endif %}
 				</table>
 				<div class="add_role">

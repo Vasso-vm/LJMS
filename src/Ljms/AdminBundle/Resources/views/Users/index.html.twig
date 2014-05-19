@@ -73,23 +73,25 @@
 					<td> {{u.homephone}}</td>
 					<td class="email">{{ u.email}}</td>
 					<td class="role">
-						{% if u.adminrole == 1%}
-							<p>Admin</p>
-						{% endif %}	
-						{% if u.directorrole == 1%}
-							Director
-                            {% for d in u.divisions %}<br>{% endfor %}
-						{% endif %}
-						{% if u.coachrole == 1%}
-							Coach
-                            {% for c in u.coachTeams %}<br>{% endfor %}
-						{% endif %}
-						{% if u.managerrole == 1%}
-							<p>Manager</p>
-						{% endif %}
-                        {% if u.guardianrole == 1%}
-                            <p>Guardian</p>
-                        {% endif %}
+                        {% for role in u.roles if role!=null %}
+                            {% if role.id == 1%}
+                                <p>Admin</p>
+                            {% endif %}
+                            {% if role.id == 2%}
+                                Director
+                                {% for d in u.divisions %}<br>{% endfor %}
+                            {% endif %}
+                            {% if role.id == 3%}
+                                Coach
+                                {% for c in u.coachTeams %}<br>{% endfor %}
+                            {% endif %}
+                            {% if role.id == 4%}
+                                <p>Manager</p>
+                            {% endif %}
+                            {% if role.id == 5%}
+                                <p>Guardian</p>
+                            {% endif %}
+                        {% endfor %}
                     </td>
 					<td class="division">
                         {% if u.adminRole ==1 %}<br>{% endif %}

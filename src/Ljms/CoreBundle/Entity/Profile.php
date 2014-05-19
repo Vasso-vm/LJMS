@@ -2,6 +2,7 @@
 	namespace Ljms\CoreBundle\Entity;
 
 	use Doctrine\ORM\Mapping as ORM;
+    use Symfony\Component\Security\Core\User\AdvancedUserInterface;
     use Symfony\Component\Security\Core\User\UserInterface;
     use Doctrine\Common\Collections\ArrayCollection;
     use Symfony\Component\Validator\Constraints as Assert;
@@ -18,7 +19,7 @@
      *      message = "This email is already used."
      * )
 	 */
-	class Profile implements UserInterface, \Serializable
+	class Profile implements AdvancedUserInterface, \Serializable
 	{
 
 	/**
@@ -110,31 +111,6 @@
     protected $is_active=1;
 
     /**
-     * @ORM\Column(type="boolean" , options={"default" = 0})
-     */
-    protected $admin_role=0;
-
-    /**
-     * @ORM\Column(type="boolean" , options={"default" = 0})
-     */
-    protected $director_role=0;
-
-    /**
-     * @ORM\Column(type="boolean" , options={"default" = 0})
-     */
-    protected $guardian_role=0;
-
-    /**
-     * @ORM\Column(type="boolean" , options={"default" = 0})
-     */
-    protected $manager_role=0;
-
-    /**
-     * @ORM\Column(type="boolean" , options={"default" = 0})
-     */
-    protected $coach_role=0;
-
-    /**
      * @ORM\OneToOne(targetEntity="Address",cascade={"persist"})
      * @ORM\JoinColumn(name="address_id", referencedColumnName="id")
      */
@@ -164,8 +140,14 @@
     /**
      * @ORM\OneToMany(targetEntity="Team", mappedBy="manager_profile")
      */
+
     protected $manager_teams;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
+     *
+     */
+    private $roles;
     /**
      * Constructor
      */
@@ -175,6 +157,7 @@
         $this->players = new ArrayCollection();
         $this->divisions = new ArrayCollection();
         $this->teams = new ArrayCollection();
+        $this->roles = new ArrayCollection();
     }
 
     /**
@@ -190,11 +173,30 @@
      *
      * @return string The username.
      */
+
     public function getUsername()
     {
         return $this->email;
     }
+        public function isAccountNonExpired()
+        {
+            return true;
+        }
 
+        public function isAccountNonLocked()
+        {
+            return true;
+        }
+
+        public function isCredentialsNonExpired()
+        {
+            return true;
+        }
+
+        public function isEnabled()
+        {
+            return true;
+        }
     /**
      * Геттер для пароля.
      *
@@ -240,24 +242,7 @@
      */
     public function getRoles()
     {
-        $role=array();
-        if ($this->admin_role==1){
-            array_push($role,'ROLE_ADMIN');
-            return $role;
-        }
-        if ($this->director_role==1){
-            array_push($role,'ROLE_DIRECTOR');
-        }
-        if ($this->guardian_role==1){
-            array_push($role,'ROLE_GUARDIAN');
-        }
-        if ($this->coach_role==1){
-            array_push($role,'ROLE_COACH');
-        }
-        if ($this->manager_role==1){
-            array_push($role,'ROLE_MANAGER');
-        }
-        return $role;
+        return $this->roles->toArray();
     }
 
     public function serialize()
@@ -486,121 +471,6 @@
     }
 
     /**
-     * Set admin_role
-     *
-     * @param boolean $adminRole
-     * @return Profile
-     */
-    public function setAdminRole($adminRole)
-    {
-        $this->admin_role = $adminRole;
-
-        return $this;
-    }
-
-    /**
-     * Get admin_role
-     *
-     * @return boolean 
-     */
-    public function getAdminRole()
-    {
-        return $this->admin_role;
-    }
-
-    /**
-     * Set director_role
-     *
-     * @param boolean $directorRole
-     * @return Profile
-     */
-    public function setDirectorRole($directorRole)
-    {
-        $this->director_role = $directorRole;
-
-        return $this;
-    }
-
-    /**
-     * Get director_role
-     *
-     * @return boolean 
-     */
-    public function getDirectorRole()
-    {
-        return $this->director_role;
-    }
-
-    /**
-     * Set guardian_role
-     *
-     * @param boolean $guardianRole
-     * @return Profile
-     */
-    public function setGuardianRole($guardianRole)
-    {
-        $this->guardian_role = $guardianRole;
-
-        return $this;
-    }
-
-    /**
-     * Get guardian_role
-     *
-     * @return boolean 
-     */
-    public function getGuardianRole()
-    {
-        return $this->guardian_role;
-    }
-
-    /**
-     * Set manager_role
-     *
-     * @param boolean $managerRole
-     * @return Profile
-     */
-    public function setManagerRole($managerRole)
-    {
-        $this->manager_role = $managerRole;
-
-        return $this;
-    }
-
-    /**
-     * Get manager_role
-     *
-     * @return boolean 
-     */
-    public function getManagerRole()
-    {
-        return $this->manager_role;
-    }
-
-    /**
-     * Set coach_role
-     *
-     * @param boolean $coachRole
-     * @return Profile
-     */
-    public function setCoachRole($coachRole)
-    {
-        $this->coach_role = $coachRole;
-
-        return $this;
-    }
-
-    /**
-     * Get coach_role
-     *
-     * @return boolean 
-     */
-    public function getCoachRole()
-    {
-        return $this->coach_role;
-    }
-
-    /**
      * Set alt_contact
      *
      * @param \Ljms\CoreBundle\Entity\AltContact $altContact
@@ -814,5 +684,28 @@
     $this->setPassword($password);
     $this->setVerification(null);
     return $pass;
+    }
+
+    /**
+     * Add roles
+     *
+     * @param \Ljms\CoreBundle\Entity\Role $roles
+     * @return Profile
+     */
+    public function addRole(\Ljms\CoreBundle\Entity\Role $roles)
+    {
+        $this->roles[] = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Remove roles
+     *
+     * @param \Ljms\CoreBundle\Entity\Role $roles
+     */
+    public function removeRole(\Ljms\CoreBundle\Entity\Role $roles)
+    {
+        $this->roles->removeElement($roles);
     }
 }

@@ -201,27 +201,32 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
                 $em=$this->getDoctrine()->getManager();
                 switch ($role){
                     case '1':
-                        $profile->setAdminRole(1);
+                        $role=$em->getRepository('LjmsCoreBundle:Role')->find('1');
+                        $profile->addRole($role);
                         break;
                     case '2':
-                        $profile->setDirectorRole(1);
+                        $role=$em->getRepository('LjmsCoreBundle:Role')->find('2');
+                        $profile->addRole($role);
                         $division = $em->getRepository('LjmsCoreBundle:Division')->find($division_id);
                         $division->setProfile($profile);
                         $em->flush();
                         break;
                     case '3':
-                        $profile->setCoachRole(1);
+                        $role=$em->getRepository('LjmsCoreBundle:Role')->find('3');
+                        $profile->addRole($role);
                         $team = $em->getRepository('LjmsCoreBundle:Team')->find($team_id);
                         $team->setCoachProfile($profile);
                         $em->flush();
                         break;
                     case '4':
-                        $profile->setManagerRole(1);
+                        $role=$em->getRepository('LjmsCoreBundle:Role')->find('4');
+                        $profile->addRole($role);
                         $team = $em->getRepository('LjmsCoreBundle:Team')->find($team_id);
                         $team->setManagerProfile($profile);
                         $em->flush();
                     case '5':
-                        $profile->setGuardianRole(1);
+                        $role=$em->getRepository('LjmsCoreBundle:Role')->find('5');
+                        $profile->addRole($role);
                 }
             }
         }
@@ -233,11 +238,10 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
      */
     private function deleteRole(&$profile)
     {
-        $profile->setAdminRole(0);
-        $profile->setDirectorRole(0);
-        $profile->setCoachRole(0);
-        $profile->setManagerRole(0);
-        $profile->setGuardianRole(0);
+        $roles=$profile->getRoles();
+        foreach ($roles as $role){
+            $profile->removeRole($role);
+        }
         foreach ($profile->getDivisions() as $division){
             $division->setProfile(null);
         }
