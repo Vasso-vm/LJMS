@@ -6,7 +6,15 @@
 	class DivisionRepository extends EntityRepository
 	{
 		const TABLE_ALIAS = 'division';
-		public function findDivisions($filter,$page,$limit,$id=null)
+
+        /**
+         * @param string $filter
+         * @param int $page
+         * @param int $limit
+         * @param int|null $id
+         * @return bool|Paginator
+         */
+        public function findDivisions($filter,$page,$limit,$id=null)
 		{
             if ($page<=0 or $limit<0){
                 return false;
@@ -41,20 +49,36 @@
             $paginator = new Paginator($query, $fetchJoinCollection = true);
             Return $paginator;
 		}
+
+        /**
+         * Get teams for division
+         * @param int $id - division id
+         * @return array
+         */
         public function getTeams($id){
             $qb = $this->createQueryBuilder(self::TABLE_ALIAS);
             $qb->leftJoin(self::TABLE_ALIAS.'.teams','teams');
-            $qb->add('select','teams.id,teams.name');
-            $qb->add('where',self::TABLE_ALIAS.'.id ='.$id);
+            $qb->select('teams.id, teams.name');
+            $qb->where(self::TABLE_ALIAS.'.id ='.$id);
             return $qb->getQuery()->getArrayResult();
         }
+
+        /**
+         * Get division`s name for division filter
+         * @return array
+         */
         public function getDivisionList()
         {
             $qb = $this->createQueryBuilder(self::TABLE_ALIAS);
-            $qb->add('select',self::TABLE_ALIAS.'.name');
+            $qb->select(self::TABLE_ALIAS.'.name');
             return $qb->getQuery()->getArrayResult();
         }
-		public function getDivisions()
+
+        /**
+         * Get divisions for change director
+         * @return array
+         */
+        public function getDivisions()
         {
             $qb = $this->createQueryBuilder('d');
             $qb->select('d.id,d.name');

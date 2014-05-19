@@ -11,10 +11,11 @@
 		const TABLE_ALIAS = 'profile';
 
         /**
-         * Find Guardians for guardians grid
-         * @param array $filter
+         * Find guardians for Guardians grid
+         * @param string $filter
          * @param int $page
          * @param int $limit
+         * @param string $id
          * @return bool|Paginator
          */
         public function findGuardians($filter,$page,$limit,$id=''){
@@ -45,9 +46,7 @@
             $paginator = new Paginator($query, $fetchJoinCollection = true);
             Return $paginator;
 		}
-        public function findGuardian($filter,$page,$limit){
 
-        }
         /**
          * Find Users for system users grid
          * @param array $filter
@@ -55,7 +54,6 @@
          * @param int $limit
          * @return bool|Paginator
          */
-
         public function findUsers($filter,$page,$limit){
             if ($page<=0 or $limit<0){
                 return false;
@@ -63,6 +61,8 @@
             if ($limit>0){
                 $page=($page-1)*$limit;
             }
+            $qb = $this->createQueryBuilder(self::TABLE_ALIAS)
+                ->orderBy(self::TABLE_ALIAS.'.id','ASC');
             switch ($filter['status']){
                 case 'active':
                     $status=0;
@@ -73,23 +73,17 @@
                 default:
                     $status=2;
             }
-            $where='p.is_active<>:status';
-            $join=null;
+            $qb->where(self::TABLE_ALIAS.".is_active!='$status'");
             if($filter['division']!='all'){
-                $where='(p.is_active<>:status and d.name=:division)';
-                $join='JOIN p.divisions d';
+                $division=$filter['division'];
+                $qb->leftJoin(self::TABLE_ALIAS.'.divisions','d')
+                    ->andWhere("d.name='$division");
             }
-            $dql="SELECT p FROM Ljms\CoreBundle\Entity\Profile p ".$join." WHERE ".$where." ORDER BY p.id ASC";
-            $query = $this->getEntityManager()->createQuery($dql);
-            $query->setParameter('status',$status);
             if ($limit!='all'){
-                $query->setFirstResult($page);
-                $query->setMaxResults($limit);
+                $qb->setFirstResult($page);
+                $qb->setMaxResults($limit);
             }
-            if($filter['division']!='all'){
-                $query->setParameter('division',$filter['division']);
-            }
-            $paginator = new Paginator($query, $fetchJoinCollection = true);
+            $paginator = new Paginator($qb, $fetchJoinCollection = true);
             Return $paginator;
         }
 	}

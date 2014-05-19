@@ -6,7 +6,18 @@
 	class TeamRepository extends EntityRepository
 	{
 		const TABLE_ALIAS = 'team';
-		public function findTeams($filter,$page,$limit,$director_id,$coach_id,$manager_id)
+
+        /**
+         * Find teams for team grid
+         * @param string $filter
+         * @param int $page
+         * @param int $limit
+         * @param int $director_id
+         * @param int $coach_id
+         * @param int $manager_id
+         * @return bool|Paginator
+         */
+        public function findTeams($filter,$page,$limit,$director_id,$coach_id,$manager_id)
 		{
             if ($page<=0 or $limit<0){
                 return false;

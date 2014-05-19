@@ -6,7 +6,16 @@
 	class PlayerRepository extends EntityRepository
 	{
 		const TABLE_ALIAS = 'player';
-		public function findPlayers($filter,$page,$limit,$guardian_id,$coach_id)
+
+        /**
+         * @param string $filter
+         * @param int $page
+         * @param int $limit
+         * @param int $guardian_id
+         * @param int $coach_id
+         * @return bool|Paginator
+         */
+        public function findPlayers($filter,$page,$limit,$guardian_id,$coach_id)
 		{
             if ($page<=0 or $limit<0){
                 return false;
