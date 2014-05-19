@@ -1,13 +1,13 @@
 <?php
 namespace Ljms\CoreBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 use Ljms\CoreBundle\Entity\Profile;
-use Ljms\CoreBundle\Entity\Address;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
-class LoadAdminData implements FixtureInterface
+class LoadAdminData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * {@inheritDoc}
@@ -15,11 +15,6 @@ class LoadAdminData implements FixtureInterface
     public function load(ObjectManager $manager)
     {
         $encoder = new MessageDigestPasswordEncoder('sha512', true, 10);
-
-        $address= new Address();
-        $address->setAddress('test');
-        $address->setCity('test');
-        $address->setZip('123');
 
         $userAdmin = new Profile();
 
@@ -31,10 +26,16 @@ class LoadAdminData implements FixtureInterface
         $userAdmin->setEmail('admin@admin.com');
         $userAdmin->setHomePhone('123');
         $userAdmin->setAdminRole(true);
-        $userAdmin->setAddress($address);
-
+        $userAdmin->setAddress($this->getReference('address'));
         $manager->persist($userAdmin);
         $manager->flush();
+    }
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 3; // the order in which fixtures will be loaded
     }
 }
 ?>
