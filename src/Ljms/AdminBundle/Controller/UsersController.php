@@ -104,6 +104,7 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
         $encoder = new MessageDigestPasswordEncoder('sha512', true, 10);
         $em=$this->getDoctrine()->getManager();
         $profile = $em->getRepository('LjmsCoreBundle:Profile')->find($id);
+        $old_pass=$profile->getPassword();
         if (!$profile) {
             throw $this->createNotFoundException(
                 'No profile found for id '.$id
@@ -112,8 +113,10 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
         $form = $this->createForm(new UserType(), $profile);
         $form->handleRequest($request);
         if ($form->isValid()){
+            if ($profile->getPassword()!==null){
             $password = $encoder->encodePassword($profile->getPassword(), $profile->getSalt());
             $profile->setPassword($password);
+            }else { $profile->setPassword($old_pass);}
             $this->setRole($request->request->get('current_role'),$profile);
             $em->flush();
             $request->getSession()->getFlashBag()->add('success', 'User profile successfully modified.');
@@ -240,17 +243,19 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
     private function deleteRole(&$profile)
     {
         $roles=$profile->getRoles();
-        foreach ($roles as $role){
-            $profile->removeRole($role);
-        }
-        foreach ($profile->getDivisions() as $division){
-            $division->setProfile(null);
-        }
-        foreach ($profile->getCoachTeams() as $coach_team ){
-            $coach_team->setCoachProfile(null);
-        }
-        foreach ($profile->getManagerTeams() as $manager_team ){
-            $manager_team->setManagerProfile(null);
+        if ($roles!=null){
+            foreach ($roles as $role){
+                $profile->removeRole($role);
+            }
+            foreach ($profile->getDivisions() as $division){
+                $division->setProfile(null);
+            }
+            foreach ($profile->getCoachTeams() as $coach_team ){
+                $coach_team->setCoachProfile(null);
+            }
+            foreach ($profile->getManagerTeams() as $manager_team ){
+                $manager_team->setManagerProfile(null);
+            }
         }
     }
 

@@ -7,8 +7,8 @@ security:
             encode-as-base64: true
             iterations: 10
     providers:
-          main:
-              entity: { class: LjmsCoreBundle:Profile, property: email }
+        main:
+            entity: { class: LjmsCoreBundle:Profile, property: email }
     firewalls:
             secured_area:
                 pattern:    ^/
@@ -16,6 +16,7 @@ security:
                 form_login: 
                     login_path: /admin
                     check_path: /login_check
+                    default_target_path: users_index
                 logout:
                     path:   /logout
                     target: /home
