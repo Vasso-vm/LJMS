@@ -67,6 +67,7 @@ class LocationController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($location);
             $em->flush();
+            $request->getSession()->getFlashBag()->add('success', 'New location has been added.');
             return $this->redirect($this->generateUrl('location_index'));
         }
         return array('method'=>'add','form'=>$form->createView());
@@ -88,6 +89,7 @@ class LocationController extends Controller
         if ($form->isValid()){
             $location->setGoogleMapLink('https://www.google.com/maps/place/'.$location->getAddress().'+'.$location->getState()->getName().'+'.$location->getCity());
             $em->flush();
+            $request->getSession()->getFlashBag()->add('success', 'Location successfully modified.');
             return $this->redirect($this->generateUrl('location_index'));
         }
         return array('method'=>'edit','form'=>$form->createView(),'edit_id'=>$id);

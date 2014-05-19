@@ -2,6 +2,13 @@
 	{% block content%}
 		<h2>Hi, Administrator </h2>
 		<h2>System Users</h2>
+        {% for label, flashes in app.session.flashbag.all %}
+            {% for flash in flashes %}
+                <p class="alert alert-{{ label }}">
+                    {{ flash }}
+                </p>
+            {% endfor %}
+        {% endfor %}
 		<form action="{{path ('users_index')}}" method="get" class="pull-left" id="filter_form">
 			<span class="filter"><strong>Filter by:</strong></span>
             <span class="filter"> Division:</span>

@@ -84,7 +84,8 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
                 $player->setAddress($player->getProfile()->getAddress());
             }
             $em->persist($player);
-            $em->flush();           
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('success', 'New player has been added.');
             return $this->redirect($this->generateUrl('player_index'));
         }
         return array('method'=>'add','form'=>$form->createView(),'guardian_id'=>$profile->getId(),'ajaxUrl'=>'team_get');
@@ -110,7 +111,8 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
             if ($player->getSharesGuardianAddress()==1){
                 $player->setAddress($player->getProfile()->getAddress());
             }
-            $em->flush();           
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('success', 'Player profile successfully modified.');
             return $this->redirect($this->generateUrl('player_index'));
         }
         return array(

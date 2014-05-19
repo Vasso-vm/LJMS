@@ -77,7 +77,8 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
             $guardian->setGuardianRole(1);
             $em = $this->getDoctrine()->getManager();
             $em->persist($guardian);
-            $em->flush();           
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('success', 'New guardian has been added.');
             return $this->redirect($this->generateUrl('guardian_index'));
         }
         return array(
@@ -105,7 +106,8 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
         if ($form->isValid()){
             $password = $encoder->encodePassword($guardian->getPassword(), $guardian->getSalt());
             $guardian->setPassword($password);
-            $em->flush();           
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('success', 'Guardian profile successfully modified.');
             return $this->redirect($this->generateUrl('guardian_index'));
         }
         return array(

@@ -84,7 +84,8 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
             $this->setRole($request->request->get('current_role'),$profile);
             $em = $this->getDoctrine()->getManager();
             $em->persist($profile);
-            $em->flush();           
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('success', 'New user has been added.');
             return $this->redirect($this->generateUrl('users_index'));
         }
         return array(
@@ -114,7 +115,8 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
             $password = $encoder->encodePassword($profile->getPassword(), $profile->getSalt());
             $profile->setPassword($password);
             $this->setRole($request->request->get('current_role'),$profile);
-            $em->flush();           
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('success', 'User profile successfully modified.');
             return $this->redirect($this->generateUrl('users_index'));
         }
         return array(

@@ -91,7 +91,8 @@ class TeamController extends Controller
         if ($form->isValid()){
             $em = $this->getDoctrine()->getManager();
             $em->persist($team);
-            $em->flush();           
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('success', 'New team has been added.');
             return $this->redirect($this->generateUrl('team_index'));
         }
         return array(
@@ -124,7 +125,8 @@ class TeamController extends Controller
         $form = $this->createForm(new TeamType(), $team,array('attr'=>array('id'=>$id)));
         $form->handleRequest($request);
         if ($form->isValid()){
-            $em->flush();           
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('success', 'Team successfully modified.');
             return $this->redirect($this->generateUrl('team_index'));
         }
         return array(

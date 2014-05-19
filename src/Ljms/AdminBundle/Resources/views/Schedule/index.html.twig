@@ -1,6 +1,13 @@
 {% extends 'LjmsAdminBundle:Default:base.html.twig' %}
 	{% block content%}
 		<h2>Game Schedule</h2>
+        {% for label, flashes in app.session.flashbag.all %}
+            {% for flash in flashes %}
+                <p class="alert alert-{{ label }}">
+                    {{ flash }}
+                </p>
+            {% endfor %}
+        {% endfor %}
 		<form action="{{path ('schedule_index')}}" method="get" class="pull-left" id="filter_form">
 			<span class="filter"><strong>Filter by:</strong></span>
             <span class="filter"> Division:</span>

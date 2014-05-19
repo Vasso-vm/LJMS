@@ -82,7 +82,8 @@ class DivisionController extends Controller
         if ($form->isValid()){
             $em = $this->getDoctrine()->getManager();
             $em->persist($division);
-            $em->flush();           
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('success', 'New division has been added.');
             return $this->redirect($this->generateUrl('division_index'));
         }
         return array(
@@ -114,7 +115,8 @@ class DivisionController extends Controller
         $form = $this->createForm(new DivisionType(), $division);
         $form->handleRequest($request);
         if ($form->isValid()){
-            $em->flush();           
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('success', 'Division successfully modified.');
             return $this->redirect($this->generateUrl('division_index'));
         }
         return array(
@@ -135,6 +137,7 @@ class DivisionController extends Controller
         $division = $em->getRepository('LjmsCoreBundle:Division')->find($id);
         $em->remove($division);
         $em->flush();
+        $request->getSession()->getFlashBag()->add('success', 'Division successfully deleted.');
         return $this->redirect($this->generateUrl('division_index'));
     }
     /**
@@ -181,7 +184,6 @@ class DivisionController extends Controller
     }
     /**
      * Get division list for change director
-     * @Return array (int id, str name)
      * @Route("/get", name="division_get")
      */
     public function getAction(){

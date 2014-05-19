@@ -82,6 +82,7 @@ class ScheduleController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($schedule);
             $em->flush();
+            $request->getSession()->getFlashBag()->add('success', 'New schedule has been added.');
             return $this->redirect($this->generateUrl('schedule_index'));
         }
         return array(
@@ -113,6 +114,7 @@ class ScheduleController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()){
             $em->flush();
+            $request->getSession()->getFlashBag()->add('success', 'Schedule successfully modified.');
             return $this->redirect($this->generateUrl('schedule_index'));
         }
         return array(
