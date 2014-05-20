@@ -72,7 +72,11 @@ class ScheduleController extends Controller
         if ($form->isValid()){
             $em = $this->getDoctrine()->getManager();
             $em->persist($schedule);
-            $em->flush();
+            try{
+                $em->flush();
+            }catch(\Exception $e){
+                $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+            }
             $request->getSession()->getFlashBag()->add('success', 'New schedule has been added.');
             return $this->redirect($this->generateUrl('schedule_index'));
         }
@@ -104,7 +108,11 @@ class ScheduleController extends Controller
         $form = $this->createForm(new ScheduleType(), $schedule);
         $form->handleRequest($request);
         if ($form->isValid()){
-            $em->flush();
+            try{
+                $em->flush();
+            }catch(\Exception $e){
+                $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+            }
             $request->getSession()->getFlashBag()->add('success', 'Schedule successfully modified.');
             return $this->redirect($this->generateUrl('schedule_index'));
         }
@@ -120,11 +128,15 @@ class ScheduleController extends Controller
      * @Method("DELETE")
      * @CsrfProtector(intention="delete_schedule", name="_token")
      */
-    public function deleteAction($id){
+    public function deleteAction(Request $request,$id){
         $em=$this->getDoctrine()->getManager();
         $schedule = $em->getRepository('LjmsCoreBundle:Schedule')->find($id);
         $em->remove($schedule);
-        $em->flush();
+        try{
+            $em->flush();
+        }catch(\Exception $e){
+            $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+        }
         return $this->redirect($this->generateUrl('schedule_index'));
     }
 
@@ -150,7 +162,11 @@ class ScheduleController extends Controller
         $form = $this->createForm(new ResultType(), $schedule);
         $form->handleRequest($request);
         if ($form->isValid()){
-            $em->flush();
+            try{
+                $em->flush();
+            }catch(\Exception $e){
+                $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+            }
             return $this->redirect($this->generateUrl('schedule_index'));
         }
         return array('form'=>$form->createView(),'edit_id'=>$id);
@@ -170,7 +186,11 @@ class ScheduleController extends Controller
                     foreach($schedules as $schedule){
                         $em->remove($schedule);
                     }
-                    $em->flush();
+                    try{
+                        $em->flush();
+                    }catch(\Exception $e){
+                        $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+                    }
                     break;
             }
         }

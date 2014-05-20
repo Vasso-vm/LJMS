@@ -79,7 +79,11 @@ class TeamController extends Controller
         if ($form->isValid()){
             $em = $this->getDoctrine()->getManager();
             $em->persist($team);
-            $em->flush();
+            try{
+                $em->flush();
+            }catch(\Exception $e){
+                $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+            }
             $request->getSession()->getFlashBag()->add('success', 'New team has been added.');
             return $this->redirect($this->generateUrl('team_index'));
         }
@@ -113,7 +117,11 @@ class TeamController extends Controller
         $form = $this->createForm(new TeamType(), $team,array('attr'=>array('id'=>$id)));
         $form->handleRequest($request);
         if ($form->isValid()){
-            $em->flush();
+            try{
+                $em->flush();
+            }catch(\Exception $e){
+                $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+            }
             $request->getSession()->getFlashBag()->add('success', 'Team successfully modified.');
             return $this->redirect($this->generateUrl('team_index'));
         }
@@ -131,7 +139,11 @@ class TeamController extends Controller
         $em=$this->getDoctrine()->getManager();
         $profile = $em->getRepository('LjmsCoreBundle:Team')->find($id);
         $em->remove($profile);
-        $em->flush();
+        try{
+            $em->flush();
+        }catch(\Exception $e){
+            $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+        }
         return $this->redirect($this->generateUrl('team_index'));
     }
 
@@ -156,7 +168,11 @@ class TeamController extends Controller
                     foreach($teams as $team){
                         $em->remove($team);
                     }
-                    $em->flush();
+                    try{
+                        $em->flush();
+                    }catch(\Exception $e){
+                        $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+                    }
                     break;
             }
         }
@@ -216,7 +232,11 @@ class TeamController extends Controller
                     $player->setTeam(null);
                 }
             }
-            $em->flush();
+            try{
+                $em->flush();
+            }catch(\Exception $e){
+                $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+            }
             return $this->redirect($this->generateUrl('team_index'));
         }
         return array(

@@ -40,7 +40,11 @@ class SecurityController extends Controller
             $user=$em->getRepository('LjmsCoreBundle:Profile')->findBy(array('verification'=>$token));
             if ($user[0]!==null){
                 $pass=$user[0]->confirmPassword();
-                $em->flush();
+                try{
+                    $em->flush();
+                }catch(\Exception $e){
+                    $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+                }
                 $this->sendPassword($user[0]->getEmail(),$pass);
                 $new_password=true;
             }
@@ -49,7 +53,11 @@ class SecurityController extends Controller
             $email=$request->get('email');
             $user=$em->getRepository('LjmsCoreBundle:Profile')->findBy(array('email'=>$email));
             if ($user[0]!== null and $user[0]->generateToken()){
-                $em->flush();
+                try{
+                    $em->flush();
+                }catch(\Exception $e){
+                    $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+                }
                 $this->sendToken($email,$user[0]->getVerification());
                 $message=true;
             }else{$message=false;}

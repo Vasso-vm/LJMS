@@ -125,7 +125,11 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
         $em=$this->getDoctrine()->getManager();
         $profile = $em->getRepository('LjmsCoreBundle:Profile')->find($id);
         $em->remove($profile);
-        $em->flush();
+        try{
+            $em->flush();
+        }catch(\Exception $e){
+            $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+        }
         return $this->redirect($this->generateUrl('users_index'));
     }
 

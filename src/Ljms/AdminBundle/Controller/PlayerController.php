@@ -75,7 +75,11 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
                 $player->setAddress($player->getProfile()->getAddress());
             }
             $em->persist($player);
-            $em->flush();
+            try{
+                $em->flush();
+            }catch(\Exception $e){
+                $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+            }
             $request->getSession()->getFlashBag()->add('success', 'New player has been added.');
             return $this->redirect($this->generateUrl('player_index'));
         }
@@ -106,7 +110,11 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
             if ($player->getSharesGuardianAddress()==1){
                 $player->setAddress($player->getProfile()->getAddress());
             }
-            $em->flush();
+            try{
+                $em->flush();
+            }catch(\Exception $e){
+                $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+            }
             $request->getSession()->getFlashBag()->add('success', 'Player profile successfully modified.');
             return $this->redirect($this->generateUrl('player_index'));
         }
@@ -125,7 +133,11 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
         $em=$this->getDoctrine()->getManager();
         $player = $em->getRepository('LjmsCoreBundle:Player')->find($id);
         $em->remove($player);
-        $em->flush();
+        try{
+            $em->flush();
+        }catch(\Exception $e){
+            $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+        }
         return $this->redirect($this->generateUrl('player_index'));
     }
     /**
@@ -148,7 +160,11 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
                     foreach($players as $player){
                         $em->remove($player);
                     }
-                    $em->flush();
+                    try{
+                        $em->flush();
+                    }catch(\Exception $e){
+                        $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+                    }
                     break;
             }
         }
@@ -166,7 +182,11 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
         foreach($players as $player){
             $player->setIsActive($is_active);
         }
-        $em->flush();
+        try{
+            $em->flush();
+        }catch(\Exception $e){
+            $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+        }
     }
 
 }

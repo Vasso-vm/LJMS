@@ -69,7 +69,11 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
             $guardian->addRole($role);
             $em = $this->getDoctrine()->getManager();
             $em->persist($guardian);
-            $em->flush();
+            try{
+                $em->flush();
+            }catch(\Exception $e){
+                $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+            }
             $request->getSession()->getFlashBag()->add('success', 'New guardian has been added.');
             return $this->redirect($this->generateUrl('guardian_index'));
         }
@@ -98,7 +102,11 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
         if ($form->isValid()){
             $password = $encoder->encodePassword($guardian->getPassword(), $guardian->getSalt());
             $guardian->setPassword($password);
-            $em->flush();
+            try{
+                $em->flush();
+            }catch(\Exception $e){
+                $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+            }
             $request->getSession()->getFlashBag()->add('success', 'Guardian profile successfully modified.');
             return $this->redirect($this->generateUrl('guardian_index'));
         }
@@ -139,7 +147,11 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
                     foreach($profiles as $profile){
                         $em->remove($profile);
                     }
-                    $em->flush();
+                    try{
+                        $em->flush();
+                    }catch(\Exception $e){
+                        $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+                    }
                     break;
             }
         }

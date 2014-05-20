@@ -32,7 +32,11 @@ class ProfileController extends Controller
             if ($form->isValid()){
                 $password = $encoder->encodePassword($profile->getPassword(), $profile->getSalt());
                 $profile->setPassword($password);
-                $em->flush();
+                try{
+                    $em->flush();
+                }catch(\Exception $e){
+                    $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+                }
                 return $this->redirect($this->generateUrl('users_index'));
             }
             return array(

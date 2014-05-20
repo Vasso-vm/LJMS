@@ -65,7 +65,11 @@ class DivisionController extends Controller
         if ($form->isValid()){
             $em = $this->getDoctrine()->getManager();
             $em->persist($division);
-            $em->flush();
+            try{
+                $em->flush();
+            }catch(\Exception $e){
+                $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+            }
             $request->getSession()->getFlashBag()->add('success', 'New division has been added.');
             return $this->redirect($this->generateUrl('division_index'));
         }
@@ -97,7 +101,11 @@ class DivisionController extends Controller
         $form = $this->createForm(new DivisionType(), $division);
         $form->handleRequest($request);
         if ($form->isValid()){
-            $em->flush();
+            try{
+                $em->flush();
+            }catch(\Exception $e){
+                $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+            }
             $request->getSession()->getFlashBag()->add('success', 'Division successfully modified.');
             return $this->redirect($this->generateUrl('division_index'));
         }
@@ -117,7 +125,11 @@ class DivisionController extends Controller
         $em=$this->getDoctrine()->getManager();
         $division = $em->getRepository('LjmsCoreBundle:Division')->find($id);
         $em->remove($division);
-        $em->flush();
+        try{
+            $em->flush();
+        }catch(\Exception $e){
+            $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+        }
         $request->getSession()->getFlashBag()->add('success', 'Division successfully deleted.');
         return $this->redirect($this->generateUrl('division_index'));
     }
@@ -142,7 +154,11 @@ class DivisionController extends Controller
                     foreach($divisions as $division){
                         $em->remove($division);
                     }
-                    $em->flush();
+                    try{
+                        $em->flush();
+                    }catch(\Exception $e){
+                        $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+                    }
                     break;
             }
         }

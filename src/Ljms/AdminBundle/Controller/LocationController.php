@@ -57,7 +57,11 @@ class LocationController extends Controller
             $location->setGoogleMapLink('https://www.google.com/maps/place/'.$location->getAddress().'+'.$location->getState()->getName().'+'.$location->getCity());
             $em = $this->getDoctrine()->getManager();
             $em->persist($location);
-            $em->flush();
+            try{
+                $em->flush();
+            }catch(\Exception $e){
+                $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+            }
             $request->getSession()->getFlashBag()->add('success', 'New location has been added.');
             return $this->redirect($this->generateUrl('location_index'));
         }
@@ -82,7 +86,11 @@ class LocationController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()){
             $location->setGoogleMapLink('https://www.google.com/maps/place/'.$location->getAddress().'+'.$location->getState()->getName().'+'.$location->getCity());
-            $em->flush();
+            try{
+                $em->flush();
+            }catch(\Exception $e){
+                $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+            }
             $request->getSession()->getFlashBag()->add('success', 'Location successfully modified.');
             return $this->redirect($this->generateUrl('location_index'));
         }
@@ -101,7 +109,11 @@ class LocationController extends Controller
         $em=$this->getDoctrine()->getManager();
         $location = $em->getRepository('LjmsCoreBundle:Location')->find($id);
         $em->remove($location);
-        $em->flush();
+        try{
+            $em->flush();
+        }catch(\Exception $e){
+            $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+        }
         return $this->redirect($this->generateUrl('location_index'));
     }
     /**
@@ -124,7 +136,11 @@ class LocationController extends Controller
                     foreach($locations as $location){
                         $em->remove($location);
                     }
-                    $em->flush();
+                    try{
+                        $em->flush();
+                    }catch(\Exception $e){
+                        $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+                    }
                     break;
             }
         }
