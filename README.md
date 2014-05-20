@@ -24,7 +24,6 @@ GIT REPO BRANCHES
 * master - main work branch
 
 
-
 TECHNOLOGIES
 ========================
 
@@ -33,16 +32,6 @@ TECHNOLOGIES
 * [Symfony Standard Edition](https://github.com/symfony/symfony-standard)
 
 * [DoctrineFixturesBundle](http://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html)
-
-* [StofDoctrineExtensionsBundle](https://github.com/stof/StofDoctrineExtensionsBundle)
-
-* [LiipImagineBundle](https://github.com/liip/LiipImagineBundle)
-
-* [PHPResqueBundle](https://github.com/sheknows/PHPResqueBundle)
-
-* [JMSSecurityExtraBundle](http://jmsyst.com/bundles/JMSSecurityExtraBundle)
-
-* [JMSSerializerBundle](http://jmsyst.com/bundles/JMSSerializerBundle)
 
 * [UserfulAnnotationsBundle](https://github.com/umbrella-web/Symfony2-UsefulAnnotationsBundle)
 
