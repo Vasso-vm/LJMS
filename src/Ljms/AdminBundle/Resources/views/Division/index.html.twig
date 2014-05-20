@@ -1,13 +1,8 @@
 {% extends 'LjmsAdminBundle:Default:base.html.twig' %}
+{% import 'LjmsTplBundle:Macros:general.html.twig' as macros %}
 	{% block content%}
 		<h2>Divisions</h2>
-        {% for label, flashes in app.session.flashbag.all %}
-            {% for flash in flashes %}
-                <p class="alert alert-{{ label }}">
-                    {{ flash }}
-                </p>
-            {% endfor %}
-        {% endfor %}
+        {{ macros.status_message }}
 		<form action="{{path ('division_index')}}" method="get" class="pull-left" id="filter_form">
 			<span class="filter"><strong>Filter by:</strong></span>
             <span class="filter"> Division:</span>
@@ -97,6 +92,5 @@
 				</tbody>
 			</table>
 		</form>
-        {% import 'LjmsTplBundle:Macros:general.html.twig' as pages %}
-        {{ pages.links('division_index',filter,page,limit,pagination)}}
+        {{ macros.links('division_index',filter,page,limit,pagination)}}
 	{% endblock %}

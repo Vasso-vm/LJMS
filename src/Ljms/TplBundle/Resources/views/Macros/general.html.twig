@@ -19,3 +19,13 @@
         </div>
     {% endif %}
 {% endmacro %}
+
+{% macro status_message () %}
+    {% for label, flashes in app.session.flashbag.all %}
+        {% for flash in flashes %}
+            <p class="alert alert-{{ label }}">
+                {{ flash }}
+            </p>
+        {% endfor %}
+    {% endfor %}
+{% endmacro %}
