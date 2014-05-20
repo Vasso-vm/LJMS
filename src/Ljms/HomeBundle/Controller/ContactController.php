@@ -26,7 +26,7 @@ class ContactController extends Controller
                 $message = \Swift_Message::newInstance()
                     ->setSubject($form->get('subject')->getData())
                     ->setFrom($form->get('email')->getData())
-                    ->setTo('contact@example.com')
+                    ->setTo($this->container->getParameter('admin_email'))
                     ->setBody('<p>'.$form->get('name')->getData().'</p>'.'<p>'.$form->get('message')->getData().'</p>');
                 $this->get('mailer')->send($message);
                 $request->getSession()->getFlashBag()->add('success', 'Your email has been sent! Thanks!');
