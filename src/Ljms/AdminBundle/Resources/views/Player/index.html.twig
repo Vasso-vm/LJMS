@@ -81,31 +81,6 @@
 				</tbody>
 			</table>
 		</form>
-        {% if limit!='all' and limit!=false and pagination.count_pages>0 %}
-            <div class="pagination">
-                <ul>
-                    {% if page!=1 %}
-                        <li><a href="{{ path('player_index') }}?status={{ filter.status }}&page=1&limit={{ limit }}">To Start</a></li>
-                        <li><a href="{{ path('player_index') }}?status={{ filter.status }}&page={{ page-1 }}&limit={{ limit }}">Previous</a></li>
-                    {% endif %}
-                    {% if pagination.count_pages>20 and page-3>pagination.center %}
-                        <li><a href="{{ path('player_index') }}?status={{ filter.status }}&page={{ pages/2|round }}&limit={{ limit }}">To Start</a></li>
-                        <li><span class="invizible">...</span></li>
-                    {% endif %}
-                    {% for i in pagination.i..pagination.end %}
-                        <li{% if i==page %} class="active"{% endif %}>
-                            <a href="{{ path('player_index') }}?status={{ filter.status }}&page={{ i }}&limit={{ limit }}">{{ i }}</a>
-                        </li>
-                    {% endfor %}
-                    {% if pagination.count_pages>20 and page+3<pagination.center %}
-                        <li><span class="invizible">...</span></li>
-                        <li><a href="{{ path('player_index') }}?status={{ filter.status }}&page={{ pages/2|round }}&limit={{ limit }}">To Start</a></li>
-                    {% endif %}
-                    {% if page!=pagination.count_pages %}
-                        <li><a href="{{ path('player_index') }}?status={{ filter.status }}&page={{ page+1 }}&limit={{ limit }}">Next</a></li>
-                        <li><a href="{{ path('player_index') }}?status={{ filter.status }}&page={{ pagination.count_pages }}&limit={{ limit }}">To end</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-        {% endif %}
+        {% import 'LjmsTplBundle:Macros:general.html.twig' as pages %}
+        {{ pages.links('player_index',filter,page,limit,pagination)}}
 	{% endblock %}

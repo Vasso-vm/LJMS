@@ -1,7 +1,6 @@
 <?php
 
 namespace Ljms\HomeBundle\Form;
-
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\AbstractType;
@@ -25,7 +24,6 @@ class CaptchaType extends AbstractType
             'compound'      => false,
             'public_key'    => null,
             'url' => null,
-
         ));
     }
 
