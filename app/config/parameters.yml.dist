@@ -13,3 +13,8 @@ parameters:
 
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    temp_dir: upload/temp
+    public_key: public
+    private_key: private
+    admin_email: admin@admin.com

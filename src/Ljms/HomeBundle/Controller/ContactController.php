@@ -21,8 +21,7 @@ class ContactController extends Controller
     public function indexAction(Request $request)
     {
         $form = $this->createForm(new ContactType());
-        if ($request->isMethod('POST')) {
-            $form->bind($request);
+        $form->handleRequest($request);
             if ($form->isValid()) {
                 $message = \Swift_Message::newInstance()
                     ->setSubject($form->get('subject')->getData())
@@ -33,7 +32,6 @@ class ContactController extends Controller
                 $request->getSession()->getFlashBag()->add('success', 'Your email has been sent! Thanks!');
                 return $this->redirect($this->generateUrl('contact_index'));
             }
-        }
         return array(
             'division_list'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisions(),
             'ajaxUrl'=>'home_get_schedule',
