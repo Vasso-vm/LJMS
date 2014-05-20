@@ -18,11 +18,6 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
      */
 class DivisionController extends Controller
 {
-    /*
-     * Directory for preview uploaded image
-     */
-    const TMP_DIR='/web/upload/tmp';
-
     /**
      * @Route("", name="division_index")
      * @Template()
@@ -196,13 +191,9 @@ class DivisionController extends Controller
      */
     public function addLogoAction(Request $request){
         $file=$request->files->get('logo');
-        $extension = $file->guessExtension();
-        if (!$extension) {
-            return null;
-        }
-        $name=rand(1,999).'.'.$extension;
-        $file->move(__DIR__.'/../../../..'.self::TMP_DIR,$name);
-        return new Response(self::TMP_DIR.'/'.$name);
+        $division= new Division();
+        $dir=$this->container->getParameter('temp_dir');
+        return new Response($division->uploadLogo($file,$dir));
     }
 }
 ?>

@@ -423,4 +423,13 @@
     {
         return $this->photo;
     }
+    public function uploadLogo($file,$dir){
+        $extension = $file->guessExtension();
+        if (!$extension) {
+            return null;
+        }
+        $name=rand(1,999).'.'.$extension;
+        $file->move(__DIR__.'/../../../..'.$dir,$name);
+        return $dir.'/'.$name;
+    }
 }
