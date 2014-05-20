@@ -32,22 +32,10 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
     {
         $users=false;
         $pagination=false;
-        $filter['status']=$request->get('status');
-        $filter['division']=$request->get('division');
-        $page=$request->get('page');
-        $limit=$request->get('limit');
-        if ($page===null){
-            $page=1;
-        }
-        if ($limit===null){
-            $limit=10;
-        }
-        if ($filter['division']===null){
-            $filter['division']='all';
-        }
-        if ($filter['status']===null){
-            $filter['status']='all';
-        }
+        $page = ($request->get('page')) ? $request->get('page') : 1;
+        $limit = ($request->get('limit')) ? $request->get('limit') : 10;
+        $filter['division'] = ($request->get('division')) ? $request->get('division') : 'all';
+        $filter['status'] = ($request->get('status')) ? $request->get('status') : 'all';
         $paginator=$this->getDoctrine()->getRepository('LjmsCoreBundle:Profile')->findUsers($filter,$page,$limit);
         if ($paginator!=false){
             if ($limit!='all'){
@@ -91,8 +79,6 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
         return array(
             'method'=>'add',
             'form'=>$form->createView(),
-            'url'=>'team_get',
-            'ajaxUrl'=>'division_get',
         );
     }
 
@@ -126,9 +112,8 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
             'method'=>'edit',
             'form'=>$form->createView(),
             'edit_id'=>$id,
-            'url'=>'team_get',
             'profile'=>$profile,
-            'ajaxUrl'=>'division_get');
+        );
     }
 
         /**

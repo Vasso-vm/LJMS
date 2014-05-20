@@ -26,22 +26,10 @@ class DivisionController extends Controller
     {
         $divisions=false;
         $pagination=false;
-        $filter['status']=$request->get('status');
-        $filter['division']=$request->get('division');
-        $page=$request->get('page');
-        $limit=$request->get('limit');
-        if ($page===null){
-            $page=1;
-        }
-        if ($limit===null){
-            $limit=10;
-        }
-        if ($filter['division']===null){
-            $filter['division']='all';
-        }
-        if ($filter['status']===null){
-            $filter['status']='all';
-        }
+        $page = ($request->get('page')) ? $request->get('page') : 1;
+        $limit = ($request->get('limit')) ? $request->get('limit') : 10;
+        $filter['division'] = ($request->get('division')) ? $request->get('division') : 'all';
+        $filter['status'] = ($request->get('status')) ? $request->get('status') : 'all';
         if ($this->get('security.context')->isGranted('ROLE_ADMIN')){
             $paginator=$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->findDivisions($filter,$page,$limit);
         }else{
@@ -84,7 +72,6 @@ class DivisionController extends Controller
         return array(
             'method'=>'add',
             'form'=>$form->createView(),
-            'ajaxUrl'=>'division_add_logo',
         );
     }
     /**
@@ -119,7 +106,6 @@ class DivisionController extends Controller
             'form'=>$form->createView(),
             'photo'=>$division->getWebPath(),
             'edit_id'=>$id,
-            'ajaxUrl'=>'division_add_logo',
         );
     }
     /**

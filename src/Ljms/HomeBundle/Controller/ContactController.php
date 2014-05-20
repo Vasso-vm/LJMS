@@ -34,8 +34,6 @@ class ContactController extends Controller
             }
         return array(
             'division_list'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisions(),
-            'ajaxUrl'=>'home_get_schedule',
-            'url'=>'home_schedule',
             'form'=> $form->createView(),
         );
     }

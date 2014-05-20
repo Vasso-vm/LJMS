@@ -21,8 +21,6 @@
         {
             return array(
                 'division_list'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisions(),
-                'ajaxUrl'=>'home_get_schedule',
-                'url'=>'home_schedule'
             );
         }
         /**
@@ -43,8 +41,6 @@
             return array(
                 'schedule'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Schedule')->findGames($year,$month,$day),
                 'division_list'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisions(),
-                'ajaxUrl'=>'home_get_schedule',
-                'url'=>'home_schedule'
             );
         }
         /**
@@ -56,8 +52,6 @@
             return array(
                 'division'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->find($division_id),
                 'division_list'=>$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getDivisions(),
-                'ajaxUrl'=>'home_get_schedule',
-                'url'=>'home_schedule'
             );
         }
     }

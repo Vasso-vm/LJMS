@@ -1,4 +1,9 @@
 {% extends 'LjmsAdminBundle:Default:base.html.twig' %}
+    {% if method=='add'%}
+        {% block ajax %}
+            var Url='{{path('team_index')}}';
+        {% endblock %}
+    {% endif %}
 	{% block content%}
 		<h2 class="add_user">
 			{% if method=='add'%}

@@ -26,26 +26,14 @@ class TeamController extends Controller
     {
         $teams=false;
         $pagination=false;
-        $filter['status']=$request->get('status');
-        $filter['division']=$request->get('division');
-        $page=$request->get('page');
-        $limit=$request->get('limit');
         $director_id=null;
         $coach_id=null;
         $manager_id=null;
         $id=$this->getUser()->getId();
-        if ($page===null){
-            $page=1;
-        }
-        if ($limit===null){
-            $limit=10;
-        }
-        if ($filter['division']===null){
-            $filter['division']='all';
-        }
-        if ($filter['status']===null){
-            $filter['status']='all';
-        }
+        $page = ($request->get('page')) ? $request->get('page') : 1;
+        $limit = ($request->get('limit')) ? $request->get('limit') : 10;
+        $filter['division'] = ($request->get('division')) ? $request->get('division') : 'all';
+        $filter['status'] = ($request->get('status')) ? $request->get('status') : 'all';
         if (!$this->get('security.context')->isGranted('ROLE_ADMIN')){
             if ($this->get('security.context')->isGranted('ROLE_DIRECTOR')){
                 $director_id=$this->getUser()->getId();
@@ -98,7 +86,7 @@ class TeamController extends Controller
         return array(
             'method'=>'add',
             'form'=>$form->createView(),
-            'Url'=>'team_index');
+        );
     }
     /**
      * @Route("/edit/{id}", name="team_edit")

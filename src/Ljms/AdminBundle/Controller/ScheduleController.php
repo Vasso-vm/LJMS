@@ -26,21 +26,12 @@ class ScheduleController extends Controller
     {
         $schedule=false;
         $pagination=false;
-        $filter['division']=$request->get('division');
-        $page=$request->get('page');
-        $limit=$request->get('limit');
         $manager_id=null;
         $coach_id=null;
         $id=$this->getUser()->getId();
-        if ($page===null){
-            $page=1;
-        }
-        if ($limit===null){
-            $limit=10;
-        }
-        if ($filter['division']===null){
-            $filter['division']='all';
-        }
+        $page = ($request->get('page')) ? $request->get('page') : 1;
+        $limit = ($request->get('limit')) ? $request->get('limit') : 10;
+        $filter['division'] = ($request->get('division')) ? $request->get('division') : 'all';
         if (!$this->get('security.context')->isGranted('ROLE_ADMIN')){
             if ($this->get('security.context')->isGranted('ROLE_MANAGER')){
                 $manager_id=$this->getUser()->getId();
@@ -88,7 +79,7 @@ class ScheduleController extends Controller
         return array(
             'method'=>'add',
             'form'=>$form->createView(),
-            'url'=>'team_get');
+        );
     }
 
     /**
@@ -121,7 +112,7 @@ class ScheduleController extends Controller
             'method'=>'edit',
             'form'=>$form->createView(),
             'edit_id'=>$id,
-            'url'=>'team_get');
+        );
     }
 
     /**

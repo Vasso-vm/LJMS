@@ -72,7 +72,7 @@ class SecurityController extends Controller
         $link=$this->generateUrl('security_recover',array('token'=>$token),true);
         $message = \Swift_Message::newInstance()
             ->setSubject('Forgot Password')
-            ->setFrom('send@example.com')
+            ->setFrom($this->container->getParameter('admin_email'))
             ->setTo($email)
             ->setBody($link)
         ;
@@ -87,7 +87,7 @@ class SecurityController extends Controller
     private function sendPassword($email,$password){
         $message = \Swift_Message::newInstance()
             ->setSubject('New Password')
-            ->setFrom('send@example.com')
+            ->setFrom($this->container->getParameter('admin_email'))
             ->setTo($email)
             ->setBody($password)
         ;

@@ -1,8 +1,10 @@
 {% extends 'LjmsTplBundle:Default:base.html.twig' %}
         {% block scripts %}
             <script>
-                {% if url is defined %} var Url='{{path(url,{'year':0,'month':0,'day':0})}}';{% endif %}
-                {% if ajaxUrl is defined %} var ajaxUrl='{{path(ajaxUrl)}}';{% endif %}
+                {% block ajax %}
+                    var Url='{{path('home_schedule',{'year':0,'month':0,'day':0})}}';
+                    var ajaxUrl='{{path('home_get_schedule')}}';
+                {% endblock %}
             </script>
         {% endblock %}
         {% block section%}

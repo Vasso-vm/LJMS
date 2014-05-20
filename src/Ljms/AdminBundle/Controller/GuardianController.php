@@ -27,18 +27,9 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
     {
         $guardians=false;
         $pagination=false;
-        $filter['status']=$request->get('status');
-        $page=$request->get('page');
-        $limit=$request->get('limit');
-        if ($page===null){
-            $page=1;
-        }
-        if ($limit===null){
-            $limit=10;
-        }
-        if ($filter['status']===null){
-            $filter['status']='all';
-        }
+        $page = ($request->get('page')) ? $request->get('page') : 1;
+        $limit = ($request->get('limit')) ? $request->get('limit') : 10;
+        $filter['status'] = ($request->get('status')) ? $request->get('status') : 'all';
         if ($this->get('security.context')->isGranted('ROLE_ADMIN')){
             $paginator=$this->getDoctrine()->getRepository('LjmsCoreBundle:Profile')->findGuardians($filter,$page,$limit);
         }else{

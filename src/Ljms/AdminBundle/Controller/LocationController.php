@@ -25,18 +25,9 @@ class LocationController extends Controller
     {
         $locations=false;
         $pagination=false;
-        $filter['status']=$request->get('status');
-        $page=$request->get('page');
-        $limit=$request->get('limit');
-        if ($page===null){
-            $page=1;
-        }
-        if ($limit===null){
-            $limit=10;
-        }
-        if ($filter['status']===null){
-            $filter['status']='all';
-        }
+        $page = ($request->get('page')) ? $request->get('page') : 1;
+        $limit = ($request->get('limit')) ? $request->get('limit') : 10;
+        $filter['status'] = ($request->get('status')) ? $request->get('status') : 'all';
         $paginator=$this->getDoctrine()->getRepository('LjmsCoreBundle:Location')->findLocations($filter,$page,$limit);
         if ($paginator!=false){
             if ($limit!='all'){
@@ -70,7 +61,10 @@ class LocationController extends Controller
             $request->getSession()->getFlashBag()->add('success', 'New location has been added.');
             return $this->redirect($this->generateUrl('location_index'));
         }
-        return array('method'=>'add','form'=>$form->createView());
+        return array(
+            'method'=>'add',
+            'form'=>$form->createView()
+        );
     }
     /**
      * @Route("/edit/{id}", name="location_edit")
@@ -92,7 +86,11 @@ class LocationController extends Controller
             $request->getSession()->getFlashBag()->add('success', 'Location successfully modified.');
             return $this->redirect($this->generateUrl('location_index'));
         }
-        return array('method'=>'edit','form'=>$form->createView(),'edit_id'=>$id);
+        return array(
+            'method'=>'edit',
+            'form'=>$form->createView(),
+            'edit_id'=>$id,
+        );
     }
     /**
      * @Route("/delete/{id}", name="location_delete")

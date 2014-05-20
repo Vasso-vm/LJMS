@@ -26,21 +26,12 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
     {
         $players=false;
         $pagination=false;
-        $filter['status']=$request->get('status');
-        $page=$request->get('page');
-        $limit=$request->get('limit');
         $guardian_id=$request->get('id');
         $coach_id=null;
         $id=$this->getUser()->getId();
-        if ($page===null){
-            $page=1;
-        }
-        if ($limit===null){
-            $limit=10;
-        }
-        if ($filter['status']===null){
-            $filter['status']='all';
-        }
+        $page = ($request->get('page')) ? $request->get('page') : 1;
+        $limit = ($request->get('limit')) ? $request->get('limit') : 10;
+        $filter['status'] = ($request->get('status')) ? $request->get('status') : 'all';
         if (!$this->get('security.context')->isGranted('ROLE_ADMIN')){
             if ($this->get('security.context')->isGranted('ROLE_GUARDIAN')){
                 $guardian_id=$this->getUser()->getId();
@@ -88,7 +79,11 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
             $request->getSession()->getFlashBag()->add('success', 'New player has been added.');
             return $this->redirect($this->generateUrl('player_index'));
         }
-        return array('method'=>'add','form'=>$form->createView(),'guardian_id'=>$profile->getId(),'ajaxUrl'=>'team_get');
+        return array(
+            'method'=>'add',
+            'form'=>$form->createView(),
+            'guardian_id'=>$profile->getId(),
+        );
     }
     /**
      * @Route("/edit/{id}", name="player_edit")
@@ -119,7 +114,6 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
             'method'=>'edit',
             'form'=>$form->createView(),
             'edit_id'=>$id,
-            'ajaxUrl'=>'team_get'
         );
     }
     /**
