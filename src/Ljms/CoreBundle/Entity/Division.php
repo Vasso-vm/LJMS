@@ -125,7 +125,8 @@
     {
         // the absolute directory path where uploaded
         // documents should be saved
-        return '/../../../../web/'.$this->getUploadDir();
+
+        return FCPATH.'/'.$this->getUploadDir();
     }
 
     protected function getUploadDir()
