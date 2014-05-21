@@ -16,11 +16,12 @@ security:
                 form_login: 
                     login_path: /admin
                     check_path: /login_check
-                    default_target_path: users_index
+                    default_target_path: dashboard_index
                 logout:
                     path:   /logout
                     target: /home
     access_control:
+        - { path: ^/admin/dashboard , roles: [ROLE_DIRECTOR, ROLE_COACH, ROLE_MANAGER, ROLE_GUARDIAN] }
         - { path: ^/admin/users , roles: ROLE_ADMIN }
         - { path: ^/admin/guardian/add , roles: ROLE_ADMIN }
         - { path: ^/admin/division/add , roles: ROLE_ADMIN }

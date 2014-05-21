@@ -69,8 +69,13 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: "%mailer_transport%"
-    host:      "%mailer_host%"
-    username:  "%mailer_user%"
-    password:  "%mailer_password%"
-    spool:     { type: memory }
+    transport:            "%mailer_transport%"
+    username:             "%mailer_user%"
+    password:             "%mailer_password%"
+    host:                 "%mailer_host%"
+    delivery_address:     "%mailer_delivery_address%"
+
+ljms_home:
+    public_key:   "%public_key%"
+    private_key:  "%private_key%"
+    locale_key:   "%locale_key%"
