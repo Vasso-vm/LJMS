@@ -117,10 +117,10 @@ class DivisionController extends Controller
      * @Route("/delete/{id}", name="division_delete")
      * @Method("DELETE")
      * @CsrfProtector(intention="delete_division", name="_token")
+     * @ParamConverter("division", class="LjmsCoreBundle:Division")
      */
-    public function deleteAction(Request $request,$id){
+    public function deleteAction(Request $request,$division){
         $em=$this->getDoctrine()->getManager();
-        $division = $em->getRepository('LjmsCoreBundle:Division')->find($id);
         $em->remove($division);
         try{
             $em->flush();

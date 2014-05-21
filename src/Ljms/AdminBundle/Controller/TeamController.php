@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
 use Ljms\CoreBundle\Component\Pagination\Pagination;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
     /**
      * TeamController - edit/delete operations for backend-users (admins)
      * @Route("admin/teams")
@@ -95,10 +96,10 @@ class TeamController extends Controller
     /**
      * @Route("/edit/{id}", name="team_edit")
      * @Template("LjmsAdminBundle:Team:add.html.twig")
+     * @ParamConverter("team", class="LjmsCoreBundle:Team")
      */
-    public function editAction(Request $request,$id){
+    public function editAction(Request $request,$team){
         $em=$this->getDoctrine()->getManager();
-        $team = $em->getRepository('LjmsCoreBundle:Team')->find($id);
         $profile=$team->getDivision()->getProfile();
         if (!$this->get('security.context')->isGranted('ROLE_ADMIN')){
             $id=$this->getUser()->getId();
@@ -111,10 +112,10 @@ class TeamController extends Controller
         }
         if (!$team) {
             throw $this->createNotFoundException(
-                'No profile found for id '.$id
+                'No profile found for id '.$team->getId()
             );
         }
-        $form = $this->createForm(new TeamType(), $team,array('attr'=>array('id'=>$id)));
+        $form = $this->createForm(new TeamType(), $team,array('attr'=>array('id'=>$team->getId())));
         $form->handleRequest($request);
         if ($form->isValid()){
             try{
@@ -128,17 +129,17 @@ class TeamController extends Controller
         return array(
             'method'=>'edit',
             'form'=>$form->createView(),
-            'edit_id'=>$id);
+            'edit_id'=>$team->getId());
     }
     /**
      * @Route("/delete/{id}", name="team_delete")
      * @Method("DELETE")
      * @CsrfProtector(intention="delete_team", name="_token")
+     * @ParamConverter("team", class="LjmsCoreBundle:Team")
      */
-    public function deleteAction(Request $request,$id){
+    public function deleteAction(Request $request,$team){
         $em=$this->getDoctrine()->getManager();
-        $profile = $em->getRepository('LjmsCoreBundle:Team')->find($id);
-        $em->remove($profile);
+        $em->remove($team);
         try{
             $em->flush();
         }catch(\Exception $e){
@@ -197,11 +198,11 @@ class TeamController extends Controller
      * Assign players to team
      * @Route("/assign/{id}", name="team_assign")
      * @Template()
+     * @ParamConverter("team", class="LjmsCoreBundle:Team")
      */
-    public function assignAction(Request $request,$id)
+    public function assignAction(Request $request,$team)
     {
         $em=$this->getDoctrine()->getManager();
-        $team = $em->getRepository('LjmsCoreBundle:Team')->find($id);
         $coach=$team->getCoachProfile();
         if (!$this->get('security.context')->isGranted('ROLE_ADMIN')){
             if ($coach===null){
@@ -213,10 +214,10 @@ class TeamController extends Controller
         }
         if (!$team) {
             throw $this->createNotFoundException(
-                'No profile found for id '.$id
+                'No profile found for id '.$team->getId()
             );
         }
-        $form = $this->createForm(new AssignType(),null, array('attr'=>array('id'=>$id,'team_name'=>$team->getName(),'division_name'=>$team->getDivision()->getName(),)));
+        $form = $this->createForm(new AssignType(),null, array('attr'=>array('id'=>$team->getId(),'team_name'=>$team->getName(),'division_name'=>$team->getDivision()->getName(),)));
         $form->handleRequest($request);
         if ($request->request->get('assign')){
             $assign=$request->request->get('assign');
@@ -241,7 +242,7 @@ class TeamController extends Controller
         }
         return array(
             'form'=>$form->createView(),
-            'edit_id'=>$id,);
+            'edit_id'=>$team->getId(),);
     }
 
     /**

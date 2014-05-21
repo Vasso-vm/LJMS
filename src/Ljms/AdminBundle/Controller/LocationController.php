@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
 use Ljms\CoreBundle\Component\Pagination\Pagination;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
     /**
      * LocationController - edit/delete operations for backend-users (admins)
      * @Route("admin/location")
@@ -73,13 +74,13 @@ class LocationController extends Controller
     /**
      * @Route("/edit/{id}", name="location_edit")
      * @Template("LjmsAdminBundle:Location:add.html.twig")
+     * @ParamConverter("location", class="LjmsCoreBundle:Location")
      */
-    public function editAction(Request $request,$id){
+    public function editAction(Request $request,$location){
         $em=$this->getDoctrine()->getManager();
-        $location = $em->getRepository('LjmsCoreBundle:Location')->find($id);
         if (!$location) {
             throw $this->createNotFoundException(
-                'No profile found for id '.$id
+                'No profile found for id '.$location->getId()
             );
         }
         $form = $this->createForm(new LocationType(), $location);
@@ -97,17 +98,17 @@ class LocationController extends Controller
         return array(
             'method'=>'edit',
             'form'=>$form->createView(),
-            'edit_id'=>$id,
+            'edit_id'=>$location->getId(),
         );
     }
     /**
      * @Route("/delete/{id}", name="location_delete")
      * @Method("DELETE")
      * @CsrfProtector(intention="delete_location", name="_token")
+     * @ParamConverter("location", class="LjmsCoreBundle:Location")
      */
-    public function deleteAction(Request $request,$id){
+    public function deleteAction(Request $request,$location){
         $em=$this->getDoctrine()->getManager();
-        $location = $em->getRepository('LjmsCoreBundle:Location')->find($id);
         $em->remove($location);
         try{
             $em->flush();

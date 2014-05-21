@@ -15,8 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
 use Ljms\CoreBundle\Component\Pagination\Pagination;
-
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
     /**
      * UsersController - edit/delete operations for backend-users (admins)
      * @Route("admin/users")
@@ -85,15 +84,15 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
     /**
      * @Route("/edit/{id}", name="users_edit")
      * @Template("LjmsAdminBundle:Users:add.html.twig")
+     * @ParamConverter("profile", class="LjmsCoreBundle:Profile")
      */
-    public function editAction(Request $request,$id){
+    public function editAction(Request $request,$profile){
         $encoder = new MessageDigestPasswordEncoder('sha512', true, 10);
         $em=$this->getDoctrine()->getManager();
-        $profile = $em->getRepository('LjmsCoreBundle:Profile')->find($id);
         $old_pass=$profile->getPassword();
         if (!$profile) {
             throw $this->createNotFoundException(
-                'No profile found for id '.$id
+                'No profile found for id '.$profile->getId()
             );
         }
         $form = $this->createForm(new UserType(), $profile);
@@ -111,7 +110,7 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
         return array(
             'method'=>'edit',
             'form'=>$form->createView(),
-            'edit_id'=>$id,
+            'edit_id'=>$profile->getId(),
             'profile'=>$profile,
         );
     }
@@ -120,10 +119,10 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
          * @Route("/delete/{id}", name="users_delete")
          * @Method("DELETE")
          * @CsrfProtector(intention="delete_user", name="_token")
+         * @ParamConverter("profile", class="LjmsCoreBundle:Profile")
          */
-        public function deleteAction(Request $request,$id){
+        public function deleteAction(Request $request,$profile){
         $em=$this->getDoctrine()->getManager();
-        $profile = $em->getRepository('LjmsCoreBundle:Profile')->find($id);
         $em->remove($profile);
         try{
             $em->flush();

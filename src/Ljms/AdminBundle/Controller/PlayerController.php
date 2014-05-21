@@ -92,16 +92,16 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
     /**
      * @Route("/edit/{id}", name="player_edit")
      * @Template("LjmsAdminBundle:Player:add.html.twig")
+     * @ParamConverter("player", class="LjmsCoreBundle:Player")
      */
-    public function editAction(Request $request,$id){
+    public function editAction(Request $request,$player){
         $em=$this->getDoctrine()->getManager();
-        $player = $em->getRepository('LjmsCoreBundle:Player')->find($id);
         if ((!$this->get('security.context')->isGranted('ROLE_ADMIN'))and($player->getProfile()->getId()!=$this->getUser()->getId())){
             return $this->redirect($this->generateUrl('player_index'));
         }
         if (!$player) {
             throw $this->createNotFoundException(
-                'No profile found for id '.$id
+                'No profile found for id '.$player->getId()
             );
         }
         $form = $this->createForm(new PlayerType(), $player);
@@ -121,17 +121,17 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
         return array(
             'method'=>'edit',
             'form'=>$form->createView(),
-            'edit_id'=>$id,
+            'edit_id'=>$player->getId(),
         );
     }
     /**
      * @Route("/delete/{id}", name="player_delete")
      * @Method("DELETE")
      * @CsrfProtector(intention="delete_player", name="_token")
+     * @ParamConverter("player", class="LjmsCoreBundle:Player")
      */
-    public function deleteAction(Request $request,$id){
+    public function deleteAction(Request $request,$player){
         $em=$this->getDoctrine()->getManager();
-        $player = $em->getRepository('LjmsCoreBundle:Player')->find($id);
         $em->remove($player);
         try{
             $em->flush();
@@ -170,12 +170,13 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
         }
         return $this->redirect($this->generateUrl('player_index'));
     }
+
     /**
-     * Multiple change status
-     * @param array $check
-     * @param boolean $is_active
+     * @param Request $request
+     * @param $check
+     * @param $is_active
      */
-    private function active($check,$is_active)
+    private function active(Request $request,$check,$is_active)
     {
         $em=$this->getDoctrine()->getManager();
         $players=$em->getRepository('LjmsCoreBundle:Player')->findBy(array('id'=>$check));

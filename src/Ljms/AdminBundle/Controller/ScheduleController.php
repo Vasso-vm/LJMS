@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
 use Ljms\CoreBundle\Component\Pagination\Pagination;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 /**
  * ScheduleController - edit/delete operations for backend-users (admins)
  * @Route("admin/schedule")
@@ -89,10 +90,10 @@ class ScheduleController extends Controller
     /**
      * @Route("/edit/{id}", name="schedule_edit")
      * @Template("LjmsAdminBundle:Schedule:add.html.twig")
+     * @ParamConverter("schedule", class="LjmsCoreBundle:Schedule")
      */
-    public function editAction(Request $request,$id){
+    public function editAction(Request $request,$schedule){
         $em=$this->getDoctrine()->getManager();
-        $schedule = $em->getRepository('LjmsCoreBundle:Schedule')->find($id);
         $profile=$schedule->getHomeTeam()->getManagerProfile();
         $profile1=$schedule->getVisitingTeam()->getManagerProfile();
         if (!$this->get('security.context')->isGranted('ROLE_ADMIN')){
@@ -102,7 +103,7 @@ class ScheduleController extends Controller
         }
         if (!$schedule) {
             throw $this->createNotFoundException(
-                'No profile found for id '.$id
+                'No profile found for id '.$schedule->getId()
             );
         }
         $form = $this->createForm(new ScheduleType(), $schedule);
@@ -119,7 +120,7 @@ class ScheduleController extends Controller
         return array(
             'method'=>'edit',
             'form'=>$form->createView(),
-            'edit_id'=>$id,
+            'edit_id'=>$schedule->getId(),
         );
     }
 
@@ -127,10 +128,10 @@ class ScheduleController extends Controller
      * @Route("/delete/{id}", name="schedule_delete")
      * @Method("DELETE")
      * @CsrfProtector(intention="delete_schedule", name="_token")
+     * @ParamConverter("schedule", class="LjmsCoreBundle:Schedule")
      */
-    public function deleteAction(Request $request,$id){
+    public function deleteAction(Request $request,$schedule){
         $em=$this->getDoctrine()->getManager();
-        $schedule = $em->getRepository('LjmsCoreBundle:Schedule')->find($id);
         $em->remove($schedule);
         try{
             $em->flush();
@@ -143,10 +144,10 @@ class ScheduleController extends Controller
     /**
      * @Route("/result/{id}", name="schedule_result")
      * @Template()
+     * @ParamConverter("schedule", class="LjmsCoreBundle:Schedule")
      */
-    public function resultAction(Request $request,$id){
+    public function resultAction(Request $request,$schedule){
         $em=$this->getDoctrine()->getManager();
-        $schedule = $em->getRepository('LjmsCoreBundle:Schedule')->find($id);
         $profile=$schedule->getHomeTeam()->getManagerProfile();
         $profile1=$schedule->getVisitingTeam()->getManagerProfile();
         if (!$this->get('security.context')->isGranted('ROLE_ADMIN')){
@@ -156,7 +157,7 @@ class ScheduleController extends Controller
         }
         if (!$schedule) {
             throw $this->createNotFoundException(
-                'No profile found for id '.$id
+                'No profile found for id '.$schedule->getId()
             );
         }
         $form = $this->createForm(new ResultType(), $schedule);
@@ -169,7 +170,9 @@ class ScheduleController extends Controller
             }
             return $this->redirect($this->generateUrl('schedule_index'));
         }
-        return array('form'=>$form->createView(),'edit_id'=>$id);
+        return array(
+            'form'=>$form->createView(),
+            'edit_id'=>$schedule->getId());
     }
 
     /**

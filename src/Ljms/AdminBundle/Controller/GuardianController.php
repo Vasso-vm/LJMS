@@ -6,6 +6,7 @@ use Ljms\CoreBundle\Entity\AltContact;
 use Ljms\CoreBundle\Form\UserType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -84,17 +85,17 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
     /**
      * @Route("/edit/{id}", name="guardian_edit")
      * @Template("LjmsAdminBundle:Guardian:add.html.twig")
+     * @ParamConverter("guardian", class="LjmsCoreBundle:Profile")
      */
-    public function editAction(Request $request,$id){
-        if ((!$this->get('security.context')->isGranted('ROLE_ADMIN'))and($id!=$this->getUser()->getId())){
+    public function editAction(Request $request,$guardian){
+        if ((!$this->get('security.context')->isGranted('ROLE_ADMIN'))and($guardian->getId()!=$this->getUser()->getId())){
             return $this->redirect($this->generateUrl('guardian_index'));
         }
         $encoder = new MessageDigestPasswordEncoder('sha512', true, 10);
         $em=$this->getDoctrine()->getManager();
-        $guardian = $em->getRepository('LjmsCoreBundle:Profile')->find($id);
         if (!$guardian) {
             throw $this->createNotFoundException(
-                'No profile found for id '.$id
+                'No profile found for id '.$guardian->getId()
             );
         }
         $form = $this->createForm(new UserType(), $guardian,array('attr'=>array('guardian'=>true)));
@@ -113,16 +114,16 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
         return array(
             'method'=>'edit',
             'form'=>$form->createView(),
-            'edit_id'=>$id);
+            'edit_id'=>$guardian->getId());
     }
     /**
      * @Route("/delete/{id}", name="guardian_delete")
      * @Method("DELETE")
      * @CsrfProtector(intention="delete_guardian", name="_token")
+     * @ParamConverter("profile", class="LjmsCoreBundle:Profile")
      */
-    public function deleteAction(Request $request,$id){
+    public function deleteAction(Request $request,$profile){
         $em=$this->getDoctrine()->getManager();
-        $profile = $em->getRepository('LjmsCoreBundle:Profile')->find($id);
         $em->remove($profile);
         $em->flush();
         return $this->redirect($this->generateUrl('guardian_index'));
