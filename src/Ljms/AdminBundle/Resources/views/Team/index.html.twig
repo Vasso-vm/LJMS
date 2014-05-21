@@ -124,6 +124,5 @@
 				</tbody>
 			</table>
 		</form>
-        {% import 'LjmsTplBundle:Macros:general.html.twig' as pages %}
-        {{ pages.links('team_index',filter,page,limit,pagination)}}
+        {{ macros.links('team_index',filter,page,limit,pagination)}}
 	{% endblock %}

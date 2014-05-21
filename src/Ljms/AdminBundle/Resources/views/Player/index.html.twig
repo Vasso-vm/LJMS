@@ -75,6 +75,5 @@
 				</tbody>
 			</table>
 		</form>
-        {% import 'LjmsTplBundle:Macros:general.html.twig' as pages %}
-        {{ pages.links('player_index',filter,page,limit,pagination)}}
+        {{ macros.links('player_index',filter,page,limit,pagination)}}
 	{% endblock %}

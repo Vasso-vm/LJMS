@@ -84,6 +84,5 @@
 				</tbody>
 			</table>
 		</form>
-        {% import 'LjmsTplBundle:Macros:general.html.twig' as pages %}
-        {{ pages.links('schedule_index',filter,page,limit,pagination)}}
+        {{ macros.links('schedule_index',filter,page,limit,pagination)}}
 	{% endblock %}

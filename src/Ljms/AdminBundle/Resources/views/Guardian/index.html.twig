@@ -1,7 +1,7 @@
 {% extends 'LjmsAdminBundle:Default:base.html.twig' %}
 	{% block content%}
 		<h2>Guardians</h2>
-        {{ macros.status_message }}
+        {{ macros.status_message () }}
 		<form action="{{path ('guardian_index')}}" method="get" class="pull-left" id="filter_form">
 			<span class="filter"><strong>Filter by:</strong></span>
 			<span class="filter"> Status:</span>
@@ -82,6 +82,5 @@
 				</tbody>
 			</table>
 		</form>
-        {% import 'LjmsTplBundle:Macros:general.html.twig' as pages %}
-        {{ pages.links('guardian_index',filter,page,limit,pagination)}}
+        {{ macros.links('guardian_index',filter,page,limit,pagination)}}
 	{% endblock %}

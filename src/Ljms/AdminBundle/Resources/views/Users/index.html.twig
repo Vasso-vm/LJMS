@@ -140,6 +140,5 @@
 				</tbody>
 			</table>
 		</form>
-        {% import 'LjmsTplBundle:Macros:general.html.twig' as pages %}
-            {{ pages.links('users_index',filter,page,limit,pagination)}}
+            {{ macros.links('users_index',filter,page,limit,pagination)}}
 	{% endblock %}
