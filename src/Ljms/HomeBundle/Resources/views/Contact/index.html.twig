@@ -20,7 +20,8 @@
                 {{form_row(form.email)}}
                 {{form_row(form.subject)}}
                 {{form_row(form.message)}}
-                {{ form_widget(form.captcha) }}
+
+                {{ form_widget(form.recaptcha) }}
             </fieldset>
             <div class="controls buttons">
                 {{form_widget(form.Submit,{attr:{'class':'btn'}})}}

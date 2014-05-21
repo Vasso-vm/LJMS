@@ -8,6 +8,8 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Collection;
+use Ljms\HomeBundle\Validator\Constraints\True;
+
 
 
 class ContactType extends AbstractType{
@@ -28,7 +30,16 @@ class ContactType extends AbstractType{
             ->add('message','textarea',array(
                 'error_bubbling' =>true,
             ))
-            ->add('captcha', new CaptchaType())
+            ->add('recaptcha', 'recaptcha',array(
+                'mapped' => false,
+                'attr' => array(
+                    'options' => array(
+                        'theme' => 'red'
+                    )),
+                'constraints'   => array(
+                    new True()
+                )
+            ))
             ->add('Submit', 'submit');
     }
     public function getName()

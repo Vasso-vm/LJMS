@@ -19,11 +19,14 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('ljms_home');
-
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
-
+        $rootNode
+            ->children()
+            ->scalarNode('public_key')->isRequired()->end()
+            ->scalarNode('private_key')->isRequired()->end()
+            ->booleanNode('enabled')->defaultTrue()->end()
+            ->scalarNode('locale_key')->defaultValue('kernel.default_locale')->end()
+            ->end()
+        ;
         return $treeBuilder;
     }
 }

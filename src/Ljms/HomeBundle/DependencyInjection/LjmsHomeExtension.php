@@ -22,10 +22,38 @@ class LjmsHomeExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.yml');
+        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.xml');
+
+        foreach ($config as $key => $value) {
+            $container->setParameter('recaptcha.'.$key, $value);
+        }
+
+        $this->registerWidget($container);
 
 
+    }
+    protected function registerWidget(ContainerBuilder $container)
+    {
+        $templatingEngines = $container->getParameter('templating.engines');
+
+        if (in_array('php', $templatingEngines)) {
+            $formRessource = 'LjmsHomeBundle:Form';
+
+            $container->setParameter('templating.helper.form.resources', array_merge(
+                $container->getParameter('templating.helper.form.resources'),
+                array($formRessource)
+            ));
+        }
+
+        if (in_array('twig', $templatingEngines)) {
+            $formRessource = 'LjmsTplBundle:Form:form.html.twig';
+
+            $container->setParameter('twig.form.resources', array_merge(
+                $container->getParameter('twig.form.resources'),
+                array($formRessource)
+            ));
+        }
     }
 
 }
