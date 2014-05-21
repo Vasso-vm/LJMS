@@ -49,7 +49,7 @@
 
 	/**
      * @ORM\Column(type="string", length=100 , nullable=true)
-     * @Assert\Email()
+     * @Assert\Email(message = "The alt email '{{ value }}' is not a valid email.")
      * @Assert\Length(
      *      max = "100"
      * )
