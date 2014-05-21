@@ -834,3 +834,11 @@ form select.input-large{
     width:195px;
 }
 
+#add_user_form p.dashboard{
+    font-size:14px;
+    height:20px;
+    line-height:20px;
+    padding: 4px 6px;
+    width: 210px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}

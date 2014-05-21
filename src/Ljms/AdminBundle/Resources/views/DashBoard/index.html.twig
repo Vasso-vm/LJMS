@@ -1,0 +1,133 @@
+{% extends 'LjmsAdminBundle:Default:base.html.twig' %}
+	{% block content%}
+        <h2 class="add_user">My Profile</h2>
+        <form action="" class="form-horizontal" id="add_user_form">
+            <fieldset>
+                <h3>User information</h3>
+                <div class="pull-left">
+                    <div class="control-group">
+                        <label class="control-label">First Name</label>
+                        <div class="controls">
+                            <p class="dashboard well">{{ profile.FirstName }}</p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Email</label>
+                        <div class="controls">
+                            <p class="dashboard well">{{ profile.Email }}</p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Home phone</label>
+                        <div class="controls">
+                            <p class="dashboard well">{{ profile.HomePhone }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="pull-right">
+                    <div class="control-group">
+                        <label class="control-label">Last Name</label>
+                        <div class="controls">
+                            <p class="dashboard well"> {{ profile.LastName }}</p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Cell phone</label>
+                        <div class="controls">
+                            <p class="dashboard well">{{ profile.CellPhone }}</p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Alt phone</label>
+                        <div class="controls">
+                            <p class="dashboard well">{{ profile.AltPhone }}</p>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <h3>Address information</h3>
+                <div class="pull-left">
+                    <div class="control-group">
+                        <label class="control-label">Address</label>
+                        <div class="controls">
+                            <p class="dashboard well">{{ profile.address.Address }}</p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">State</label>
+                        <div class="controls">
+                            <p class="dashboard well">{{ profile.address.state.name }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="pull-right">
+                    <div class="control-group">
+                        <label class="control-label">City</label>
+                        <div class="controls">
+                            <p class="dashboard well">{{ profile.address.City }}</p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Zip</label>
+                        <div class="controls">
+                            <p class="dashboard well">{{ profile.address.zip }}</p>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+            <h3>Role information</h3>
+            <table class="roles" id="roles">
+                <tr class="header">
+                    <td>Current Roles</td>
+                    <td>Division</td>
+                    <td>Team</td>
+                </tr>
+                    {% for role in profile.roles if profile.roles!=null %}
+                        {% if role.name=='Admin' %}
+                            <tr>
+                                <td>Admin</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        {% endif %}
+                        {% if role.name=='Director' %}
+                            {% for d in profile.divisions %}
+                                <tr>
+                                    <td>Director</td>
+                                    <td>{{ d.name }}</td>
+                                    <td></td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        {% if role.name=='Coach' %}
+                            {% for c in profile.coachTeams %}
+                                <tr>
+                                    <td>Coach</td>
+                                    <td>{{ c.division.name }}</td>
+                                    <td>{{ c.name }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        {% if role.name=='Manager' %}
+                            {% for m in profile.managerTeams %}
+                                <tr>
+                                    <td>Manager</td>
+                                    <td>{{ m.division.name }}</td>
+                                    <td>{{ m.name }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        {% if role.name=='Guardian' %}
+                            <tr>
+                                <td>Guardian</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+            </table>
+            </fieldset>
+        </form>
+    {% endblock %}
