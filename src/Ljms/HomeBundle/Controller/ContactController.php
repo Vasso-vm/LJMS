@@ -27,7 +27,15 @@ class ContactController extends Controller
                     ->setSubject($form->get('subject')->getData())
                     ->setFrom($form->get('email')->getData())
                     ->setTo($this->container->getParameter('admin_email'))
-                    ->setBody('<p>'.$form->get('name')->getData().'</p>'.'<p>'.$form->get('message')->getData().'</p>');
+                    ->setBody(
+                        $this->renderView(
+                            'LjmsTplBundle:Email:contact.html.twig',
+                            array(
+                                'name' => $form->get('name')->getData(),
+                                'message'=> $form->get('message')->getData(),
+                                'subject'=> $form->get('subject')->getData(),
+                            )
+                        ));
                 $this->get('mailer')->send($message);
                 $request->getSession()->getFlashBag()->add('success', 'Your email has been sent! Thanks!');
                 return $this->redirect($this->generateUrl('contact_index'));

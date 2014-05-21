@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="recaptcha.form.type.class">Ljms\HomeBundle\Form\RecaptchaType</parameter>
+        <parameter key="recaptcha.validator.true.class">Ljms\HomeBundle\Validator\Constraints\TrueValidator</parameter>
+    </parameters>
+
+    <services>
+        <service id="recaptcha.form.type" class="%recaptcha.form.type.class%">
+            <tag name="form.type" alias="recaptcha" />
+            <argument type="service" id="service_container" />
+        </service>
+
+        <service id="recaptcha.validator.true" class="%recaptcha.validator.true.class%">
+            <tag name="validator.constraint_validator" alias="recaptcha.true" />
+            <argument type="service" id="service_container" />
+        </service>
+    </services>
+</container>

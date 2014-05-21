@@ -38,7 +38,8 @@ class ContactType extends AbstractType{
                     )),
                 'constraints'   => array(
                     new True()
-                )
+                ),
+                'error_bubbling' =>true,
             ))
             ->add('Submit', 'submit');
     }
