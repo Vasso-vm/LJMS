@@ -176,18 +176,16 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
      * @param $check
      * @param $is_active
      */
-    private function active(Request $request,$check,$is_active)
+    private function active($check,$is_active)
     {
         $em=$this->getDoctrine()->getManager();
         $players=$em->getRepository('LjmsCoreBundle:Player')->findBy(array('id'=>$check));
         foreach($players as $player){
             $player->setIsActive($is_active);
         }
-        try{
+
             $em->flush();
-        }catch(\Exception $e){
-            $request->getSession()->getFlashBag()->add('error', $e->getMessage());
-        }
+
     }
 
 }

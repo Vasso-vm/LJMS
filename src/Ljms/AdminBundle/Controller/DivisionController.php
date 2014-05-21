@@ -61,7 +61,7 @@ class DivisionController extends Controller
      */
     public function addAction(Request $request){
         $division = new Division();
-        $form = $this->createForm(new DivisionType(), $division);
+        $form = $this->createForm(new DivisionType(), $division,array('validation_groups' => array('mapped')));
         $form->handleRequest($request);
         if ($form->isValid()){
             $em = $this->getDoctrine()->getManager();
@@ -94,7 +94,7 @@ class DivisionController extends Controller
                 'No profile found for id '.$division->getId()
             );
         }
-        $form = $this->createForm(new DivisionType(), $division);
+        $form = $this->createForm(new DivisionType(), $division,array('validation_groups' => array('mapped')));
         $form->handleRequest($request);
         if ($form->isValid()){
             $em=$this->getDoctrine()->getManager();
