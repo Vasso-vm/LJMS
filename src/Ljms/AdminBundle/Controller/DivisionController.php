@@ -7,6 +7,7 @@ use Ljms\CoreBundle\Form\DivisionType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -82,25 +83,21 @@ class DivisionController extends Controller
      * Edit division
      * @Route("/edit/{id}", name="division_edit")
      * @Template("LjmsAdminBundle:Division:add.html.twig")
+     * @ParamConverter("division", class="LjmsCoreBundle:Division")
      */
-    public function editAction(Request $request,$id){
-        if ($request->get('id')!==null){
-            $session=$request->getSession();
-            $session->set('edit_id',$request->get('id'));
-        }    
-        $em=$this->getDoctrine()->getManager();
-        $division = $em->getRepository('LjmsCoreBundle:Division')->find($id);
+    public function editAction(Request $request,$division){
         if ((!$this->get('security.context')->isGranted('ROLE_ADMIN'))and($division->getProfile()->getId()!=$this->getUser()->getId())){
             return $this->redirect($this->generateUrl('division_index'));
         }
         if (!$division) {
             throw $this->createNotFoundException(
-                'No profile found for id '.$id
+                'No profile found for id '.$division->getId()
             );
         }
         $form = $this->createForm(new DivisionType(), $division);
         $form->handleRequest($request);
         if ($form->isValid()){
+            $em=$this->getDoctrine()->getManager();
             try{
                 $em->flush();
             }catch(\Exception $e){
@@ -113,7 +110,7 @@ class DivisionController extends Controller
             'method'=>'edit',
             'form'=>$form->createView(),
             'photo'=>$division->getWebPath(),
-            'edit_id'=>$id,
+            'edit_id'=>$division->getId(),
         );
     }
     /**
@@ -195,7 +192,7 @@ class DivisionController extends Controller
         $file=$request->files->get('logo');
         $division= new Division();
         $dir=$this->container->getParameter('temp_dir');
-        return new Response($division->uploadLogo($file,$dir));
+        return new Response($request->getBaseUrl().'/../'.$division->uploadLogo($file,$dir));
     }
 }
 ?>

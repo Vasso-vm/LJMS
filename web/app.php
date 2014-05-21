@@ -3,6 +3,10 @@
 use Symfony\Component\ClassLoader\ApcClassLoader;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * added manually and used for defining file upload paths in the Doctrine Entities,
+ */
+define('FCPATH', __DIR__);
 $loader = require_once __DIR__.'/../app/bootstrap.php.cache';
 
 // Use APC for autoloading to improve performance.

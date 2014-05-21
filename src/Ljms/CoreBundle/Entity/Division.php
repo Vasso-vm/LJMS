@@ -117,19 +117,20 @@
     {
         return null === $this->photo
             ? null
-            : '/web/'.$this->getUploadDir().'/'.$this->photo;
+            : $this->getUploadDir().'/'.$this->photo;
     }
     protected function getUploadRootDir()
     {
         // the absolute directory path where uploaded
         // documents should be saved
-        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+        return '/../../../../web/'.$this->getUploadDir();
     }
 
     protected function getUploadDir()
     {
         // get rid of the __DIR__ so it doesn't screw up
         // when displaying uploaded doc/image in the view.
+
         return self::UPLOAD_PHOTO_DIR;
     }
     /**
@@ -429,7 +430,7 @@
             return null;
         }
         $name=rand(1,999).'.'.$extension;
-        $file->move(__DIR__.'/../../../..'.$dir,$name);
+        $file->move(FCPATH.$dir,$name);
         return $dir.'/'.$name;
     }
 }
