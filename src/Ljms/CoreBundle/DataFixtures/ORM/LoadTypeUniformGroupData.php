@@ -19,11 +19,15 @@ class LoadTypeUniformGroupData extends AbstractFixture implements OrderedFixture
             'Adult',
         );
         foreach ($types as $type){
-            $uniform= new TypeUniformGroup();
+            $uniform = new TypeUniformGroup();
             $uniform->setName($type);
             $uniform->setIsActive(true);
             $manager->persist($uniform);
         }
+        $uniform = new TypeUniformGroup();
+        $uniform->setName($types[1]);
+        $uniform->setIsActive(true);
+        $this->addReference('type',$uniform);
         $manager->flush();
     }
     /**

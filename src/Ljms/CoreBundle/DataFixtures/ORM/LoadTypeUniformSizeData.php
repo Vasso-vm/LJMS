@@ -29,6 +29,10 @@ class LoadTypeUniformSizeData extends AbstractFixture implements OrderedFixtureI
             $uniform->setIsActive(true);
             $manager->persist($uniform);
         }
+        $uniform= new TypeUniformSize();
+        $uniform->setName($sizes[1]);
+        $uniform->setIsActive(true);
+        $this->addReference('size',$uniform);
         $manager->flush();
     }
     /**
