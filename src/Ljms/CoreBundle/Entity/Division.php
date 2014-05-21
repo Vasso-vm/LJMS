@@ -11,7 +11,9 @@
 	 * @ORM\Table(name="Division")
      * @ORM\HasLifecycleCallbacks
      * @ORM\Entity(repositoryClass="Ljms\CoreBundle\Repository\DivisionRepository")
+     * @Assert\GroupSequence({"Division", "mapped"})
      * @UniqueEntity(
+     *      groups = {"mapped"},
      *      fields = "name",
      *      message = "This Division name is already used."
      * )

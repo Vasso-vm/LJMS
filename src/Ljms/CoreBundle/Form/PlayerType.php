@@ -56,9 +56,9 @@
                         $data=$form->getData();
                         $address=$data->getSharesGuardianAddress();
                         if ($address==true){
-                            return array('Player','PlayerRegistration');
+                            return array('Division','Player','PlayerRegistration');
                         }else{
-                            return array('Player','PlayerRegistration','Address');
+                            return array('Division','PlayerRegistration','Address');
                         }
                 },
 		    ));

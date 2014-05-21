@@ -9,7 +9,11 @@
 	 * @ORM\Entity
 	 * @ORM\Table(name="PlayerRegistration")
      * @UniqueEntity(
-     *      fields = "name",
+     *      fields = "jersey_name",
+     *      message = "This Jersey name is already used."
+     * )
+     * @UniqueEntity(
+     *      fields = "jersey_number",
      *      message = "This Jersey number is already used."
      * )
 	*/
