@@ -11,20 +11,16 @@
 	    	$builder
 	    		->add('alt_first_name','text',array(
                     'required' => false,
-                    'error_bubbling' =>true,
                 ))
 	            ->add('alt_last_name', 'text',array(
                     'required' => false,
-                    'error_bubbling' =>true,
                 ))
 	            ->add('alt_email','text',array(
                     'required' => false,
-                    'error_bubbling' =>true,
                     'invalid_message' => 'The field Alt email is not valid'
                 ))
 	            ->add('alt_phone','number',array(
                     'required' => false,
-                    'error_bubbling' =>true,
                     'invalid_message'=>'The field Alt Phone must contain only numbers.',
                 ));
 	    }

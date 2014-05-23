@@ -84,7 +84,8 @@
 
     /**
      * @Assert\File(
-     *     maxSize = "4M"
+     *     maxSize = "4M",
+     *     mimeTypes = {"image/png", "image/jpeg", "image/gif" , "image/jpg"}
      * )
      * @Assert\Image(
      *     maxWidth = "640",
@@ -95,7 +96,7 @@
 
     private $temp;
     /**
-     * @ORM\ManyToOne(targetEntity="Ljms\CoreBundle\Entity\Profile", inversedBy="divisions")
+     * @ORM\ManyToOne(targetEntity="Ljms\CoreBundle\Entity\Profile", inversedBy="divisions",cascade={"persist"})
      * @ORM\JoinColumn(name="profile_id", referencedColumnName="id")
      */
     protected $profile;

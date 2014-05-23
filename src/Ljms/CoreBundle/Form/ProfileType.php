@@ -8,36 +8,30 @@ class ProfileType extends AbstractType{
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('FirstName','text',array(
-                'error_bubbling'=>true
+            ->add('first_name','text',array(
+
             ))
-            ->add('email','repeated',array(
-                'type'=>'email',
-                'first_options'  => array('label' => 'Email',),
-                'second_options' => array('label' => 'Confirm Email',),
-                'invalid_message'=>'The Email fields must match.',
-                'error_bubbling'=>true
+            ->add('email','email',array(
+
             ))
             ->add('password','repeated',array(
                 'type'=>'password',
                 'first_options'  => array('label' => 'Password','required'=>false,),
                 'second_options' => array('label' => 'Confirm Password','required'=>false,),
-                'error_bubbling'=>true,
+                'required' =>false,
                 'invalid_message'=>'The Password fields must match.',
             ))
-            ->add('LastName','text',array(
-                'error_bubbling'=>true,
+            ->add('last_name','text',array(
+
             ))
-            ->add('HomePhone','number',array(
-                'error_bubbling'=>true
+            ->add('home_phone','number',array(
+
             ))
-            ->add('CellPhone','number',array(
+            ->add('cell_phone','number',array(
                 'required' => false,
-                'error_bubbling'=>true
             ))
-            ->add('AltPhone','number',array(
+            ->add('alt_phone','number',array(
                 'required' => false,
-                'error_bubbling'=>true
             ))
             ->add('Save', 'submit');
 
@@ -50,6 +44,7 @@ class ProfileType extends AbstractType{
     {
         $resolver->setDefaults(array(
             'data_class' => 'Ljms\CoreBundle\Entity\Profile',
+            'validation_groups' => array('Profile'),
         ));
     }
 }

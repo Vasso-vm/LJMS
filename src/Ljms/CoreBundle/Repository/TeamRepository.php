@@ -19,7 +19,7 @@
          */
         public function findTeams($filter,$page,$limit,$director_id,$coach_id,$manager_id)
 		{
-            if ($page<=0 or $limit<0){
+            if (intval($page)<=0 or (intval($limit)<=0 and $limit!='all')){
                 return false;
             }
             if ($limit>0){
@@ -32,11 +32,15 @@
                 case 'inactive':
                     $status=1;
                     break;
-                default:
+                case 'all':
                     $status=2;
+                    break;
+                default:
+                    return false;
             }
-            $query = $this->createQueryBuilder(self::TABLE_ALIAS);
-            $query->where(self::TABLE_ALIAS.".is_active!='$status'");
+            $query = $this->createQueryBuilder(self::TABLE_ALIAS)
+                ->orderBy(self::TABLE_ALIAS.'.id','DESC')
+                ->where(self::TABLE_ALIAS.".is_active!='$status'");
             if ($limit!='all'){
                 $query->setFirstResult($page);
                 $query->setMaxResults($limit);

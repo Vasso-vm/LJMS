@@ -9,7 +9,7 @@
 	 * @ORM\Entity
 	 * @ORM\Table(name="Player")
      * @ORM\Entity(repositoryClass="Ljms\CoreBundle\Repository\PlayerRepository")
-     * @Assert\GroupSequence({"Player"})
+     *
 	 */
 	class Player
 	{
@@ -49,6 +49,7 @@
 
 	/**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank(message="Field Birth date is required.")
      * @Assert\Date()
      */
 	protected $birth_date;

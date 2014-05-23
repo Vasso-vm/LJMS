@@ -755,7 +755,7 @@ h2.game_result{
 #result_form {
     margin:0 auto;
     margin-top:10px;
-    width:400px;
+    width:580px;
     text-align: center;
 
 }
@@ -835,10 +835,19 @@ form select.input-large{
 }
 
 #add_user_form p.dashboard{
+    margin-left:90px;
     font-size:14px;
     height:20px;
+    min-width: 240px;
     line-height:20px;
     padding: 4px 6px;
-    width: 210px;
+    color:#000000;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+#division_name{
+    width:181px;
+}
+label.required:after {
+    content: "* ";
+    color:red;
 }

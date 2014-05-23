@@ -14,34 +14,33 @@
 	            ->add('is_active','choice',array(
 	            		'choices'=>array('1'=>'Active','0'=>'Inactive'),
 	            		'empty_value' =>'Select One',
-                        'error_bubbling' =>true,
+
 	            	))
 	            ->add('name','text',array(
                     'label'=>'Division Name',
-                    'error_bubbling' =>true,
+
                 ))
 	            ->add('min_age','choice',array(
 	            	'choices'=>$array,
 	            	'empty_value'=>'Select One',
-                    'error_bubbling' =>true,
+
 	            	))
 	            ->add('max_age','choice',array(
 	            	'choices'=>$array,
 	            	'empty_value'=>'Select One',
-                    'error_bubbling' =>true,
+
 	            	))
 	            ->add('description','textarea',array(
 	            	'required'    => false,
 	            	'label' => 'Description',
-                    'error_bubbling' =>true,
+
 	            	))	   
             	->add('rules','textarea',array(
             		'required'    => false,
             		'label' => 'Rules',
-                    'error_bubbling' =>true,
+
             		))
                 ->add('file','file',array(
-                    'error_bubbling' =>true,
                     'required'=>false,
                     'label'=>'Logo',
                 ))
@@ -54,7 +53,8 @@
 	    public function setDefaultOptions(OptionsResolverInterface $resolver)
 		{
 		    $resolver->setDefaults(array(
-		        'data_class' => 'Ljms\CoreBundle\Entity\Division',		        
+		        'data_class' => 'Ljms\CoreBundle\Entity\Division',
+                'validation_groups' => array('Division','mapped'),
 		    ));
 		}
 	}

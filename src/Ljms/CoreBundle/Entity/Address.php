@@ -45,7 +45,7 @@
      */
     protected $zip;
     /**
-     * @ORM\ManyToOne(targetEntity="State")
+     * @ORM\ManyToOne(targetEntity="State", cascade={"persist"})
      * @ORM\JoinColumn(name="state_id", referencedColumnName="id")
      * @Assert\NotBlank(message="Field State is required.")
      */

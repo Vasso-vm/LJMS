@@ -13,17 +13,18 @@
                 ->add('is_active','choice',array(
                     'choices'=>array('1'=>'Active','0'=>'Inactive'),
                     'empty_value' =>'Select One',
-                    'error_bubbling' =>true,
+
                 ))
                 ->add('name','text',array(
                     'label'=>'Team Name',
-                    'error_bubbling' =>true,
+
+
                 ))
                 ->add('division','entity',array(
                     'class' => 'LjmsCoreBundle:Division',
                     'property' => 'name',
                     'empty_value' => 'Select One',
-                    'error_bubbling' =>true,
+
                     'query_builder'=>function(EntityRepository $er)use ($id){
                             if ($id!==null){
                                 return $er->createQueryBuilder('d')
@@ -31,13 +32,13 @@
                                     ->where("p.id='$id'");
                             }
                             else return $er->createQueryBuilder('d');
-                        },
+                    },
                 ))
                 ->add('traveling','choice',array(
                     'choices'=>array('1'=>'Yes','0'=>'No'),
                     'empty_value' =>'Select One',
                     'label' => 'is Visitor',
-                    'error_bubbling' =>true,
+
                 ))
                 ->add('Save', 'submit');
         }

@@ -106,6 +106,32 @@ $(document).ready(function(){
     $('#date').pickmeup({
         flat	: true
     });
+    if ($("#player_division option:selected").text()!='Select One'){
+        $("#player_team").removeAttr("disabled");
+    }
+    $(".player").submit(function(){
+        $("#player_address_address").removeAttr("disabled");
+        $("#player_address_city").removeAttr("disabled");
+        $("#player_address_state").removeAttr("disabled");
+        $("#player_address_zip").removeAttr("disabled");
+    });
+    if ($("#add_user_form").hasClass("add_game")){
+        if ($("#schedule_division option:selected").text()=='Select One'){
+            $("#schedule_home_team").empty();
+            $("#schedule_home_team").append($('<option>',{value :""}).text("Select One"));
+            $("#schedule_visiting_team").empty();
+            $("#schedule_visiting_team").append($('<option>',{value :""}).text("Select One"));
+        }
+    }
+    if ($("#add_user_form").hasClass("edit_game")){
+        var h=$("#schedule_home_team option:selected");
+        var v=$("#schedule_visiting_team option:selected");
+        $("#schedule_home_team").empty();
+        $("#schedule_home_team").append(h);
+        $("#schedule_visiting_team").empty();
+        $("#schedule_visiting_team").append(v);
+
+    }
 
 });
 var month1=4;

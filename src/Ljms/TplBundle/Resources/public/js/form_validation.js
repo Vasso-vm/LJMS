@@ -1,349 +1,435 @@
-$(document).ready(function(){
-    $("#contact_form").validate({
-        rules: {
-            name: {
-                required:true,
-                maxlength:70
-            },
-            email: {
-                required: true,
-                email:true,
-                maxlength:70
-            },
-            subject:{
-                required:true,
-                maxlength:100
-            },
-            message:{
-                required:true,
-                maxlength:900
-            }
-        },
-        errorClass: 'help-inline error'
-    });
-    $("#admin_login_form").validate({
-        rules:{
-            email:{
-                required:true,
-                email:true,
-                maxlength:70
-            },
-            password:{
-                required:true,
-                minlength:5,
-                maxlength:30
-            }
-        },
-        errorClass: 'help-inline error'
-    });
-    $("#profile_form").validate({
-        rules: {
-            firstname: {
-                required:true,
-                maxlength:50
-            },
-            lastname:{
-                required:true,
-                maxlength:50
-            },
-            homephone:{
-                required:true,
-                number:true,
-                maxlength:15
-            },
-            cellphone:{
-                number:true,
-                maxlength:15
-            },
-            altphone:{
-                number:true,
-                maxlength:15
-            },
-            email: {
-                required: true,
-                email:true,
-                maxlength:70
-            },
-            confirmemail:{
-                equalTo:'#email'
-            },
-            password:{
-                required:true,
-                minlength:5,
-                maxlength:30
-            },
-            confirmpassword:{
-                equalTo:'#password'
-            }
 
-        },
-        errorClass: 'help-inline error'
-    });
+$(document).ready(function(){
     $("#add_user_form").validate({
         rules: {
-            first_name: {
+            "user[first_name]": {
                 required:true,
-                maxlength:100
+                maxlength:100,
+                minlength:2
             },
-            address:{
+            "user[last_name]":  {
                 required:true,
-                maxlength:70
+                maxlength:100,
+                minlength:2
             },
-            city:{
+            "user[email][first]":{
                 required:true,
-                maxlength:70
-            },
-            zip:{
-                required:true,
-                maxlength:30
-            },
-            last_name:{
-                required:true,
-                maxlength:100
-            },
-            home_phone:{
-                required:true,
-                number:true,
-                maxlength:15
-            },
-            cell_phone:{
-                number:true,
-                maxlength:15
-            },
-            alt_phone:{
-                number:true,
-                maxlength:15
-            },
-            email: {
-                required: true,
                 email:true,
-                maxlength:70
+                maxlength:100,
+                minlength:2
             },
-            confirm_email:{
-                equalTo:'#email'
+            "user[email][second]":{
+                equalTo:"#user_email_first"
             },
-            password:{
+            "user[password][first]":{
                 required:true,
-                minlength:5,
-                maxlength:30
+                maxlength:30,
+                minlength:5
             },
-            confirm_password:{
-                equalTo:'#password'
+            "user[password][second]":{
+                equalTo:"#user_password_first"
             },
-            alt_email:{
-                email:true,
-                maxlength:70
-            },
-            alt_alt_phone:{
-                number:true,
-                maxlength:15
-            },
-            jersey_name:{
+            "user[home_phone]":{
                 required:true,
-                maxlength:70
-            },
-            jersey_number:{
-                required:true,
-                maxlength:10,
+                maxlength:20,
                 number:true
             },
-            short_type:{
-                required:true,
-                maxlength:70
+            "user[cell_phone]":{
+                maxlength:20,
+                number:true
             },
-            shirt_type:{
-                required:true,
-                maxlength:70
+            "user[alt_phone]":{
+                maxlength:20,
+                number:true
             },
-            short_size:{
+            "user[address][address]":{
                 required:true,
-                maxlength:70
+                maxlength:100
             },
-            shirt_size:{
+            "user[address][city]":{
                 required:true,
-                maxlength:70
+                maxlength:100
             },
-            states:{
+            "user[address][state]":{
                 required:true,
-                maxlength:70
+                maxlength:100
             },
-            birth:{
+            "user[address][zip]":{
+                required:true,
+                maxlength:20,
+                number:true
+            },
+            "user[altContact][alt_first_name]":{
+                maxlength:100
+            },
+            "user[altContact][alt_last_name]":{
+                maxlength:100
+            },
+            "user[altContact][alt_email]":{
+                maxlength:100,
+                email:true
+            },
+            "user[altContact][alt_phone]":{
+                maxlength:20,
+                number:true
+            },
+            "player[address][address]":{
+                required:true,
+                maxlength:100
+            },
+            "player[address][city]":{
+                required:true,
+                maxlength:100
+            },
+            "player[address][state]":{
+                required:true,
+                maxlength:100
+            },
+            "player[address][zip]":{
+                required:true,
+                maxlength:20,
+                number:true
+            },
+            "player[birth_date][day]":{
                 required:true
             },
-            team_name: {
-                required:true,
-                maxlength:70
+            "player[birth_date][month]":{
+                required:true
             },
-            division: {
-                required:true,
-                maxlength:70
+            "player[birth_date][year]":{
+                required:true
             },
-            status:{
-                required:true,
-                maxlength:70
+            "player[player_registration][shirt_type]":{
+                required:true
             },
-            time:{
-                required:true,
-                maxlength:10
+            "player[player_registration][short_type]":{
+                required:true
             },
-            home_team:{
-                required:true,
-                maxlength:70
+            "player[player_registration][shirt_size]":{
+                required:true
             },
-            visitor_team:{
-                required:true,
-                maxlength:70
+            "player[player_registration][short_size]":{
+                required:true
             },
-            datepicker:{
+            "player[player_registration][jersey_name]":{
                 required:true,
-                maxlength:70
+                maxlength:100
             },
-            name:{
+            "player[player_registration][jersey_number]":{
                 required:true,
+                maxlength:3,
+                number:true
+            },
+            "player[first_name]": {
+                required:true,
+                maxlength:100,
+                minlength:2
+            },
+            "player[last_name]":  {
+                required:true,
+                maxlength:100,
+                minlength:2
+            },
+            "team[name]":{
+                required:true,
+                maxlength:100,
+                minlength:2
+            },
+            "team[is_active]":{
+                required:true
+
+            },
+            "team[division]":{
+                required:true
+
+            },
+            "team[traveling]":{
+                required:true
+
+            },
+            "schedule[date][date][day]":{
+                required:true
+            },
+            "schedule[date][date][month]":{
+                required:true
+            },
+            "schedule[date][date][year]":{
+                required:true
+            },
+            "schedule[date][time][hour]":{
+                required:true
+            },
+            "schedule[date][time][minute]":{
+                required:true
+            },
+            "schedule[home_team]":{
+                required:true
+            },
+            "schedule[visiting_team]":{
+                required:true
+            },
+            "schedule[location]":{
+                required:true
+            },
+            "location[name]":{
+                maxlength:100,
+                required:true
+            },
+            "location[city]":{
+                maxlength:100
+
+            },
+            "location[address]":{
+                maxlength:100
+
+            },
+            "location[state]":{
+                required:true
+            },
+            "location[zip]":{
+                number:true,
+                maxlength:20
+            },
+            "location[phone]":{
+                number:true,
+                maxlength:20
+            },
+            "location[url]":{
                 maxlength:150
             },
-            location:{
-                required:true,
-                maxlength:150
-            },
-            loccity:{
-                maxlength:150
-            },
-            locaddress:{
-                maxlength:150
-            },
-            loczip:{
-                maxlength:150
+            "location[is_active]":{
+                required:true
             }
         },
         errorClass: 'help-block error'
     });
     $("#edit_user_form").validate({
         rules: {
-            firstname: {
+            "user[first_name]": {
+                required:true,
+                maxlength:100,
+                minlength:2
+            },
+            "player[first_name]": {
+                required:true,
+                maxlength:100,
+                minlength:2
+            },
+            "user[last_name]":  {
+                required:true,
+                maxlength:100,
+                minlength:2
+            },
+            "player[last_name]":  {
+                required:true,
+                maxlength:100,
+                minlength:2
+            },
+            "user[email][first]":{
+                required:true,
+                email:true,
+                maxlength:100,
+                minlength:2
+            },
+            "user[email][second]":{
+                equalTo:"#user_email_first"
+            },
+            "user[password][first]":{
+                maxlength:30,
+                minlength:5
+            },
+            "user[password][second]":{
+                equalTo:"#user_password_first"
+            },
+            "user[home_phone]":{
+                required:true,
+                maxlength:20,
+                number:true
+            },
+            "user[cell_phone]":{
+                maxlength:20,
+                number:true
+            },
+            "user[alt_phone]":{
+                maxlength:20,
+                number:true
+            },
+            "user[address][address]":{
                 required:true,
                 maxlength:100
             },
-            address:{
-                required:true,
-                maxlength:70
-            },
-            city:{
-                required:true,
-                maxlength:70
-            },
-            zip:{
-                required:true,
-                maxlength:30
-            },
-            lastname:{
+            "user[address][city]":{
                 required:true,
                 maxlength:100
             },
-            homephone:{
+            "user[address][state]":{
+                required:true,
+                maxlength:100
+            },
+            "user[address][zip]":{
+                required:true,
+                maxlength:20,
+                number:true
+            },
+            "player[address][address]":{
+                required:true,
+                maxlength:100
+            },
+            "player[address][city]":{
+                required:true,
+                maxlength:100
+            },
+            "player[address][state]":{
+                required:true,
+                maxlength:100
+            },
+            "player[address][zip]":{
+                required:true,
+                maxlength:20,
+                number:true
+            },
+            "player[birth_date][day]":{
+                required:true
+            },
+            "player[birth_date][month]":{
+                required:true
+            },
+            "player[birth_date][year]":{
+                required:true
+            },
+            "player[player_registration][shirt_type]":{
+                required:true
+            },
+            "player[player_registration][short_type]":{
+                required:true
+            },
+            "player[player_registration][shirt_size]":{
+                required:true
+            },
+            "player[player_registration][short_size]":{
+                required:true
+            },
+            "player[player_registration][jersey_name]":{
+                required:true,
+                maxlength:100
+            },
+            "player[player_registration][jersey_number]":{
+                required:true,
+                maxlength:3,
+                number:true
+            },
+            "user[altContact][alt_first_name]":{
+                maxlength:100
+            },
+            "user[altContact][alt_last_name]":{
+                maxlength:100
+            },
+            "user[altContact][alt_email]":{
+                maxlength:100,
+                email:true
+            },
+            "user[altContact][alt_phone]":{
+                maxlength:20,
+                number:true
+            }
+        },
+        errorClass: 'help-block error'
+    });
+    $("#profile_form").validate({
+        rules: {
+            "profile[first_name]": {
+                required:true,
+                maxlength:100,
+                minlength:2
+            },
+            "profile[last_name]":{
+                required:true,
+                maxlength:100,
+                minlength:2
+            },
+            "profile[home_phone]":{
                 required:true,
                 number:true,
-                maxlength:15
+                maxlength:20
             },
-            cellphone:{
+            "profile[alt_phone]":{
                 number:true,
-                maxlength:15
+                maxlength:20
             },
-            altphone:{
+            "profile[cell_phone]":{
                 number:true,
-                maxlength:15
+                maxlength:20
             },
-            email: {
+            "profile[email]":{
                 required: true,
                 email:true,
-                maxlength:70
+                maxlength:100
             },
-            confirmemail:{
-                equalTo:'#email'
-            },
-            password:{
+            "profile[password][first]":{
                 minlength:5,
                 maxlength:30
             },
-            confirmpassword:{
-                equalTo:'#password'
-            },
-            altemail:{
-                email:true,
-                maxlength:70
-            },
-            altaltphone:{
-                number:true,
-                maxlength:15
-            },
-            namejersey:{
+            "profile[password][second]":{
+                equalTo:'#profile_password_first'
+            }
+        },
+        errorClass: 'help-inline error'
+    });
+    $("#admin_login_form").validate({
+        rules: {
+            "_username": {
                 required:true,
-                maxlength:70
+                maxlength:100,
+                email:true
             },
-            number:{
+            "_password": {
                 required:true,
-                maxlength:10,
-                number:true
-            },
-            location:{
-                required:true,
-                maxlength:150
-            },
-            birth:{
+                maxlength:30,
+                minlength:5
+            }
+        },
+        errorClass: 'help-inline error'
+    });
+    $("#division").validate({
+        rules: {
+            "division[is_active]": {
                 required:true
+
+            },
+            "division[name]":{
+                required:true,
+                maxlength:100,
+                minlength:2
+            },
+            "division[min_age]":{
+                required:true
+
+            },
+            "division[max_age]":{
+                number:true
+
+            }
+
+        },
+        errorClass: 'help-inline error'
+    });
+    $("#result_form").validate({
+        rules: {
+            "result[visiting_team_score]": {
+               maxlength:3,
+                number:true
+
+            },
+            "result[home_team_score]": {
+                maxlength:3,
+                number:true
+
             }
 
         },
         errorClass: 'help-block error'
     });
-    $("#division").validate({
-        rules: {
-            status: {
-                required:true,
-                maxlength:1
-            },
-            name:{
-                required:true,
-                maxlength:150
-            },
-            min_age:{
-                required:true,
-                maxlength:2,
-                number:true
-            },
-            max_age:{
-                required:true,
-                maxlength:2,
-                number:true
-            },
-            description:{
-                maxlength:500
-            },
-            rules:{
-                maxlength:500
-            }
-        }
-    });
-    $("#result_form").validate({
-        rules: {
-            homeTeam: {
-                required:true,
-                maxlength:3,
-                number:true
-            },
-            visitorTeam: {
-                required:true,
-                maxlength:3,
-                number:true
-            }
-        }
-    });
 });
-
-
-
-
-
 
 
 

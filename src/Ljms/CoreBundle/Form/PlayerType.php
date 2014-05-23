@@ -13,16 +13,19 @@
                 ->add('shares_guardian_address','checkbox',array(
                     'required'=>false,
                 ))
-	            ->add('FirstName','text')
-	            ->add('LastName','text')
-	            ->add('birthdate','birthday',array(
-                    'years' =>range(date('Y')-20,date('Y')),
-                    'error_bubbling' =>true,
+	            ->add('first_name','text',array(
+
+                ))
+	            ->add('last_name','text',array(
+
+                ))
+	            ->add('birth_date','birthday',array(
+                    'years' =>range(date('Y')-20,date('Y')-5),
+
                 ))
 	            ->add('note','textarea',array(
 	            	'required'    => false,
 	            	'label' => 'Allergies/Medical Conditions',
-                    'error_bubbling' =>true,
 	            	))
                 ->add('division','entity',array(
                     'mapped'=>false,
@@ -30,14 +33,13 @@
                     'required'=>false,
                     'empty_value'=>'Select One',
                     'property'=>'name',
-                    'error_bubbling' =>true,
                 ))
                 ->add('team','entity',array(
                     'class' =>'LjmsCoreBundle:Team',
                     'property' => 'name',
                     'empty_value' =>'Select One',
+                    'attr'=>array('disabled'=>'disabled'),
                     'required'=>false,
-                    'error_bubbling' =>true,
                 ))
 	            ->add('Save', 'submit');
 	        $builder->add('address', new AddressType());
@@ -58,7 +60,7 @@
                         if ($address==true){
                             return array('Division','Player','PlayerRegistration');
                         }else{
-                            return array('Division','PlayerRegistration','Address');
+                            return array('Division','Player','PlayerRegistration','Address');
                         }
                 },
 		    ));

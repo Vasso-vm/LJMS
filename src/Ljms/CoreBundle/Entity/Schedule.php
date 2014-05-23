@@ -21,6 +21,7 @@
 
 	/**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank(message="Field Date and Time is required.")
      * @Assert\Date()
      */
 	protected $date;

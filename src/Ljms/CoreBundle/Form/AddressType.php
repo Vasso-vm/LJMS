@@ -10,19 +10,19 @@
 	    {
 	    	$builder
 	    		->add('address','text',array(
-                    'error_bubbling' =>true,
+
                 ))
 	            ->add('state','entity',array(
                     'class' => 'LjmsCoreBundle:State',
                     'property' => 'name',
                     'empty_value' => 'Select One',
-                    'error_bubbling' =>true,
+
 	            	))
 	            ->add('city','text',array(
-                    'error_bubbling' =>true,
+
                 ))
 	            ->add('zip','number',array(
-                    'error_bubbling' =>true,
+
                     'invalid_message'=>'The field Zip must contain only numbers.',
                     ));
 	    }

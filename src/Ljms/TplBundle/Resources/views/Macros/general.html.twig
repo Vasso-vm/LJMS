@@ -1,5 +1,5 @@
 {% macro links (path,filter,page,limit,pagination) %}
-    {% if limit!='all' and limit!=false and pagination.count_pages>0 %}
+    {% if limit!='all' and limit!=false and pagination!=false and pagination.count_pages>0 %}
         <div class="pagination">
             <ul>
                 {% if page!=1 %}

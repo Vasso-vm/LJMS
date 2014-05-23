@@ -16,7 +16,7 @@
          */
         public function findDivisions($filter,$page,$limit,$id=null)
 		{
-            if ($page<=0 or $limit<0){
+            if (intval($page)<=0 or (intval($limit)<=0 and $limit!='all')){
                 return false;
             }
             if ($limit>0){
@@ -29,10 +29,14 @@
                 case 'inactive':
                     $status=1;
                     break;
-                default:
+                case 'all':
                     $status=2;
+                    break;
+                default:
+                    return false;
             }
-            $query = $this->createQueryBuilder(self::TABLE_ALIAS);
+            $query = $this->createQueryBuilder(self::TABLE_ALIAS)
+                ->orderBy(self::TABLE_ALIAS.'.id','DESC');
             $query->where(self::TABLE_ALIAS.".is_active!='$status'");
             if ($limit!='all'){
                 $query->setFirstResult($page);

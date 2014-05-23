@@ -8,35 +8,36 @@
 		public function buildForm(FormBuilderInterface $builder, array $options)
 	    {
 	        $builder
-	            ->add('FirstName','text')
+	            ->add('first_name','text',array(
+                    'attr'=>array('class'=>'required')
+                ))
 	            ->add('email','repeated',array(
 	            		'type'=>'email',
 	            		'first_options'  => array('label' => 'Email'),
     					'second_options' => array('label' => 'Confirm Email'),
                         'invalid_message'=>'The Email fields must match.',
-                        'error_bubbling' =>true,
+
 	            	))	            
 	            ->add('password','repeated',array(
 	            		'type'=>'password',
 	            		'first_options'  => array('label' => 'Password'),
     					'second_options' => array('label' => 'Confirm Password'),
-                        'error_bubbling' =>true,
-                        'required'=>false,
                         'invalid_message'=>'The Password fields must match.',
+                        'required'=>false,
 	            	))	            
-	            ->add('LastName','text')
-	            ->add('HomePhone','number',array(
-                        'error_bubbling' =>true,
+	            ->add('last_name','text',array(
+
+                ))
+	            ->add('home_phone','number',array(
+
                         'invalid_message'=>'The field Home Phone must contain only numbers.',
                 ))
-	            ->add('CellPhone','number',array(
+	            ->add('cell_phone','number',array(
                     'required' => false,
-                    'error_bubbling' =>true,
                     'invalid_message'=>'The field Cell Phone must contain only numbers.',
                 ))
-	            ->add('AltPhone','number',array(
+	            ->add('alt_phone','number',array(
                     'required' => false,
-                    'error_bubbling' =>true,
                     'invalid_message'=>'The field Alt Phone must contain only numbers.',
                 ))
                 ->add('Save', 'submit');

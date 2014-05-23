@@ -19,7 +19,7 @@
          * @return bool|Paginator
          */
         public function findGuardians($filter,$page,$limit,$id=''){
-            if ($page<=0 or $limit<0){
+            if ($page<=0 or (intval($limit)<=0 and $limit!='all')){
                 return false;
             }
             if ($limit>0){
@@ -28,7 +28,7 @@
             $query = $this->createQueryBuilder(self::TABLE_ALIAS)
                 ->leftJoin(self::TABLE_ALIAS.'.roles','role')
                 ->where("role.name='Guardian'")
-                ->orderBy(self::TABLE_ALIAS.'.id','ASC');
+                ->orderBy(self::TABLE_ALIAS.'.id','DESC');
             switch ($filter['status']){
                 case 'active':
                     $query->andwhere(self::TABLE_ALIAS.'.is_active=1');
@@ -36,6 +36,10 @@
                 case 'inactive':
                     $query->andwhere(self::TABLE_ALIAS.'.is_active=0');
                     break;
+                case 'all':
+                    break;
+                default:
+                    return false;
             }
             if ($id!==''){
                 $query->andwhere(self::TABLE_ALIAS.".id='$id'");
@@ -56,14 +60,14 @@
          * @return bool|Paginator
          */
         public function findUsers($filter,$page,$limit){
-            if ($page<=0 or $limit<0){
+            if (intval($page)<=0 or (intval($limit)<=0 and $limit!='all')){
                 return false;
             }
             if ($limit>0){
                 $page=($page-1)*$limit;
             }
             $qb = $this->createQueryBuilder(self::TABLE_ALIAS)
-                ->orderBy(self::TABLE_ALIAS.'.id','ASC');
+                ->orderBy(self::TABLE_ALIAS.'.id','DESC');
             switch ($filter['status']){
                 case 'active':
                     $status=0;
@@ -71,14 +75,21 @@
                 case 'inactive':
                     $status=1;
                     break;
-                default:
+                case 'all':
                     $status=2;
+                    break;
+                default:
+                    return false;
             }
             $qb->where(self::TABLE_ALIAS.".is_active!='$status'");
             if($filter['division']!='all'){
                 $division=$filter['division'];
                 $qb->leftJoin(self::TABLE_ALIAS.'.divisions','d')
-                    ->andWhere("d.name='$division");
+                    ->leftJoin(self::TABLE_ALIAS.'.coach_teams','c')
+                    ->leftJoin(self::TABLE_ALIAS.'.manager_teams','m')
+                    ->leftJoin('m.division','m_d')
+                    ->leftJoin('c.division','c_d')
+                    ->andWhere("(d.name='$division' or m_d.name='$division' or c_d.name='$division')");
             }
             if ($limit!='all'){
                 $qb->setFirstResult($page);

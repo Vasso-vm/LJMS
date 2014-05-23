@@ -12,11 +12,11 @@ class ResultType extends AbstractType{
         $builder
             ->add('home_team_score','number',array(
                 'label' => 'Home Team',
-                'error_bubbling' =>true,
+                'required'=>false,
             ))
             ->add('visiting_team_score','number',array(
                 'label' => 'Visiting Team',
-                'error_bubbling' =>true,
+                'required'=>false,
             ))
             ->add('Save', 'submit');
     }

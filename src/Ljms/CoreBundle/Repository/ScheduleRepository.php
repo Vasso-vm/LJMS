@@ -18,7 +18,7 @@ class ScheduleRepository extends EntityRepository
      */
     public function findSchedules($filter,$page,$limit,$coach_id,$manager_id)
     {
-        if ($page<=0 or $limit<0){
+        if (intval($page)<=0 or (intval($limit)<=0 and $limit!='all')){
             return false;
         }
         if ($limit>0){

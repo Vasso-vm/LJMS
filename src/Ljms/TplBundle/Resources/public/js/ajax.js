@@ -8,28 +8,30 @@ $(document).ready(function(){
             var url=window.Url;
             jQuery.post(url,{id: id},"json").done(function(data){
                 var result=JSON.parse(data);
-                if (window.adminrole!=1 &&  window.managerrole==1){
-                    var home_team=result['home_teams'];
-                    delete result['home_teams'];
-                    for (var key in result) {
-                        for (var row in key){
-                            $('#visitor_team').append($('<option>',{value : result[key]['id']})
-                                .text(result[key]['name']));
+                if (result[0]['id']!==null){
+                    if (window.adminrole!=1 &&  window.managerrole==1){
+                        var home_team=result['home_teams'];
+                        delete result['home_teams'];
+                        for (var key in result) {
+                            for (var row in key){
+                                $('#visitor_team').append($('<option>',{value : result[key]['id']})
+                                    .text(result[key]['name']));
+                            }
                         }
-                    }
-                    for (var key in home_team) {
-                        for (var row in key){
-                            $("#home_team").append($('<option>',{value : result[key]['id']})
-                                .text(result[key]['name'])
-                            );
+                        for (var key in home_team) {
+                            for (var row in key){
+                                $("#home_team").append($('<option>',{value : result[key]['id']})
+                                    .text(result[key]['name'])
+                                );
+                            }
                         }
-                    }
-                }else{
-                    for (var key in result) {
-                        for (var row in key){
-                            $(".select_team").append($('<option>',{value : result[key]['id']})
-                                .text(result[key]['name'])
-                            );
+                    }else{
+                        for (var key in result) {
+                            for (var row in key){
+                                $(".select_team").append($('<option>',{value : result[key]['id']})
+                                    .text(result[key]['name'])
+                                );
+                            }
                         }
                     }
                 }
@@ -98,11 +100,13 @@ $(function() {
         jQuery.post(url,{id: id}, "json")
             .done(function(data) {
                 var result=JSON.parse(data);
-                for (var key in result) {
-                    for (var row in key){
-                        $("#player_team").append($('<option>',{value : result[key]['id']})
-                            .text(result[key]['name'])
-                        );
+                if (result[0]['id']!==null){
+                    for (var key in result) {
+                        for (var row in key){
+                            $("#player_team").append($('<option>',{value : result[key]['id']})
+                                .text(result[key]['name'])
+                            );
+                        }
                     }
                 }
             });
@@ -176,8 +180,10 @@ $(function() {
                 var url=window.Url;
                jQuery.post(url,{id: id},"json").done(function(data){
                     var result=JSON.parse(data);
-                    for (var key in result) {
-                        $("#user_Team").append($('<option>',{value : result[key]['id']}).text(result[key]['name']));
+                    if (result[0]['id']!==null){
+                        for (var key in result) {
+                            $("#user_Team").append($('<option>',{value : result[key]['id']}).text(result[key]['name']));
+                        }
                     }
                 });
             }
@@ -224,3 +230,7 @@ function GetDivisionList(){
         }
     });
 }
+$(document).ready(function(){
+
+
+});
