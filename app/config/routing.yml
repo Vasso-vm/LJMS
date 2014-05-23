@@ -11,9 +11,6 @@ ljms_home:
 ljms_admin:
     resource: "@LjmsAdminBundle/Controller"
     type:     annotation   
-login:
-    pattern:   /admin
-    defaults:  { _controller: LjmsAdminBundle:Security:login }
 login_check:
     pattern:   /login_check
 logout:

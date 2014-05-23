@@ -14,7 +14,7 @@ security:
                 pattern:    ^/
                 anonymous: ~
                 form_login: 
-                    login_path: /admin
+                    login_path: security_login
                     check_path: /login_check
                     default_target_path: dashboard_index
                 logout:
