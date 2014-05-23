@@ -1,19 +1,18 @@
 {% extends 'LjmsAdminBundle:Default:base.html.twig' %}
 	{% block content%}
         <h2 class="add_user">My Profile</h2>
-        <form action="{{ path('profile_index') }}" novalidate="novalidate" method="post" class="form-horizontal" id="profile_form">
+        <form action="{{ path('profile_index') }}" method="post" class="form-horizontal" id="profile_form">
         <fieldset>
-            {{ form_errors(form) }}
-            {{form_row(form.FirstName)}}
-            {{form_row(form.LastName)}}
-            {{form_row(form.HomePhone)}}
-            {{form_row(form.CellPhone)}}
-            {{form_row(form.AltPhone)}}
+            {{form_row(form.first_name)}}
+            {{form_row(form.last_name)}}
+            {{form_row(form.home_phone)}}
+            {{form_row(form.cell_phone)}}
+            {{form_row(form.alt_phone)}}
             {{form_row(form.email)}}
             {{form_row(form.password)}}
             <div class="controls buttons">
                 {{form_widget(form.Save,{attr:{'class':'btn'}})}}
-                <a class="btn" id="act" href="{{ path('users_index') }}">Back</a>
+                <a class="btn" id="act" href="{{ path('dashboard_index') }}">Back</a>
             </div>
         </fieldset>
         {{form_rest(form)}}

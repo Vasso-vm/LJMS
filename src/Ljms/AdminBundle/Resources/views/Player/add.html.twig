@@ -11,24 +11,23 @@
 			{% endif %}
 		</h2>
 		{% if method=='add'%}
-			<form action="{{ path('player_add',{'id':guardian_id}) }}" novalidate="novalidate" method="post" class="form-horizontal" id="add_user_form">
+			<form action="{{ path('player_add',{'id':guardian_id}) }}" novalidate="novalidate" method="post" class="form-horizontal player" id="add_user_form">
 		{% else %}
-			<form action="{{ path('player_edit',{'id':edit_id}) }}" novalidate="novalidate" method="post" class="form-horizontal" id="edit_user_form">
+			<form action="{{ path('player_edit',{'id':edit_id}) }}" novalidate="novalidate" method="post" class="form-horizontal player" id="edit_user_form">
 			
 		{% endif %}
 			<fieldset>
 				<h3>Child information</h3>
-				{{ form_errors(form) }}				
 				<div class="pull-left">
                     {{ form_row(form.shares_guardian_address) }}
-					{{form_row(form.FirstName)}}
+					{{form_row(form.first_name)}}
 					{{form_row(form.address.address)}}
 					{{form_row(form.address.state)}}
-					{{form_row(form.birthdate)}}					
+					{{form_row(form.birth_date)}}
 					{{form_row(form.note)}}
 				</div>
 				<div class="pull-right">
-					{{form_row(form.LastName)}}
+					{{form_row(form.last_name)}}
 					{{form_row(form.address.city)}}
 					{{form_row(form.address.zip)}}
 				</div>

@@ -28,8 +28,8 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
     {
         $guardians=false;
         $pagination=false;
-        $page = ($request->get('page')) ? $request->get('page') : 1;
-        $limit = ($request->get('limit')) ? $request->get('limit') : 10;
+        $page = ($request->get('page')!==null) ? $request->get('page') : 1;
+        $limit = ($request->get('limit')!==null) ? $request->get('limit') : 10;
         $filter['status'] = ($request->get('status')) ? $request->get('status') : 'all';
         if ($this->get('security.context')->isGranted('ROLE_ADMIN')){
             $paginator=$this->getDoctrine()->getRepository('LjmsCoreBundle:Profile')->findGuardians($filter,$page,$limit);
@@ -92,6 +92,7 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
             return $this->redirect($this->generateUrl('guardian_index'));
         }
         $encoder = new MessageDigestPasswordEncoder('sha512', true, 10);
+        $old_pass=$guardian->getPassword();
         $em=$this->getDoctrine()->getManager();
         if (!$guardian) {
             throw $this->createNotFoundException(
@@ -101,8 +102,10 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
         $form = $this->createForm(new UserType(), $guardian,array('attr'=>array('guardian'=>true)));
         $form->handleRequest($request);
         if ($form->isValid()){
-            $password = $encoder->encodePassword($guardian->getPassword(), $guardian->getSalt());
-            $guardian->setPassword($password);
+            if ($guardian->getPassword()!==null){
+                $password = $encoder->encodePassword($guardian->getPassword(), $guardian->getSalt());
+                $guardian->setPassword($password);
+            }else { $guardian->setPassword($old_pass);}
             try{
                 $em->flush();
             }catch(\Exception $e){
@@ -126,6 +129,7 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
         $em=$this->getDoctrine()->getManager();
         $em->remove($profile);
         $em->flush();
+        $request->getSession()->getFlashBag()->add('success', 'Guardians profiles successfully deleted.');
         return $this->redirect($this->generateUrl('guardian_index'));
     }
     /**
@@ -138,9 +142,11 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
             switch ($request->request->get('action_select')){
                 case 'active':
                     $this->active($check,1);
+                    $request->getSession()->getFlashBag()->add('success', 'Guardians Status successfully modified.');
                     break;
                 case 'inactive':
                     $this->active($check,0);
+                    $request->getSession()->getFlashBag()->add('success', 'Guardians Status successfully modified.');
                     break;
                 case 'delete':
                     $em=$this->getDoctrine()->getManager();
@@ -153,6 +159,7 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
                     }catch(\Exception $e){
                         $request->getSession()->getFlashBag()->add('error', $e->getMessage());
                     }
+                    $request->getSession()->getFlashBag()->add('success', 'Guardians profiles successfully deleted.');
                     break;
             }
         }

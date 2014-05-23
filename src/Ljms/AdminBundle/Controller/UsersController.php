@@ -31,8 +31,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
     {
         $users=false;
         $pagination=false;
-        $page = ($request->get('page')) ? $request->get('page') : 1;
-        $limit = ($request->get('limit')) ? $request->get('limit') : 10;
+        $page = ($request->get('page')!==null) ? $request->get('page') : 1;
+        $limit = ($request->get('limit')!==null) ? $request->get('limit') : 10;
         $filter['division'] = ($request->get('division')) ? $request->get('division') : 'all';
         $filter['status'] = ($request->get('status')) ? $request->get('status') : 'all';
         $paginator=$this->getDoctrine()->getRepository('LjmsCoreBundle:Profile')->findUsers($filter,$page,$limit);
@@ -129,6 +129,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
         }catch(\Exception $e){
             $request->getSession()->getFlashBag()->add('error', $e->getMessage());
         }
+        $request->getSession()->getFlashBag()->add('success', 'User profile successfully deleted.');
         return $this->redirect($this->generateUrl('users_index'));
     }
 
@@ -143,9 +144,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
             switch ($request->request->get('action_select')){
                 case 'active':
                     $this->active($check,1);
+                    $request->getSession()->getFlashBag()->add('success', 'Users Status successfully modified.');
                     break;
                 case 'inactive':
                     $this->active($check,0);
+                    $request->getSession()->getFlashBag()->add('success', 'Users Status successfully modified.');
                     break;
                 case 'delete':
                     $em=$this->getDoctrine()->getManager();
@@ -153,7 +156,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
                     foreach($profiles as $profile){
                         $em->remove($profile);
                     }
-                    $em->flush();
+                    try{
+                        $em->flush();
+                    }catch(\Exception $e){
+                        $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+                    }
+                    $request->getSession()->getFlashBag()->add('success', 'Users profiles successfully deleted.');
                     break;
             }
         }
@@ -182,6 +190,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
     private function setRole($role,&$profile)
     {
         $this->deleteRole($profile);
+        $a=0;
+        $d=0;
+        $g=0;
+        $m=0;
+        $c=0; //coach
         if($role!==null){
             sort($role);
             foreach ($role as $value){
@@ -192,33 +205,57 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
                 $em=$this->getDoctrine()->getManager();
                 switch ($role){
                     case '1':
-                        $role=$em->getRepository('LjmsCoreBundle:Role')->findOneBy(array('name'=>'Admin'));
-                        $profile->addRole($role);
+                        $a++;
+                        if ($a==1){
+                            $role=$em->getRepository('LjmsCoreBundle:Role')->findOneBy(array('name'=>'Admin'));
+                            $profile->addRole($role);
+                        }
                         break;
                     case '2':
-                        $role=$em->getRepository('LjmsCoreBundle:Role')->findOneBy(array('name'=>'Director'));
-                        $profile->addRole($role);
-                        $division = $em->getRepository('LjmsCoreBundle:Division')->find($division_id);
-                        $division->setProfile($profile);
-                        $em->flush();
+                        if (is_numeric($division_id)){
+                            $d++;
+                            if ($d==1){
+                                $role=$em->getRepository('LjmsCoreBundle:Role')->findOneBy(array('name'=>'Director'));
+                                $profile->addRole($role);
+                            }
+                            $division = $em->getRepository('LjmsCoreBundle:Division')->find($division_id);
+                            $this->_checkRole($division,'director');
+                            $division->setProfile($profile);
+                            $em->flush();
+                        }
                         break;
                     case '3':
-                        $role=$em->getRepository('LjmsCoreBundle:Role')->findOneBy(array('name'=>'Coach'));
-                        $profile->addRole($role);
-                        $team = $em->getRepository('LjmsCoreBundle:Team')->find($team_id);
-                        $team->setCoachProfile($profile);
-                        $em->flush();
+                        if (is_numeric($division_id) and is_numeric($team_id)){
+                            $c++;
+                            if ($c==1){
+                                $role=$em->getRepository('LjmsCoreBundle:Role')->findOneBy(array('name'=>'Coach'));
+                                $profile->addRole($role);
+                            }
+                            $team = $em->getRepository('LjmsCoreBundle:Team')->find($team_id);
+                            $this->_checkRole($team,'coach');
+                            $team->setCoachProfile($profile);
+                            $em->flush();
+                        }
                         break;
                     case '4':
-                        $role=$em->getRepository('LjmsCoreBundle:Role')->findOneBy(array('name'=>'Manager'));
-                        $profile->addRole($role);
-                        $team = $em->getRepository('LjmsCoreBundle:Team')->find($team_id);
-                        $team->setManagerProfile($profile);
-                        $em->flush();
+                        if (is_numeric($division_id) and is_numeric($team_id)){
+                            $m++;
+                            if ($m==1){
+                                $role=$em->getRepository('LjmsCoreBundle:Role')->findOneBy(array('name'=>'Manager'));
+                                $profile->addRole($role);
+                            }
+                            $team = $em->getRepository('LjmsCoreBundle:Team')->find($team_id);
+                            $this->_checkRole($team,'manager');
+                            $team->setManagerProfile($profile);
+                            $em->flush();
+                        }
                         break;
                     case '5':
-                        $role=$em->getRepository('LjmsCoreBundle:Role')->findOneBy(array('name'=>'Guardian'));
-                        $profile->addRole($role);
+                        $g++;
+                        if ($g==1){
+                            $role=$em->getRepository('LjmsCoreBundle:Role')->findOneBy(array('name'=>'Guardian'));
+                            $profile->addRole($role);
+                        }
                 }
             }
         }
@@ -245,6 +282,45 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
                 $manager_team->setManagerProfile(null);
             }
         }
+
+    }
+    private function _checkRole($entity,$name){
+        switch ($name){
+            case 'director':
+                $old_director=$entity->getProfile();
+                if ($old_director!=null and count($old_director->getDivisions())==1){
+                    $roles=$old_director->getRoles();
+                    foreach ($roles as $role){
+                        if ($role->getName()=='Director'){
+                            $old_director->removeRole($role);
+                        }
+                    }
+                }
+                break;
+            case 'coach':
+                $old_coach=$entity->getCoachProfile();
+                if ($old_coach!=null and count($old_coach->getCoachTeams())==1){
+                    $roles=$old_coach->getRoles();
+                    foreach ($roles as $role){
+                        if ($role->getName()=='Coach'){
+                            $old_coach->removeRole($role);
+                        }
+                    }
+                }
+                break;
+            case 'manager':
+                $old_manager=$entity->getManagerProfile();
+                if ($old_manager!=null and count($old_manager->getManagerTeams())==1){
+                    $roles=$old_manager->getRoles();
+                    foreach ($roles as $role){
+                        if ($role->getName()=='Manager'){
+                            $old_manager->removeRole($role);
+                        }
+                    }
+                }
+                break;
+        }
+
     }
 
 }

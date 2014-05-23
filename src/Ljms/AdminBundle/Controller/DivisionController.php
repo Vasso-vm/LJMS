@@ -27,8 +27,8 @@ class DivisionController extends Controller
     {
         $divisions=false;
         $pagination=false;
-        $page = ($request->get('page')) ? $request->get('page') : 1;
-        $limit = ($request->get('limit')) ? $request->get('limit') : 10;
+        $page = ($request->get('page')!==null) ? $request->get('page') : 1;
+        $limit = ($request->get('limit')!==null) ? $request->get('limit') : 10;
         $filter['division'] = ($request->get('division')) ? $request->get('division') : 'all';
         $filter['status'] = ($request->get('status')) ? $request->get('status') : 'all';
         if ($this->get('security.context')->isGranted('ROLE_ADMIN')){
@@ -61,7 +61,7 @@ class DivisionController extends Controller
      */
     public function addAction(Request $request){
         $division = new Division();
-        $form = $this->createForm(new DivisionType(), $division,array('validation_groups' => array('mapped')));
+        $form = $this->createForm(new DivisionType(), $division);
         $form->handleRequest($request);
         if ($form->isValid()){
             $em = $this->getDoctrine()->getManager();
@@ -94,7 +94,7 @@ class DivisionController extends Controller
                 'No profile found for id '.$division->getId()
             );
         }
-        $form = $this->createForm(new DivisionType(), $division,array('validation_groups' => array('mapped')));
+        $form = $this->createForm(new DivisionType(), $division);
         $form->handleRequest($request);
         if ($form->isValid()){
             $em=$this->getDoctrine()->getManager();
@@ -121,6 +121,7 @@ class DivisionController extends Controller
      */
     public function deleteAction(Request $request,$division){
         $em=$this->getDoctrine()->getManager();
+        $this->_checkRole($division);
         $em->remove($division);
         try{
             $em->flush();
@@ -141,9 +142,11 @@ class DivisionController extends Controller
             switch ($request->request->get('action_select')){
                 case 'active':
                     $this->active($check,1);
+                    $request->getSession()->getFlashBag()->add('success', 'Divisions Status successfully modified.');
                     break;
                 case 'inactive':
                     $this->active($check,0);
+                    $request->getSession()->getFlashBag()->add('success', 'Divisions Status successfully modified.');
                     break;
                 case 'delete':
                     $em=$this->getDoctrine()->getManager();
@@ -156,6 +159,7 @@ class DivisionController extends Controller
                     }catch(\Exception $e){
                         $request->getSession()->getFlashBag()->add('error', $e->getMessage());
                     }
+                    $request->getSession()->getFlashBag()->add('success', 'Divisions successfully deleted.');
                     break;
             }
         }
@@ -193,6 +197,40 @@ class DivisionController extends Controller
         $division= new Division();
         $dir=$this->container->getParameter('temp_dir');
         return new Response($request->getBaseUrl().'/../'.$division->uploadLogo($file,$dir));
+    }
+    private function _checkRole($division){
+        $director_profile=$division->getProfile();
+        if ($director_profile!==null and count($director_profile->getDivisions())==1){
+            $roles=$director_profile->getRoles();
+            foreach ($roles as $role){
+                if ($role->getName()=='Director'){
+                    $director_profile->removeRole($role);
+                }
+            }
+        }
+        $teams=$division->getTeams();
+        if ($teams!==null){
+            foreach ($teams as $team){
+                $coach_profile=$team->getCoachProfile();
+                if ($coach_profile!==null and count($coach_profile->getCoachTeams())==1){
+                    $roles=$coach_profile->getRoles();
+                    foreach ($roles as $role){
+                        if ($role->getName()=='Coach'){
+                            $coach_profile->removeRole($role);
+                        }
+                    }
+                }
+                $manager_profile=$team->getManagerProfile();
+                if ($manager_profile!==null and count($manager_profile->getManagerTeams())==1){
+                    $roles=$manager_profile->getRoles();
+                    foreach ($roles as $role){
+                        if ($role->getName()=='Manager'){
+                            $manager_profile->removeRole($role);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 ?>

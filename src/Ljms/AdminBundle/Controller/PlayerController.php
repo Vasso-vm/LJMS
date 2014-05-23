@@ -2,6 +2,7 @@
 
 namespace Ljms\AdminBundle\Controller;
 use Ljms\CoreBundle\Entity\Player;
+use Ljms\CoreBundle\Entity\Address;
 use Ljms\CoreBundle\Form\PlayerType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Umbrellaweb\Bundle\UsefulAnnotationsBundle\Annotation\CsrfProtector;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Ljms\CoreBundle\Component\Pagination\Pagination;
     /**
      * PlayerController - edit/delete operations for backend-users (admins)
@@ -29,8 +31,8 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
         $guardian_id=$request->get('id');
         $coach_id=null;
         $id=$this->getUser()->getId();
-        $page = ($request->get('page')) ? $request->get('page') : 1;
-        $limit = ($request->get('limit')) ? $request->get('limit') : 10;
+        $page = ($request->get('page')!==null) ? $request->get('page') : 1;
+        $limit = ($request->get('limit')!==null) ? $request->get('limit') : 10;
         $filter['status'] = ($request->get('status')) ? $request->get('status') : 'all';
         if (!$this->get('security.context')->isGranted('ROLE_ADMIN')){
             if ($this->get('security.context')->isGranted('ROLE_GUARDIAN')){
@@ -95,10 +97,10 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
      * @ParamConverter("player", class="LjmsCoreBundle:Player")
      */
     public function editAction(Request $request,$player){
-        $em=$this->getDoctrine()->getManager();
         if ((!$this->get('security.context')->isGranted('ROLE_ADMIN'))and($player->getProfile()->getId()!=$this->getUser()->getId())){
             return $this->redirect($this->generateUrl('player_index'));
         }
+        $old_shares_guardian_address=$player->getSharesGuardianAddress();
         if (!$player) {
             throw $this->createNotFoundException(
                 'No profile found for id '.$player->getId()
@@ -107,8 +109,23 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
         $form = $this->createForm(new PlayerType(), $player);
         $form->handleRequest($request);
         if ($form->isValid()){
-            if ($player->getSharesGuardianAddress()==1){
-                $player->setAddress($player->getProfile()->getAddress());
+            $em=$this->getDoctrine()->getManager();
+            if ($old_shares_guardian_address==true){
+                if ($player->getSharesGuardianAddress()==0){
+                    $address=new Address();
+                    $address->setAddress($player->getAddress()->getAddress());
+                    $address->setCity($player->getAddress()->getCity());
+                    $address->setZip($player->getAddress()->getZip());
+                    $address->setState($player->getAddress()->getState());
+                    $em->persist($address);
+                    $player->setAddress($address);
+                }else{
+                    $player->setAddress($player->getProfile()->getAddress());
+                }
+            }else{
+                if ($player->getSharesGuardianAddress()==1){
+                    $player->setAddress($player->getProfile()->getAddress());
+                }
             }
             try{
                 $em->flush();
@@ -138,6 +155,7 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
         }catch(\Exception $e){
             $request->getSession()->getFlashBag()->add('error', $e->getMessage());
         }
+        $request->getSession()->getFlashBag()->add('success', 'Player successfully deleted.');
         return $this->redirect($this->generateUrl('player_index'));
     }
     /**
@@ -150,9 +168,11 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
             switch ($request->request->get('action_select')){
                 case 'active':
                     $this->active($check,1);
+                    $request->getSession()->getFlashBag()->add('success', 'Players Status successfully modified.');
                     break;
                 case 'inactive':
                     $this->active($check,0);
+                    $request->getSession()->getFlashBag()->add('success', 'Players Status successfully modified.');
                     break;
                 case 'delete':
                     $em=$this->getDoctrine()->getManager();
@@ -165,6 +185,7 @@ use Ljms\CoreBundle\Component\Pagination\Pagination;
                     }catch(\Exception $e){
                         $request->getSession()->getFlashBag()->add('error', $e->getMessage());
                     }
+                    $request->getSession()->getFlashBag()->add('success', 'Players successfully deleted.');
                     break;
             }
         }

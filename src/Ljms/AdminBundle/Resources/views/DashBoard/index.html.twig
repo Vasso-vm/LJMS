@@ -1,79 +1,67 @@
 {% extends 'LjmsAdminBundle:Default:base.html.twig' %}
 	{% block content%}
-        <h2 class="add_user">My Profile</h2>
+        <h2 class="add_user">Information</h2>
         <form action="" class="form-horizontal" id="add_user_form">
             <fieldset>
                 <h3>User information</h3>
                 <div class="pull-left">
-                    <div class="control-group">
-                        <label class="control-label">First Name</label>
-                        <div class="controls">
-                            <p class="dashboard well">{{ profile.FirstName }}</p>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label">Email</label>
-                        <div class="controls">
-                            <p class="dashboard well">{{ profile.Email }}</p>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label">Home phone</label>
-                        <div class="controls">
-                            <p class="dashboard well">{{ profile.HomePhone }}</p>
-                        </div>
-                    </div>
+                    <ul class="unstyled">
+                        <li>
+                            <label class="control-label">First Name:</label>
+                            <p class="dashboard">{{ profile.FirstName }}</p>
+                        </li>
+                        <li>
+                            <label class="control-label">Email:</label>
+                            <p class="dashboard">{{ profile.Email }}</p>
+                        </li>
+                        <li>
+                            <label class="control-label">Home phone:</label>
+                            <p class="dashboard">{{ profile.HomePhone }}</p>
+                        </li>
+                    </ul>
                 </div>
                 <div class="pull-right">
-                    <div class="control-group">
-                        <label class="control-label">Last Name</label>
-                        <div class="controls">
-                            <p class="dashboard well"> {{ profile.LastName }}</p>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label">Cell phone</label>
-                        <div class="controls">
-                            <p class="dashboard well">{{ profile.CellPhone }}</p>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label">Alt phone</label>
-                        <div class="controls">
-                            <p class="dashboard well">{{ profile.AltPhone }}</p>
-                        </div>
-                    </div>
+                    <ul class="unstyled">
+                        <li>
+                            <label class="control-label">Last Name:</label>
+                            <p class="dashboard"> {{ profile.LastName }}</p>
+                        </li>
+                        <li>
+                            <label class="control-label">Cell phone:</label>
+                            <p class="dashboard">{{ profile.CellPhone }}</p>
+                        </li>
+                        <li>
+                            <label class="control-label">Alt phone:</label>
+                            <p class="dashboard">{{ profile.AltPhone }}</p>
+                        </li>
+                    </ul>
                 </div>
             </fieldset>
             <fieldset>
                 <h3>Address information</h3>
                 <div class="pull-left">
-                    <div class="control-group">
-                        <label class="control-label">Address</label>
-                        <div class="controls">
-                            <p class="dashboard well">{{ profile.address.Address }}</p>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label">State</label>
-                        <div class="controls">
-                            <p class="dashboard well">{{ profile.address.state.name }}</p>
-                        </div>
-                    </div>
+                    <ul class="unstyled">
+                        <li>
+                            <label class="control-label">Address:</label>
+                            <p class="dashboard">{{ profile.address.Address }}</p>
+                        </li>
+                        <li>
+                            <label class="control-label">State:</label>
+                            <p class="dashboard">{{ profile.address.state.name }}</p>
+                        </li>
+                    </ul>
                 </div>
                 <div class="pull-right">
-                    <div class="control-group">
-                        <label class="control-label">City</label>
-                        <div class="controls">
-                            <p class="dashboard well">{{ profile.address.City }}</p>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label">Zip</label>
-                        <div class="controls">
-                            <p class="dashboard well">{{ profile.address.zip }}</p>
-                        </div>
-                    </div>
+                    <ul class="unstyled">
+                        <li>
+                            <label class="control-label">City:</label>
+                            <p class="dashboard">{{ profile.address.City }}</p>
+                        </li>
+                        <li>
+                            <label class="control-label">Zip:</label>
+                            <p class="dashboard">{{ profile.address.zip }}</p>
+                        </li>
+                    </ul>
                 </div>
             </fieldset>
             <fieldset>

@@ -30,8 +30,8 @@ class ScheduleController extends Controller
         $manager_id=null;
         $coach_id=null;
         $id=$this->getUser()->getId();
-        $page = ($request->get('page')) ? $request->get('page') : 1;
-        $limit = ($request->get('limit')) ? $request->get('limit') : 10;
+        $page = ($request->get('page')!==null) ? $request->get('page') : 1;
+        $limit = ($request->get('limit')!==null) ? $request->get('limit') : 10;
         $filter['division'] = ($request->get('division')) ? $request->get('division') : 'all';
         if (!$this->get('security.context')->isGranted('ROLE_ADMIN')){
             if ($this->get('security.context')->isGranted('ROLE_MANAGER')){
@@ -138,6 +138,7 @@ class ScheduleController extends Controller
         }catch(\Exception $e){
             $request->getSession()->getFlashBag()->add('error', $e->getMessage());
         }
+        $request->getSession()->getFlashBag()->add('success', 'Schedule successfully deleted.');
         return $this->redirect($this->generateUrl('schedule_index'));
     }
 
@@ -194,6 +195,7 @@ class ScheduleController extends Controller
                     }catch(\Exception $e){
                         $request->getSession()->getFlashBag()->add('error', $e->getMessage());
                     }
+                    $request->getSession()->getFlashBag()->add('success', 'Schedules successfully deleted.');
                     break;
             }
         }

@@ -27,17 +27,20 @@ class ProfileController extends Controller
             $em=$this->getDoctrine()->getManager();
             $id=$this->getUser()->getId();
             $profile = $em->getRepository('LjmsCoreBundle:Profile')->find($id);
+            $old_pass=$profile->getPassword();
             $form = $this->createForm(new ProfileType(), $profile);
             $form->handleRequest($request);
             if ($form->isValid()){
-                $password = $encoder->encodePassword($profile->getPassword(), $profile->getSalt());
-                $profile->setPassword($password);
+                if ($profile->getPassword()!==null){
+                    $password = $encoder->encodePassword($profile->getPassword(), $profile->getSalt());
+                    $profile->setPassword($password);
+                }else { $profile->setPassword($old_pass);}
                 try{
                     $em->flush();
                 }catch(\Exception $e){
                     $request->getSession()->getFlashBag()->add('error', $e->getMessage());
                 }
-                return $this->redirect($this->generateUrl('users_index'));
+                return $this->redirect($this->generateUrl('dashboard_index'));
             }
             return array(
                 'form'=>$form->createView(),

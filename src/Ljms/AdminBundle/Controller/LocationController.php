@@ -115,6 +115,7 @@ class LocationController extends Controller
         }catch(\Exception $e){
             $request->getSession()->getFlashBag()->add('error', $e->getMessage());
         }
+        $request->getSession()->getFlashBag()->add('success', 'Location successfully deleted.');
         return $this->redirect($this->generateUrl('location_index'));
     }
     /**
@@ -127,9 +128,11 @@ class LocationController extends Controller
             switch ($request->request->get('action_select')){
                 case 'active':
                     $this->active($check,1);
+                    $request->getSession()->getFlashBag()->add('success', 'Locations Status successfully modified.');
                     break;
                 case 'inactive':
                     $this->active($check,0);
+                    $request->getSession()->getFlashBag()->add('success', 'Locations Status successfully modified.');
                     break;
                 case 'delete':
                     $em=$this->getDoctrine()->getManager();
@@ -142,6 +145,7 @@ class LocationController extends Controller
                     }catch(\Exception $e){
                         $request->getSession()->getFlashBag()->add('error', $e->getMessage());
                     }
+                    $request->getSession()->getFlashBag()->add('success', 'Locations successfully deleted.');
                     break;
             }
         }

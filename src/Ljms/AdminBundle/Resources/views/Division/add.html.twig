@@ -26,7 +26,7 @@
 					{{form_row(form.max_age)}}					
 					{{form_row(form.description)}}
 					{{form_row(form.rules)}}
-                    <div id="imageId">{% if photo is not null %} <img src="{{ asset(photo) }}">{% endif %}</div>
+                    <div id="imageId">{% if photo is defined and photo is not null %} <img src="{{ asset(photo) }}">{% endif %}</div>
                     {{ form_row(form.file) }}
 				</fieldset>
 				<div class="controls buttons">

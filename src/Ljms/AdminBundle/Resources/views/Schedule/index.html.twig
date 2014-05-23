@@ -16,13 +16,15 @@
 		 <div class="pull-right">
 			<a class="btn action add" href="{{path ('schedule_add')}}" id="act"> Add game</a>
 		</div>
-		<form action="{{ path ('schedule_group') }}" method="post" id="system_users_form">
-			<div class="pull-left">
-				<select id="action_select" name="action_select">
-					<option value="delete">Delete</option>
-				</select>
-				<input class="btn action" type="submit" value="Action" >
-			</div>
+        <form action="{{ path ('schedule_group') }}" method="post" id="system_users_form">
+            {% if ( is_granted('ROLE_ADMIN')) %}
+                <div class="pull-left">
+                    <select id="action_select" name="action_select">
+                        <option value="delete">Delete</option>
+                    </select>
+                    <input class="btn action" type="submit" value="Action" >
+                </div>
+            {% endif %}
             <div class="pagination pull-right">
                 <ul>
                     <li {% if limit==10 %}class="active"{% endif %}>

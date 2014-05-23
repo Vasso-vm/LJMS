@@ -14,9 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class RecaptchaType extends AbstractType
 {
-    /**
-     * The reCAPTCHA server URL's
-     */
+
     const RECAPTCHA_API_SERVER        = '//www.google.com/recaptcha/api';
     const RECAPTCHA_API_JS_SERVER     = '//www.google.com/recaptcha/api/js/recaptcha_ajax.js';
 
@@ -28,24 +26,20 @@ class RecaptchaType extends AbstractType
     protected $publicKey;
 
     /**
-     * Use secure url?
+     * Use secure url
      *
      * @var Boolean
      */
     protected $secure;
 
     /**
-     * Enable recaptcha?
+     * Enable recaptcha
      *
      * @var Boolean
      */
     protected $enabled;
 
-    /**
-     * Language
-     *
-     * @var string
-     */
+
     protected $language;
 
     /**

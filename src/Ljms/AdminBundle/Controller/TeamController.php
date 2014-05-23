@@ -31,8 +31,8 @@ class TeamController extends Controller
         $coach_id=null;
         $manager_id=null;
         $id=$this->getUser()->getId();
-        $page = ($request->get('page')) ? $request->get('page') : 1;
-        $limit = ($request->get('limit')) ? $request->get('limit') : 10;
+        $page = ($request->get('page')!==null) ? $request->get('page') : 1;
+        $limit = ($request->get('limit')!==null) ? $request->get('limit') : 10;
         $filter['division'] = ($request->get('division')) ? $request->get('division') : 'all';
         $filter['status'] = ($request->get('status')) ? $request->get('status') : 'all';
         if (!$this->get('security.context')->isGranted('ROLE_ADMIN')){
@@ -101,6 +101,7 @@ class TeamController extends Controller
     public function editAction(Request $request,$team){
         $em=$this->getDoctrine()->getManager();
         $profile=$team->getDivision()->getProfile();
+        $id=null;
         if (!$this->get('security.context')->isGranted('ROLE_ADMIN')){
             $id=$this->getUser()->getId();
             if ($profile===null){
@@ -115,7 +116,7 @@ class TeamController extends Controller
                 'No profile found for id '.$team->getId()
             );
         }
-        $form = $this->createForm(new TeamType(), $team,array('attr'=>array('id'=>$team->getId())));
+        $form = $this->createForm(new TeamType(), $team,array('attr'=>array('id'=>$id)));
         $form->handleRequest($request);
         if ($form->isValid()){
             try{
@@ -139,12 +140,14 @@ class TeamController extends Controller
      */
     public function deleteAction(Request $request,$team){
         $em=$this->getDoctrine()->getManager();
+        $this->_checkRole($team);
         $em->remove($team);
         try{
             $em->flush();
         }catch(\Exception $e){
             $request->getSession()->getFlashBag()->add('error', $e->getMessage());
         }
+        $request->getSession()->getFlashBag()->add('success', 'Team successfully deleted.');
         return $this->redirect($this->generateUrl('team_index'));
     }
 
@@ -159,9 +162,11 @@ class TeamController extends Controller
             switch ($request->request->get('action_select')){
                 case 'active':
                     $this->active($check,1);
+                    $request->getSession()->getFlashBag()->add('success', 'Teams successfully modified.');
                     break;
                 case 'inactive':
                     $this->active($check,0);
+                    $request->getSession()->getFlashBag()->add('success', 'Teams successfully modified.');
                     break;
                 case 'delete':
                     $em=$this->getDoctrine()->getManager();
@@ -174,6 +179,7 @@ class TeamController extends Controller
                     }catch(\Exception $e){
                         $request->getSession()->getFlashBag()->add('error', $e->getMessage());
                     }
+                    $request->getSession()->getFlashBag()->add('success', 'Teams successfully deleted.');
                     break;
             }
         }
@@ -217,7 +223,7 @@ class TeamController extends Controller
                 'No profile found for id '.$team->getId()
             );
         }
-        $form = $this->createForm(new AssignType(),null, array('attr'=>array('id'=>$team->getId(),'team_name'=>$team->getName(),'division_name'=>$team->getDivision()->getName(),)));
+        $form = $this->createForm(new AssignType(),null, array('attr'=>array('id'=>$team->getId(),'team_name'=>$team->getName(),'division_name'=>$team->getDivision()->getName(),'max_age'=>$team->getDivision()->getMaxAge(),'min_age'=>$team->getDivision()->getMinAge())));
         $form->handleRequest($request);
         if ($request->request->get('assign')){
             $assign=$request->request->get('assign');
@@ -253,6 +259,25 @@ class TeamController extends Controller
         $team_list=$this->getDoctrine()->getRepository('LjmsCoreBundle:Division')->getTeams($id);
         return new Response(json_encode($team_list));
     }
-
+    private function _checkRole($team){
+        $coach_profile=$team->getCoachProfile();
+        if ($coach_profile!==null and count($coach_profile->getCoachTeams())==1){
+            $roles=$coach_profile->getRoles();
+            foreach ($roles as $role){
+                if ($role->getName()=='Coach'){
+                    $coach_profile->removeRole($role);
+                }
+            }
+        }
+        $manager_profile=$team->getManagerProfile();
+        if ($manager_profile!==null and count($manager_profile->getManagerTeams())==1){
+            $roles=$manager_profile->getRoles();
+            foreach ($roles as $role){
+                if ($role->getName()=='Manager'){
+                    $manager_profile->removeRole($role);
+                }
+            }
+        }
+    }
 }
 ?>

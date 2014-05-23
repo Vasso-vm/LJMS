@@ -6,9 +6,16 @@
     use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
     use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-
+    /**
+     * SecurityController -
+     * @Route("admin")
+     */
 class SecurityController extends Controller
 {
+    /**
+     * @Route("", name="security_login")
+     * @Template()
+     */
     public function loginAction()
     {
         $request = $this->getRequest();

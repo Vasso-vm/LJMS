@@ -11,9 +11,9 @@
 			{% endif %}
 		</h2>
 			{% if method=='add'%}
-				<form action="{{ path('schedule_add') }}" method="post" class="form-horizontal game_form" id="add_user_form">
+				<form action="{{ path('schedule_add') }}" method="post" class="form-horizontal game_form add_game" id="add_user_form">
 			{% else %}
-				<form action="{{ path('schedule_edit',{'id':edit_id}) }}" method="post" class="form-horizontal game_form" id="add_user_form">
+				<form action="{{ path('schedule_edit',{'id':edit_id}) }}" method="post" class="form-horizontal game_form edit_game" id="add_user_form">
 			{% endif %}
 				<fieldset>
 					{{ form_errors(form) }}
