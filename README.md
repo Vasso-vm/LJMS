@@ -3,7 +3,7 @@ LJMS
 OVERVIEW
 ========================
 
-TERMINOLOGY (Abbreviations)
+TERMINOLOGY ( Abbreviations )
 ========================
 
 * **Ftd** - Frontend  
