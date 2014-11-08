@@ -133,11 +133,4 @@
             <arg path="${basedir}/app/build/code-browser" />
         </exec>
     </target>
-
-    <target name="parameters" description="Copy parameters">
-        <exec executable="cp" failonerror="true">
-            <arg path="app/config/parameters.ini.template" />
-            <arg path="app/config/parameters.ini" />
-        </exec>
-    </target>
 </project>
