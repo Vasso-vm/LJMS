@@ -134,12 +134,6 @@
         </exec>
     </target>
 
-    <target name="vendors" description="Update vendors">
-        <exec executable="${basedir}/bin/vendors" failonerror="true">
-            <arg value="update" />
-        </exec>
-    </target>
-
     <target name="parameters" description="Copy parameters">
         <exec executable="cp" failonerror="true">
             <arg path="app/config/parameters.ini.template" />
